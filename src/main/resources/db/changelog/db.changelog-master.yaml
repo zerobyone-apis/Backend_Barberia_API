@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: /db/changelog/entities/user.yaml
+  - include:
+      file: /db/changelog/entities/barber.yaml
+  - include:
+      file: /db/changelog/entities/reserve.yaml
