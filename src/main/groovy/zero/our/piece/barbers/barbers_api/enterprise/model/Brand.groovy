@@ -15,53 +15,39 @@ import javax.persistence.Id
 import javax.persistence.Table
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
-import java.time.Instant
+import java.sql.Timestamp
 
 @Entity
 @ToString
 @EqualsAndHashCode
-@Table(name="enterprise")
-class Enterprise {
+@Table(name="brand")
+class Brand {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id
 
-    @NotEmpty(message = "INVALID_NAME")
+    @NotEmpty(message = "INVALID_BRAND_NAME")
     @Length(min = 3, max = 200)
     String name
 
-    @NotEmpty(message = "INVALID_LEGAL_NAME")
-    @Length(min = 3, max = 200)
-    String legalName
+    String title
+    String slogan
 
     @NotEmpty(message = "INVALID_PHONE")
     @Length(min = 5, max = 40)
-    String internalPhone
+    String preferredPhone
 
-    @NotNull(message = "INVALID_LEGAL_ID")
-    @Length(min = 1, max = 200)
-    String legalNumber
+    @NotNull(message = "INVALID_AVATAR")
+    String avatar
 
-    @NotNull(message = "INVALID_BRAND")
-    Brand brand
+    @NotNull(message = "INVALID_BANNER")
+    String banner
 
-    ShopTime openTime
-    ServicesProvider services //Lista de servicios que la empresa cliente prove
-    EnterpriseStatus enterpriseStatus
-    Address address
-    List<Proveedor> proveedores
-    List<Product> products
-    List<Users> users
-    RatingScore rating
-    Instant createdOn
-    Instant updatedOn
-
-    Boolean hasIntegration
-
-
+    String urlFolderImages
+    Timestamp createdOn
+    Timestamp updatedOn
+    Timestamp deletedOn
     Boolean enabled = Boolean.TRUE
 
-    //TODO: Queda temrinar varios de las entidades y realizar todas las tablas en liquibase.
-    // See: https://web.archive.org/web/20161108113341/https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
 }
