@@ -9,6 +9,7 @@ import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.Table
 import javax.validation.constraints.NotEmpty
+import java.time.Instant
 
 @Entity
 @ToString
@@ -21,12 +22,20 @@ class Image {
     @NotEmpty(message = "INVALID_ID")
     String id
 
-    @NotEmpty(message = "INVALID_NAME")
-    String originalName
+    @NotEmpty(message = "INVALID_IMAGE_NAME")
+    String imgName
 
-    String url
+    String urlAvatar
+    String banner
 
-    Date added
-
+    Gallery galleryImage
+    Instant createdOn
+    Instant removedOn
     Integer image_order
+}
+
+class Gallery {
+    String name
+    String url
+    Integer numOrder
 }

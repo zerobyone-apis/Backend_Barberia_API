@@ -4,14 +4,19 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import org.hibernate.validator.constraints.Length
 import zero.our.piece.barbers.barbers_api.producto.model.Product
-import zero.our.piece.barbers.barbers_api.proveedor.model.Proveedor
+import zero.our.piece.barbers.barbers_api.proveedor.model.Provider
+import zero.our.piece.barbers.barbers_api.services.model.Services
 import zero.our.piece.barbers.barbers_api.user.model.Users
 
-import javax.persistence.Column
+import javax.persistence.CollectionTable
+import javax.persistence.ElementCollection
+import javax.persistence.Embeddable
+import javax.persistence.Embedded
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
+import javax.persistence.JoinColumn
 import javax.persistence.Table
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
@@ -20,11 +25,12 @@ import java.time.Instant
 @Entity
 @ToString
 @EqualsAndHashCode
+@Embeddable
 @Table(name="enterprise")
 class Enterprise {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     Long id
 
     @NotEmpty(message = "INVALID_NAME")
@@ -35,6 +41,10 @@ class Enterprise {
     @Length(min = 3, max = 200)
     String legalName
 
+    @NotEmpty(message = "INVALID_EMAIL")
+    @Length(min = 6, max = 200)
+    String email
+
     @NotEmpty(message = "INVALID_PHONE")
     @Length(min = 5, max = 40)
     String internalPhone
@@ -44,22 +54,42 @@ class Enterprise {
     String legalNumber
 
     @NotNull(message = "INVALID_BRAND")
-    Brand brand
+    Long brandId
 
-    ShopTime openTime
-    ServicesProvider services //Lista de servicios que la empresa cliente prove
-    EnterpriseStatus enterpriseStatus
-    Address address
-    List<Proveedor> proveedores
+    @NotNull(message = "INVALID_OPEN_TIMES")
+    Long shopTimeId
+
+    @NotNull(message = "INVALID_ADDRESS_ID")
+    Long addressId
+
+    Long ratingId
+
+    @Embedded
+    @ElementCollection(targetClass = Services.class)
+    @CollectionTable(name = "services" , joinColumns = @JoinColumn(name= "id"))
+    List<Services> services // Lista de servicios que la empresa brinda
+
+    @Embedded
+    @ElementCollection(targetClass = Provider.class)
+    @CollectionTable(name = "providers" , joinColumns = @JoinColumn(name= "id"))
+    List<Provider> providers
+
+    @Embedded
+    @ElementCollection(targetClass = Product.class)
+    @CollectionTable(name = "products" , joinColumns = @JoinColumn(name= "id"))
     List<Product> products
+
+    @Embedded
+    @ElementCollection(targetClass = Users.class)
+    @CollectionTable(name = "users" , joinColumns = @JoinColumn(name= "id"))
     List<Users> users
-    RatingScore rating
+
+    String enterpriseStatus
+
     Instant createdOn
     Instant updatedOn
 
-    Boolean hasIntegration
-
-
+    Boolean hasIntegration // Integration with others apis
     Boolean enabled = Boolean.TRUE
 
     //TODO: Queda temrinar varios de las entidades y realizar todas las tablas en liquibase.

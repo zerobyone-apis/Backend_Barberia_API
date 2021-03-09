@@ -5,3 +5,5 @@ databaseChangeLog:
       file: /db/changelog/entities/barber.yaml
   - include:
       file: /db/changelog/entities/reserve.yaml
+  - include:
+      file: /db/changelog/entities/enterprise.yaml

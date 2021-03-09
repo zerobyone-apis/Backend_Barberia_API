@@ -24,7 +24,7 @@ class Category {
     Long id
 
     @Column
-    Long parent_id
+    Long parentId
 
     @Column
     String name
@@ -33,10 +33,10 @@ class Category {
     Boolean enabled
 
     @Column
-    Boolean is_leaf
+    Boolean isLeaf
 
     @Column
-    String country_id
+    String countryId
 
     @Column
     List<Category> children

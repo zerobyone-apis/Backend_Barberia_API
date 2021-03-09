@@ -1,5 +1,5 @@
 server:
-  port: 8080 #$PORT
+  port: 8080 #PORT
   tomcat:
     max-threads: 300
 
@@ -18,10 +18,10 @@ spring:
       username: postgres
       password: postgres
 
-    #    Production DB Connections
-    #    url:
-    #    username:
-    #    password:
+    #  Production DB Connections
+    #  url:
+    #  username:
+    #  password:
   jpa:
     properties:
       hibernate.jdbc.time_zone: UTC

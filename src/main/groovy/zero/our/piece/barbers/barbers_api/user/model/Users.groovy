@@ -20,5 +20,6 @@ class Users {
     Long id
 
 
+    // todo: hacer las entidades y tables en liquibase para comenzar con los features de Entrerprise.
 
 }

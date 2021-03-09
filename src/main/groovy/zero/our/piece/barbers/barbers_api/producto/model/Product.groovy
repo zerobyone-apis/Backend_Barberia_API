@@ -1,11 +1,10 @@
 package zero.our.piece.barbers.barbers_api.producto.model
 
-import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonProperty
+
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import org.hibernate.validator.constraints.Length
-import zero.our.piece.barbers.barbers_api.proveedor.model.Proveedor
+import zero.our.piece.barbers.barbers_api.proveedor.model.Provider
 
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -52,7 +51,7 @@ class Product {
     String country_id
 
     @Column
-    Proveedor proveedor
+    Provider proveedor
 
 
     //TODO: Queda temrinar varios de las entidades y realizar todas las tablas en liquibase.
