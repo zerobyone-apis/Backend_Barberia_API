@@ -1,5 +1,6 @@
 package zero.our.piece.barbers.barbers_api.enterprise.model
 
+import com.google.type.DateTime
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import org.hibernate.validator.constraints.Length
@@ -23,8 +24,8 @@ import java.time.Instant
 @Table(name="brand")
 class Brand {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@Id
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id
 
     @NotEmpty(message = "INVALID_BRAND_NAME")
@@ -39,13 +40,13 @@ class Brand {
     String preferredPhone
     //TODO: This is the number to show on the image on front or the marketing campaign
 
-    @ElementCollection(targetClass = Image.class)
-    @CollectionTable(name = "images" , joinColumns = @JoinColumn(name= "id"))
-    List<Image> images
+    //@ElementCollection(targetClass = Image.class)
+    //@CollectionTable(name = "images" , joinColumns = @JoinColumn(name= "id"))
+    List<Image> images //TODO: Crear tabla de IDs conteniendo las imagenes que esta marca tenga, idBrand, idImages (idBrand= 1, idImage = 1) (idBrand= 1, idImage = 2) (idBrand= 1, idImage = 3)
 
-    Instant createdOn
-    Instant updatedOn
-    Instant deletedOn
+    DateTime createdOn
+    DateTime updatedOn
+    DateTime deletedOn
     Boolean enabled = Boolean.TRUE
 
 }

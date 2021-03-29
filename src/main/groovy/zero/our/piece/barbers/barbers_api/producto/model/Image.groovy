@@ -1,5 +1,6 @@
 package zero.our.piece.barbers.barbers_api.producto.model
 
+import com.google.type.DateTime
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
@@ -17,8 +18,8 @@ import java.time.Instant
 @Table(name="images")
 class Image {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+   // @Id
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotEmpty(message = "INVALID_ID")
     String id
 
@@ -27,11 +28,13 @@ class Image {
 
     String urlAvatar
     String banner
-
-    Gallery galleryImage
-    Instant createdOn
-    Instant removedOn
+    DateTime createdOn
+    DateTime deletedOn
     Integer image_order
+
+    Gallery galleryImage (){
+        new Gallery(name: imgName, url: urlAvatar, numOrder: image_order)
+    }
 }
 
 class Gallery {

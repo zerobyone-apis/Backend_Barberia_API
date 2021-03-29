@@ -1,4 +1,4 @@
-package zero.our.piece.barbers.barbers_api.enterprise.model
+package zero.our.piece.barbers.barbers_api.enterprise.infrastructure
 
 import groovy.transform.ToString
 

@@ -12,11 +12,7 @@ import javax.validation.constraints.NotNull
 @EqualsAndHashCode
 @Table(name="countries")
 class Countries {
-
-    @NotNull
     Long id
-
     String name
-
     String iso_code
 }

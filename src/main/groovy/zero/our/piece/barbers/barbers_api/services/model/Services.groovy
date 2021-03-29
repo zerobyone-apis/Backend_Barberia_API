@@ -1,5 +1,6 @@
 package zero.our.piece.barbers.barbers_api.services.model
 
+import com.google.type.DateTime
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import zero.our.piece.barbers.barbers_api.producto.model.Image
@@ -33,8 +34,8 @@ class Services {
     List<WorkServices> services
 
 
-    Instant createdOn
-    Instant updateOn
+    DateTime createdOn
+    DateTime updateOn
 
     Boolean enabled = Boolean.TRUE
 
