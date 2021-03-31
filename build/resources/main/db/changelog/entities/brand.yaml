@@ -1,0 +1,100 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_brand_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: brand
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR
+              - column:
+                  name: title
+                  type: VARCHAR
+              - column:
+                  name: slogan
+                  type: VARCHAR
+              - column:
+                  name: preferredPhone
+                  type: VARCHAR
+              - column:
+                  name: createdOn
+                  type: DATETIME
+              - column:
+                  name: updateOn
+                  type: DATETIME
+              - column:
+                  name: deletedOn
+                  type: DATETIME
+              - column:
+                  name: enabled
+                  type: BIT
+
+  ################################################################################################
+  ##  TODO: Crear la clave foranea entre users:
+  ##  (id) Brand -> Images table 1 a n
+  ################################################################################################
+
+  - changeSet:
+      id: create_images_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: images
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: imgName
+                  type: VARCHAR
+              - column:
+                  name: urlAvatar
+                  type: VARCHAR
+              - column:
+                  name: banner
+                  type: VARCHAR
+              - column:
+                  name: Integer
+                  type: INT
+              - column:
+                  name: createdOn
+                  type: DATETIME
+              - column:
+                  name: deletedOn
+                  type: DATETIME
+
+  ################################################################################################
+  ##  TODO: Crear la clave foranea entre users:
+  ##  (id) Countries -> Address table 1 a n
+  ################################################################################################
+
+  # - changeSet:
+  #     id: LO_QUE_HACE_EL_SQL_FILE
+  #     author: ZERITO
+  #     dbms: mysql
+  #     runOnChange: true
+  #     changes:
+  #       - sqlFile:
+  #           dbms: mysql
+  #           path: /db/changelog/sql/EXAMPLE.sql
+  #
+  #       - changeSet:
+  #           id: LO_QUE_HACE_EL_SQL_FILE
+  #           author: ZERITO
+  #           dbms: mysql
+  #           runOnChange: true
+  #           changes:
+  #             - sqlFile:
+  #                 dbms: mysql
+  #                 path: /db/changelog/sql/EXAMPLE.sql

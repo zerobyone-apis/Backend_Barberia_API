@@ -1,0 +1,79 @@
+package zero.our.piece.barbers.barbers_api.services.model
+
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
+import org.joda.time.DateTime
+
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.Table
+
+@Entity
+@ToString
+@EqualsAndHashCode
+@Table(name = "services")
+//@Embeddable
+class Services {
+
+    @Id
+    //  @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id
+
+    //@ElementCollection(targetClass = WorkServices.class)
+    //@Embedded
+    //@CollectionTable(name = "images")
+    //List<WorkServices> services //todo: crear tabal con id y lista de servicios.
+
+    DateTime createdOn
+    DateTime updateOn
+
+    Boolean enabled = Boolean.TRUE
+
+}
+
+class WorkServices {
+    ServicesBarber servicesBarber
+    ServicesHairdresser servicesHairdresser
+    Promos promos
+}
+
+/**********  BARBERIA   ***************/
+enum ServicesBarber {
+    FADE,                       // 270
+    CLASICO,                    // 230
+    BARBA,                      // 120
+    CEJA,                       // 70
+    AFEITADO_CLASICO,           // 160
+    BRUSHING_PROGRESIVO_BARBER, // desde 500
+    MECHAS_BARBER,              // Desde 500
+    PLANCHADO,                  // 1200
+    COLORES_FANTASIA_BARBER     // 800
+}
+
+/**********   PELUQUERIA  *************/
+enum ServicesHairdresser {
+    CORTE,               // 250
+    LAVADO,              // 50
+    BRUSHING,            // Desde_200
+    DEPILACION,          // (ceja, bozo, menton) 70c/u
+    BOTOX,               // 690
+    HIDROCAUTERIZACION,  // 590
+    BRUSHING_PROGRESIVO, // desde 1200
+    CLARITOS,            // 900
+    MECHAS,              // 900
+    REFLEJOS,            // 900
+    BALAYAGE,            // desde 1600
+    CALIFORNIANAS,       // desde 1600
+    COLOR,               // 600
+    COLORES_FANTASIA,    // 600
+    APLICACION,          // 280
+    TRENZAS              // 200
+}
+
+/***********  PROMOS  *************/
+enum Promos {
+    CORTE_BARBA,        // 350
+    CORTE_BARBA_CEJAS,  // 400
+    CORTE_CEJAS,        // 320
+    CORTE_BLACKMASK     // 500
+}
