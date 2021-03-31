@@ -37,7 +37,7 @@ databaseChangeLog:
                   name: addressId
                   type: BIGINT
               - column:
-                  name: ratingId
+                  name: ratingScoreId
                   type: BIGINT
               - column:
                   name: enterpriseStatus
@@ -55,19 +55,19 @@ databaseChangeLog:
                   name: enabled
                   type: BIT
 
-#########################################################################################################
-## TODO: Añadir las foreign keys entre:
-##       brandId -> Brand table
-##       shopTimeId -> ShopTime table
-##       addressId -> Brand table
-##       ratingId -> Brand table
-##       (id) Enterprise table -> Services table - los servicios asociados a esta empresa 1 a n
-##       (id) Enterprise table -> Providers table - los Providers asociados a esta empresa 1 a n
-##       (id) Enterprise table -> Products table - los Products asociados a esta empresa 1 a n
-##       (id) Enterprise table -> Users table - los Users asociados a esta empresa 1 a n
-#########################################################################################################
+  #########################################################################################################
+  ## TODO: Añadir las foreign keys entre:
+  ##       brandId -> Brand table
+  ##       shopTimeId -> ShopTime table
+  ##       addressId -> Brand table
+  ##       ratingId -> Rating table
+  ##       (id) Enterprise table -> Services table - los servicios asociados a esta empresa 1 a n
+  ##       (id) Enterprise table -> Providers table - los Providers asociados a esta empresa 1 a n
+  ##       (id) Enterprise table -> Products table - los Products asociados a esta empresa 1 a n
+  ##       (id) Enterprise table -> Users table - los Users asociados a esta empresa 1 a n
+  #########################################################################################################
 
-## ShopTime Table
+  ## ShopTime Table
   - changeSet:
       id: create_shop_time_table
       author: max_olivero
@@ -109,6 +109,157 @@ databaseChangeLog:
   ##       enterpriseId -> Enterprise table
   ##       (id) ShopTime table -> Enterprise table  1 a 1
   #########################################################################################################
+
+  ## EnterpriseProducts Table
+  - changeSet:
+      id: create_enterprise_products_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: enterprise_products
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: enterpriseId
+                  type: BIGINT
+              - column:
+                  name: productId
+                  type: BIGINT
+
+
+  ## EnterpriseUsers Table
+  - changeSet:
+      id: create_enterprise_users_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: enterprise_users
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: enterpriseId
+                  type: BIGINT
+              - column:
+                  name: userId
+                  type: BIGINT
+
+
+  ## EnterpriseProviders Table
+  - changeSet:
+      id: create_enterprise_providers_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: enterprise_providers
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: enterpriseId
+                  type: BIGINT
+              - column:
+                  name: providerId
+                  type: BIGINT
+
+
+  ## EnterpriseServices Table
+  - changeSet:
+      id: create_enterprise_service_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: enterprise_service
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: enterpriseId
+                  type: BIGINT
+              - column:
+                  name: serviceId
+                  type: BIGINT
+
+  ## RatingScore Table
+  - changeSet:
+      id: create_rating_score_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: rating_score
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: percentage
+                  type: BIGINT
+              - column:
+                  name: average
+                  type: DOUBLE
+              - column:
+                  name: count
+                  type: INT
+
+  ## RatingScore Table
+  - changeSet:
+      id: create_days_to_work_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: days_to_work
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: dayName
+                  type: VARCHAR
+              - column:
+                  name: openTime
+                  type: VARCHAR
+              - column:
+                  name: closeTime
+                  type: VARCHAR
+
+ # - changeSet:
+ #    id: QUE_SE_HACE_EN_ESTE_CHANGESET
+ #    author: AUTHOR
+ #    changes:
+ #      - addForeignKeyConstraint:
+ #          baseColumnNames: table
+ #          baseTableName: days_to_work
+ #          constraintName: name_fk
+ #          deferrable: false
+ #          initiallyDeferred: false
+ #          onDelete: RESTRICT
+ #          onUpdate: RESTRICT
+ #          referencedColumnNames: id
+ #          referencedTableName: table
+ #          validate: true
 
   #  - changeSet:
   #      id: QUE_SE_HACE_EN_ESTE_CHANGESET

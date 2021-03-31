@@ -17,7 +17,6 @@ import javax.validation.constraints.NotNull
 class Address {
 
     @Id
-    // @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id
     Long countryId
     Long placeId

@@ -17,7 +17,6 @@ import javax.validation.constraints.NotEmpty
 class Image {
 
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotEmpty(message = "INVALID_ID")
     String id
 
@@ -28,15 +27,15 @@ class Image {
     String banner
     DateTime createdOn
     DateTime deletedOn
-    Integer image_order
+    Long imageOrder
 
     Gallery galleryImage() {
-        new Gallery(name: imgName, url: urlAvatar, numOrder: image_order)
+        new Gallery(name: imgName, url: urlAvatar, numOrder: imageOrder)
     }
 }
 
 class Gallery {
     String name
     String url
-    Integer numOrder
+    Long numOrder
 }

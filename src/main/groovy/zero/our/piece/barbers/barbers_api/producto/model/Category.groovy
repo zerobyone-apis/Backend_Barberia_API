@@ -12,14 +12,12 @@ import javax.persistence.Table
 @ToString
 @EqualsAndHashCode
 @Table(name = "category")
-class Category implements Serializable {
+class Category {
 
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id
     Long parentId
     Long countryId
-
     String name
     Boolean enabled
     Boolean isLeaf

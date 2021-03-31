@@ -22,9 +22,7 @@ import java.time.Instant
 @Entity
 @Table(name = "shop_time")
 class ShopTime {
-
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id
     Long addressId
     Long enterpriseId
@@ -34,10 +32,4 @@ class ShopTime {
     DateTime deletedOn
     Boolean enabled = Boolean.TRUE
 
-}
-
-class DaysToWork {
-    WeekDays dayName
-    String openTime
-    String closeTime
 }
