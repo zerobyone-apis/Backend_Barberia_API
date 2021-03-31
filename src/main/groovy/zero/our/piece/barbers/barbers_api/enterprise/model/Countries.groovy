@@ -4,14 +4,15 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
 import javax.persistence.Entity
+import javax.persistence.Id
 import javax.persistence.Table
-import javax.validation.constraints.NotNull
 
 @Entity
 @ToString
 @EqualsAndHashCode
-@Table(name="countries")
+@Table(name = "countries")
 class Countries {
+    @Id
     Long id
     String name
     String iso_code

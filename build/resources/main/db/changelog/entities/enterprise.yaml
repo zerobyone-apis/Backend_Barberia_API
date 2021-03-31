@@ -1,0 +1,227 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_enterprise_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: enterprise
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR
+              - column:
+                  name: legalName
+                  type: VARCHAR
+              - column:
+                  name: email
+                  type: VARCHAR
+              - column:
+                  name: internalPhone
+                  type: VARCHAR
+              - column:
+                  name: legalNumber
+                  type: VARCHAR
+              - column:
+                  name: brandId
+                  type: BIGINT
+              - column:
+                  name: shopTimeId
+                  type: BIGINT
+              - column:
+                  name: addressId
+                  type: BIGINT
+              - column:
+                  name: ratingId
+                  type: BIGINT
+              - column:
+                  name: enterpriseStatus
+                  type: VARCHAR
+              - column:
+                  name: createdOn
+                  type: DATETIME
+              - column:
+                  name: updatedOn
+                  type: DATETIME
+              - column:
+                  name: hasIntegration
+                  type: BOOLEAN
+              - column:
+                  name: enabled
+                  type: BIT
+
+#########################################################################################################
+## TODO: Añadir las foreign keys entre:
+##       brandId -> Brand table
+##       shopTimeId -> ShopTime table
+##       addressId -> Brand table
+##       ratingId -> Brand table
+##       (id) Enterprise table -> Services table - los servicios asociados a esta empresa 1 a n
+##       (id) Enterprise table -> Providers table - los Providers asociados a esta empresa 1 a n
+##       (id) Enterprise table -> Products table - los Products asociados a esta empresa 1 a n
+##       (id) Enterprise table -> Users table - los Users asociados a esta empresa 1 a n
+#########################################################################################################
+
+## ShopTime Table
+  - changeSet:
+      id: create_shop_time_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: shop_time
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: addressId
+                  type: VARCHAR
+              - column:
+                  name: enterpriseId
+                  type: VARCHAR
+              - column:
+                  name: workDays
+                  type: VARCHAR
+              - column:
+                  name: createdOn
+                  type: DATETIME
+              - column:
+                  name: deletedOn
+                  type: DATETIME
+              - column:
+                  name: hasIntegration
+                  type: BOOLEAN
+              - column:
+                  name: enabled
+                  type: BIT
+
+  #########################################################################################################
+  ## TODO: Añadir las foreign keys entre:
+  ##       addressId -> Address table
+  ##       enterpriseId -> Enterprise table
+  ##       (id) ShopTime table -> Enterprise table  1 a 1
+  #########################################################################################################
+
+  #  - changeSet:
+  #      id: QUE_SE_HACE_EN_ESTE_CHANGESET
+  #      author: AUTHOR
+  #      changes:
+  #        - renameColumn:
+  #            columnDataType: DOUBLE
+  #            oldColumnName: max_amount
+  #            newColumnName: algo_max_amount
+  #            tableName: algo_delivery_zones
+  #        - renameColumn:
+  #            columnDataType: DOUBLE
+  #            oldColumnName: min_amount
+  #            newColumnName: algo_min_amount
+  #            tableName: algo_delivery_zones
+  #        - renameColumn:
+  #            columnDataType: DOUBLE
+  #            oldColumnName: algo_cost
+  #            newColumnName: algo_delivery_cost
+  #           tableName: algo_delivery_zones
+  #      - addColumn:
+  #           columns:
+  #             - column:
+  #                 name: algo_max_amount
+  #                type: DOUBLE
+  #                constraints:
+  #                 nullable: false
+  #                defaultValueNumeric: 0
+  #           - column:
+  #                name: algo_min_amount
+  #               type: DOUBLE
+  #                constraints:
+  #                defaultValueNumeric: 0
+  #            - column:
+  #               name: algo_delivery_cost
+  #                type: DOUBLE
+  #               constraints:
+  #                 nullable: false
+  #                defaultValueNumeric: 0
+  #            - column:
+  #             name: algo_zone_name
+  #               type: TEXT
+  #               constraints:
+  #                 nullable: false
+  #            - column:
+  #              name: algo_lead_time
+  #                type: varchar(50)
+  #              constraints:
+  #                  nullable: false
+  #           - column:
+  #                name: algo_lead_time
+  #                type: varchar(50)
+  #               constraints:
+  #                  nullable: false
+  #           - column:
+  #                name: algo_delivery_calendar
+  #                type: TEXT
+  #                constraints:
+  #                 nullable: false
+  #           - column:
+  #                name: algo_delivery_calendar
+  #               type: TEXT
+  #               constraints:
+  #                 nullable: false
+  #            - column:
+  #               name: cut_off
+  #                type: varchar(50)
+  #               constraints:
+  #                 nullable: false
+  #           - column:
+  #               type: varchar(50)
+  #               constraints:
+  #                 nullable: false
+  #          - column:
+  #               name: algo_delivery_window
+  #               type: varchar(50)
+  #               constraints:
+  #                 nullable: false
+  #          tableName: TABLE_NAME
+
+
+  # - changeSet:
+  #     id: QUE_SE_HACE_EN_ESTE_CHANGESET
+  #     author: AUTHOR
+  #     changes:
+  #       - addForeignKeyConstraint:
+  #           baseColumnNames: table
+  #           baseTableName: other_table
+  #           constraintName: name_fk
+  #           deferrable: false
+  #           initiallyDeferred: false
+  #           onDelete: RESTRICT
+  #           onUpdate: RESTRICT
+  #           referencedColumnNames: id
+  #           referencedTableName: table
+  #           validate: true
+
+  # - changeSet:
+  #     id: LO_QUE_HACE_EL_SQL_FILE
+  #     author: ZERITO
+  #     dbms: mysql
+  #     runOnChange: true
+  #     changes:
+  #       - sqlFile:
+  #           dbms: mysql
+  #           path: /db/changelog/sql/EXAMPLE.sql
+
+  # - changeSet:
+  #     id: LO_QUE_HACE_EL_SQL_FILE
+  #     author: ZERITO
+  #     dbms: mysql
+  #     runOnChange: true
+  #     changes:
+  #       - sqlFile:
+  #           dbms: mysql
+  #           path: /db/changelog/sql/EXAMPLE.sql

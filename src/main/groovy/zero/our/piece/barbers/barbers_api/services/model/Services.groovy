@@ -1,38 +1,28 @@
 package zero.our.piece.barbers.barbers_api.services.model
 
-import com.google.type.DateTime
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
-import zero.our.piece.barbers.barbers_api.producto.model.Image
+import org.joda.time.DateTime
 
-import javax.persistence.CollectionTable
-import javax.persistence.ElementCollection
-import javax.persistence.Embeddable
-import javax.persistence.Embedded
 import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
 import javax.persistence.Id
-import javax.persistence.JoinColumn
 import javax.persistence.Table
-import java.time.Instant
 
 @Entity
 @ToString
 @EqualsAndHashCode
-@Table(name="services")
-@Embeddable
+@Table(name = "services")
+//@Embeddable
 class Services {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //  @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id
 
-    @ElementCollection(targetClass = WorkServices.class)
-    @Embedded
-    @CollectionTable(name = "images")
-    List<WorkServices> services
-
+    //@ElementCollection(targetClass = WorkServices.class)
+    //@Embedded
+    //@CollectionTable(name = "images")
+    //List<WorkServices> services //todo: crear tabal con id y lista de servicios.
 
     DateTime createdOn
     DateTime updateOn

@@ -1,44 +1,32 @@
 package zero.our.piece.barbers.barbers_api.producto.model
 
+
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
-import org.hibernate.validator.constraints.Length
 
-import javax.persistence.Column
 import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.Table
-import javax.validation.constraints.NotEmpty
 
 @Entity
 @ToString
 @EqualsAndHashCode
-@Table(name="category")
-class Category {
+@Table(name = "category")
+class Category implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id
-
-    @Column
     Long parentId
+    Long countryId
 
-    @Column
     String name
-
-    @Column
     Boolean enabled
-
-    @Column
     Boolean isLeaf
 
-    @Column
-    String countryId
-
-    @Column
-    List<Category> children
-
+    //List<Long> childrenIds // todo: lista de tienda, o sub tiendas o categorias en si como sevicios y dentro de esos servicios sub servicios
+    // todo: ejemplo : Barberia: id 1,   nombre = art, parent = null, children = [2,3,4]
+    //                Barberia_2: id 2, nombre = art, parent = 1   , children = []
+    //                Barberia_3: id 3, nombre = art, parent = 1   , children = []
+    //                Barberia_4: id 4, nombre = art, parent = 1   , children = []
 }

@@ -15,7 +15,7 @@ enum WeekDays {
         this.values = values
     }
 
-    getWeekDays(){
+    def getWeekDays(){
         return this.name() + " " + this.values
     }
 }

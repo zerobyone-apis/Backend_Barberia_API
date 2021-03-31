@@ -1,8 +1,8 @@
 package zero.our.piece.barbers.barbers_api.user.model
 
-import com.google.type.DateTime
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
+import org.joda.time.DateTime
 
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -17,7 +17,7 @@ import java.time.Instant
 @Table(name="users")
 class Users {
 
-    //@Id
+    @Id
     //@GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id
     Long enterpriseId

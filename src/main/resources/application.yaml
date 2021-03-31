@@ -13,10 +13,9 @@ spring:
       default-media-type: application/json
   datasource:
     driver-class-name: org.postgresql.Driver
-      #   Local DB Connections
-      url: jdbc:postgresql://localhost:5432/barbers_api
-      username: postgres
-      password: postgres
+    url: jdbc:postgresql://localhost:5432/barbers_api
+    username: postgres
+    password: password
 
     #  Production DB Connections
     #  url:
@@ -26,7 +25,7 @@ spring:
     properties:
       hibernate.jdbc.time_zone: UTC
   liquibase:
-    change-log: classpath:changelog/db.changelog-master.yaml
+    change-log: classpath:db/changelog/db.changelog-master.yaml
 
 logging:
   level:

@@ -1,57 +1,41 @@
 package zero.our.piece.barbers.barbers_api.producto.model
 
-
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import org.hibernate.validator.constraints.Length
-import zero.our.piece.barbers.barbers_api.proveedor.model.Provider
+import org.joda.time.DateTime
 
-import javax.persistence.Column
 import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.Table
 import javax.validation.constraints.NotEmpty
-import javax.validation.constraints.NotNull
 
 @Entity
 @ToString
 @EqualsAndHashCode
-@Table(name="products")
+@Table(name = "products")
 class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
     Long id
+    Long brandId
 
     @NotEmpty(message = "INVALID_NAME")
     @Length(min = 3, max = 200)
-    @Column
     String name
 
-    @Column
+
+    Long country_id //todo: Revisar si puede ir bien con Long
+    Long providerId //todo: Revisar si puede ir bien con Long
+    Long categoryId //todo: Revisar si puede ir bien con Long
+
+//    List<Image> images //TODO: SE RESUELVE HACIENDO UNA TABLA CON EL ID DEL PRODUCTO Y ID DE CADA UNO DE LOS IMAGENES QUE ESTA EMPRESA PROVEEA - Lista de Imagenes que la producto tiene
+
+    DateTime createdOn
+    DateTime updatedOn
+    DateTime deletedOn
+
     Boolean enabled = Boolean.TRUE
-
-    @Column
-    Category category
-
-    @NotNull(message = "INVALID_BRAND")
-    @Column
-    Brand brand
-
-    @Column
-    List<Image> images
-
-    @Column
-    Date created
-
-    @Column
-    String country_id
-
-    @Column
-    Provider proveedor
 
 
     //TODO: Queda temrinar varios de las entidades y realizar todas las tablas en liquibase.

@@ -1,32 +1,25 @@
 package zero.our.piece.barbers.barbers_api.enterprise.model
 
-import com.google.type.DateTime
+
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import org.hibernate.validator.constraints.Length
-import zero.our.piece.barbers.barbers_api.producto.model.Product
-import zero.our.piece.barbers.barbers_api.proveedor.model.Provider
-import zero.our.piece.barbers.barbers_api.services.model.Services
-import zero.our.piece.barbers.barbers_api.user.model.Users
+import org.joda.time.DateTime
 
 import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
 import javax.persistence.Id
-
 import javax.persistence.Table
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
-import java.time.Instant
 
 @Entity
 @ToString
 @EqualsAndHashCode
-@Table(name="enterprise")
+@Table(name = "enterprise")
 class Enterprise {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    //@GeneratedValue(strategy = GenerationType.AUTO)
     Long id
 
     @NotEmpty(message = "INVALID_NAME")
@@ -60,15 +53,16 @@ class Enterprise {
 
     Long ratingId
 
-    List<Services> services //TODO: SE RESUELVE HACIENDO UNA TABLA CON EL ID DE LA EMPRESA Y ID DE CADA UNO DE LOS SERVICIOS QUE ESTA EMPRESA PROVEEA - Lista de servicios que la empresa brinda
+//    List<Services> services //TODO: SE RESUELVE HACIENDO UNA TABLA CON EL ID DE LA EMPRESA Y ID DE CADA UNO DE LOS SERVICIOS QUE ESTA EMPRESA PROVEEA - Lista de servicios que la empresa brinda
 
-    List<Provider> providers //TODO: SE RESUELVE HACIENDO UNA TABLA CON EL ID DE LA EMPRESA Y ID DE CADA UNO DE LOS SERVICIOS QUE ESTA EMPRESA PROVEEA - Lista de servicios que la empresa brinda
+//    List<Provider> providers //TODO: SE RESUELVE HACIENDO UNA TABLA CON EL ID DE LA EMPRESA Y ID DE CADA UNO DE LOS SERVICIOS QUE ESTA EMPRESA PROVEEA - Lista de servicios que la empresa brinda
 
-    List<Product> products //TODO: SE RESUELVE HACIENDO UNA TABLA CON EL ID DE LA EMPRESA Y ID DE CADA UNO DE LOS SERVICIOS QUE ESTA EMPRESA PROVEEA - Lista de servicios que la empresa brinda
+//    List<Product> products //TODO: SE RESUELVE HACIENDO UNA TABLA CON EL ID DE LA EMPRESA Y ID DE CADA UNO DE LOS SERVICIOS QUE ESTA EMPRESA PROVEEA - Lista de servicios que la empresa brinda
 
-    List<Users> users //TODO: SE RESUELVE HACIENDO UNA TABLA CON EL ID DE LA EMPRESA Y ID DE CADA UNO DE LOS SERVICIOS QUE ESTA EMPRESA PROVEEA - Lista de servicios que la empresa brinda
+//    List<Users> users //TODO: SE RESUELVE HACIENDO UNA TABLA CON EL ID DE LA EMPRESA Y ID DE CADA UNO DE LOS SERVICIOS QUE ESTA EMPRESA PROVEEA - Lista de servicios que la empresa brinda
 
-    String enterpriseStatus //? me queda duda del tipo de status que espero, imagino que es un control, del estado de CREATED - PENDING - ACCEPTED.
+    String enterpriseStatus
+    //? me queda duda del tipo de status que espero, imagino que es un control, del estado de CREATED - PENDING - ACCEPTED.
 
     DateTime createdOn
     DateTime updatedOn

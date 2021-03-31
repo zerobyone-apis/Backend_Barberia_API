@@ -10,7 +10,6 @@ class RatingScore {
 
     Integer count
 
-
     @JsonProperty("percentage")
     Long getPercentage() {
         return (getAverage() / 5 * 100)?.setScale(2, RoundingMode.HALF_EVEN) ?: BigDecimal.ZERO

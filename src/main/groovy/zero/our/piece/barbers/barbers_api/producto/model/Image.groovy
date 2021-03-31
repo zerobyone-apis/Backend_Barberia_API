@@ -1,24 +1,22 @@
 package zero.our.piece.barbers.barbers_api.producto.model
 
-import com.google.type.DateTime
+
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
+import org.joda.time.DateTime
 
 import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.Table
 import javax.validation.constraints.NotEmpty
-import java.time.Instant
 
 @Entity
 @ToString
 @EqualsAndHashCode
-@Table(name="images")
+@Table(name = "images")
 class Image {
 
-   // @Id
+    @Id
     //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotEmpty(message = "INVALID_ID")
     String id
@@ -32,7 +30,7 @@ class Image {
     DateTime deletedOn
     Integer image_order
 
-    Gallery galleryImage (){
+    Gallery galleryImage() {
         new Gallery(name: imgName, url: urlAvatar, numOrder: image_order)
     }
 }

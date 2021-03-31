@@ -12,20 +12,18 @@ import javax.validation.constraints.NotEmpty
 @ToString
 @EqualsAndHashCode
 @Table(name="providers")
-@Embeddable
-class Provider {
+//@Embeddable
+class Provider implements Serializable{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id
 
     @NotEmpty(message = "INVALID_NAME")
     @Length(min = 3, max = 200)
     String name
 
-    @Embedded
-    @ElementCollection
-    Category category
+    String categoryID //todo: probar si va con Long -> me refiero a si conviene string o long
     Boolean enabled = Boolean.TRUE
 
 }
