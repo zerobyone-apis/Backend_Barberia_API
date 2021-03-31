@@ -65,8 +65,8 @@ databaseChangeLog:
                   name: banner
                   type: VARCHAR
               - column:
-                  name: Integer
-                  type: INT
+                  name: imageOrder
+                  type: BIGINT
               - column:
                   name: createdOn
                   type: DATETIME
@@ -78,6 +78,49 @@ databaseChangeLog:
   ##  TODO: Crear la clave foranea entre users:
   ##  (id) Countries -> Address table 1 a n
   ################################################################################################
+
+  ## BrandImages Table
+  - changeSet:
+      id: create_brand_images_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: brand_images
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: brandId
+                  type: BIGINT
+              - column:
+                  name: imageId
+                  type: BIGINT
+
+  ## BrandProducts Table
+  - changeSet:
+      id: create_brand_products_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: brand_products
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: brandId
+                  type: BIGINT
+              - column:
+                  name: productId
+                  type: BIGINT
+
 
   # - changeSet:
   #     id: LO_QUE_HACE_EL_SQL_FILE

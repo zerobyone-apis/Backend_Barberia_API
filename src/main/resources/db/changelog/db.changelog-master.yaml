@@ -7,5 +7,7 @@ databaseChangeLog:
       file: /db/changelog/entities/user.yaml
   - include:
       file: /db/changelog/entities/brand.yaml
+  - include:
+      file: /db/changelog/entities/product.yaml
  # - include:
-  #    file: /db/changelog/entities/enterprise.yaml
+ #     file: /db/changelog/entities/product.yaml

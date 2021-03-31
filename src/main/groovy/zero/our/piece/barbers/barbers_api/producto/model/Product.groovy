@@ -18,16 +18,16 @@ class Product {
 
     @Id
     Long id
-    Long brandId
 
     @NotEmpty(message = "INVALID_NAME")
     @Length(min = 3, max = 200)
     String name
 
-
-    Long country_id //todo: Revisar si puede ir bien con Long
-    Long providerId //todo: Revisar si puede ir bien con Long
-    Long categoryId //todo: Revisar si puede ir bien con Long
+    Long brandId    //todo: hacer el fk
+    Long priceId    //todo: hacer el fk y la tabla price
+    Long countryId  //todo: hacer el fk
+    Long providerId //todo: hacer el fk
+    Long categoryId //todo: hacer el fk
 
 //    List<Image> images //TODO: SE RESUELVE HACIENDO UNA TABLA CON EL ID DEL PRODUCTO Y ID DE CADA UNO DE LOS IMAGENES QUE ESTA EMPRESA PROVEEA - Lista de Imagenes que la producto tiene
 

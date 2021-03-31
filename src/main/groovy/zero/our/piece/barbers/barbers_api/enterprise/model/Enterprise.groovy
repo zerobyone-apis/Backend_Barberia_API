@@ -1,6 +1,5 @@
 package zero.our.piece.barbers.barbers_api.enterprise.model
 
-
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import org.hibernate.validator.constraints.Length
@@ -19,7 +18,6 @@ import javax.validation.constraints.NotNull
 class Enterprise {
 
     @Id
-    //@GeneratedValue(strategy = GenerationType.AUTO)
     Long id
 
     @NotEmpty(message = "INVALID_NAME")
@@ -51,7 +49,7 @@ class Enterprise {
     @NotNull(message = "INVALID_ADDRESS_ID")
     Long addressId
 
-    Long ratingId
+    Long ratingScoreId
 
 //    List<Services> services //TODO: SE RESUELVE HACIENDO UNA TABLA CON EL ID DE LA EMPRESA Y ID DE CADA UNO DE LOS SERVICIOS QUE ESTA EMPRESA PROVEEA - Lista de servicios que la empresa brinda
 

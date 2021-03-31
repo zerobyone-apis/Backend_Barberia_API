@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: create_enterprise_table
+      id: create_products_table
       author: max_olivero
       changes:
         - createTable:
-            tableName: enterprise
+            tableName: prodcuts
             columns:
               - column:
                   autoIncrement: true
@@ -16,31 +16,19 @@ databaseChangeLog:
                   name: name
                   type: VARCHAR
               - column:
-                  name: legalName
-                  type: VARCHAR
-              - column:
-                  name: email
-                  type: VARCHAR
-              - column:
-                  name: internalPhone
-                  type: VARCHAR
-              - column:
-                  name: legalNumber
-                  type: VARCHAR
-              - column:
                   name: brandId
                   type: BIGINT
               - column:
-                  name: shopTimeId
+                  name: priceId
                   type: BIGINT
               - column:
-                  name: addressId
-                  type: BIGINT
+                  name: countryId
+                  type: VARCHAR
               - column:
-                  name: ratingScoreId
-                  type: BIGINT
+                  name: providerId
+                  type: VARCHAR
               - column:
-                  name: enterpriseStatus
+                  name: categoryId
                   type: VARCHAR
               - column:
                   name: createdOn
@@ -49,8 +37,8 @@ databaseChangeLog:
                   name: updatedOn
                   type: DATETIME
               - column:
-                  name: hasIntegration
-                  type: BOOLEAN
+                  name: deletedOn
+                  type: DATETIME
               - column:
                   name: enabled
                   type: BIT
@@ -58,87 +46,48 @@ databaseChangeLog:
   #########################################################################################################
   ## TODO: Añadir las foreign keys entre:
   ##       brandId -> Brand table
-  ##       shopTimeId -> ShopTime table
-  ##       addressId -> Brand table
-  ##       ratingId -> Rating table
-  ##       (id) Enterprise table -> Services table - los servicios asociados a esta empresa 1 a n
-  ##       (id) Enterprise table -> Providers table - los Providers asociados a esta empresa 1 a n
-  ##       (id) Enterprise table -> Products table - los Products asociados a esta empresa 1 a n
-  ##       (id) Enterprise table -> Users table - los Users asociados a esta empresa 1 a n
+  ##       priceId -> Price table
+  ##       countryId -> Country table
+  ##       providerId -> Provider table
+  ##       categoryId -> Category table
+  ##       (id) Products table -> Images table - las images associates a este producto 1 a n
   #########################################################################################################
 
   ## ShopTime Table
   - changeSet:
-      id: create_shop_time_table
+      id: create_product_images_table
       author: max_olivero
       changes:
         - createTable:
-            tableName: shop_time
+            tableName: product_images
             columns:
               - column:
                   autoIncrement: true
                   constraints:
                     primaryKey: true
                   name: id
-                  type: BIGINT
-              - column:
-                  name: addressId
-                  type: VARCHAR
-              - column:
-                  name: enterpriseId
-                  type: VARCHAR
-              - column:
-                  name: workDays
-                  type: VARCHAR
-              - column:
-                  name: createdOn
-                  type: DATETIME
-              - column:
-                  name: deletedOn
-                  type: DATETIME
-              - column:
-                  name: hasIntegration
-                  type: BOOLEAN
-              - column:
-                  name: enabled
-                  type: BIT
-
-  #########################################################################################################
-  ## TODO: Añadir las foreign keys entre:
-  ##       addressId -> Address table
-  ##       enterpriseId -> Enterprise table
-  ##       (id) ShopTime table -> Enterprise table  1 a 1
-  #########################################################################################################
-
-  ## EnterpriseProducts Table
-  - changeSet:
-      id: create_enterprise_products_table
-      author: max_olivero
-      changes:
-        - createTable:
-            tableName: enterprise_products
-            columns:
-              - column:
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                  name: id
-                  type: BIGINT
-              - column:
-                  name: enterpriseId
                   type: BIGINT
               - column:
                   name: productId
                   type: BIGINT
+              - column:
+                  name: imageId
+                  type: BIGINT
 
 
-  ## EnterpriseUsers Table
+  #########################################################################################################
+  ## TODO: Añadir las foreign keys entre:
+  ##       productId -> Product table
+  ##       imageId -> Image table
+  #########################################################################################################
+
+  ## ShopTime Table
   - changeSet:
-      id: create_enterprise_users_table
+      id: create_category_table
       author: max_olivero
       changes:
         - createTable:
-            tableName: enterprise_users
+            tableName: category
             columns:
               - column:
                   autoIncrement: true
@@ -147,20 +96,27 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  name: enterpriseId
+                  name: parentId
                   type: BIGINT
               - column:
-                  name: userId
+                  name: countryId
                   type: BIGINT
-
-
-  ## EnterpriseProviders Table
+              - column:
+                  name: name
+                  type: VARCHAR
+              - column:
+                  name: enabled
+                  type: BIT
+              - column:
+                  name: isLeaf
+                  type: BIT
+  ## ShopTime Table
   - changeSet:
-      id: create_enterprise_providers_table
+      id: create_category_childrens_table
       author: max_olivero
       changes:
         - createTable:
-            tableName: enterprise_providers
+            tableName: category_childrens
             columns:
               - column:
                   autoIncrement: true
@@ -169,20 +125,22 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  name: enterpriseId
+                  name: categoryId
                   type: BIGINT
               - column:
-                  name: providerId
+                  name: parentId
                   type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR
 
-
-  ## EnterpriseServices Table
+  ## ShopTime Table
   - changeSet:
-      id: create_enterprise_service_table
+      id: create_price_table
       author: max_olivero
       changes:
         - createTable:
-            tableName: enterprise_service
+            tableName: price
             columns:
               - column:
                   autoIncrement: true
@@ -191,61 +149,35 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  name: enterpriseId
+                  name: categoryId
                   type: BIGINT
               - column:
-                  name: serviceId
-                  type: BIGINT
-
-  ## RatingScore Table
-  - changeSet:
-      id: create_rating_score_table
-      author: max_olivero
-      changes:
-        - createTable:
-            tableName: rating_score
-            columns:
-              - column:
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                  name: id
-                  type: BIGINT
-              - column:
-                  name: percentage
-                  type: BIGINT
-              - column:
-                  name: average
+                  name: price
                   type: DOUBLE
               - column:
-                  name: count
-                  type: INT
+                  name: highlightedPrice
+                  type: DOUBLE
+              - column:
+                  name: isInOffert
+                  type: BIT
+              - column:
+                  name: nameOffert
+                  type: VARCHAR
+              - column:
+                  name: haveDiscountPercentage
+                  type: DOUBLE
+              - column:
+                  name: createdOn
+                  type: DATETIME
+              - column:
+                  name: updatedOn
+                  type: DATETIME
+              - column:
+                  name: enabled
+                  type: BIT
 
-  ## RatingScore Table
-  - changeSet:
-      id: create_days_to_work_table
-      author: max_olivero
-      changes:
-        - createTable:
-            tableName: days_to_work
-            columns:
-              - column:
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                  name: id
-                  type: BIGINT
-              - column:
-                  name: dayName
-                  type: VARCHAR
-              - column:
-                  name: openTime
-                  type: VARCHAR
-              - column:
-                  name: closeTime
-                  type: VARCHAR
 
- # - changeSet:
+  # - changeSet:
  #    id: QUE_SE_HACE_EN_ESTE_CHANGESET
  #    author: AUTHOR
  #    changes:
