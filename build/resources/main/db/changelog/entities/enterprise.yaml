@@ -28,19 +28,27 @@ databaseChangeLog:
                   name: legalNumber
                   type: VARCHAR
               - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_enterprise_to_brand
+                    references: brand(id)
                   name: brandId
                   type: BIGINT
               - column:
                   name: shopTimeId
                   type: BIGINT
               - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_enterprise_to_address
+                    references: address(id)
                   name: addressId
                   type: BIGINT
               - column:
                   name: ratingScoreId
                   type: BIGINT
               - column:
-                  name: enterpriseStatus
+                  name: status
                   type: VARCHAR
               - column:
                   name: createdOn
@@ -50,7 +58,7 @@ databaseChangeLog:
                   type: DATETIME
               - column:
                   name: hasIntegration
-                  type: BOOLEAN
+                  type: BIT
               - column:
                   name: enabled
                   type: BIT
@@ -61,7 +69,7 @@ databaseChangeLog:
   ##       shopTimeId -> ShopTime table
   ##       addressId -> Brand table
   ##       ratingId -> Rating table
-  ##       (id) Enterprise table -> Services table - los servicios asociados a esta empresa 1 a n
+  ##       (id) Enterprise table -> WorkServices.groovy table - los servicios asociados a esta empresa 1 a n
   ##       (id) Enterprise table -> Providers table - los Providers asociados a esta empresa 1 a n
   ##       (id) Enterprise table -> Products table - los Products asociados a esta empresa 1 a n
   ##       (id) Enterprise table -> Users table - los Users asociados a esta empresa 1 a n
@@ -82,23 +90,25 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_shop_time_to_address
+                    references: address(id)
                   name: addressId
-                  type: VARCHAR
+                  type: BIGINT
               - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_shop_time_to_enterprise
+                    references: enterprise(id)
                   name: enterpriseId
-                  type: VARCHAR
-              - column:
-                  name: workDays
-                  type: VARCHAR
+                  type: BIGINT
               - column:
                   name: createdOn
                   type: DATETIME
               - column:
                   name: deletedOn
                   type: DATETIME
-              - column:
-                  name: hasIntegration
-                  type: BOOLEAN
               - column:
                   name: enabled
                   type: BIT
@@ -125,9 +135,17 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_enterprise_to_products
+                    references: enterprise(id)
                   name: enterpriseId
                   type: BIGINT
               - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_products_to_enterprise
+                    references: products(id)
                   name: productId
                   type: BIGINT
 
@@ -147,9 +165,17 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_users_to_enterprise
+                    references: enterprise(id)
                   name: enterpriseId
                   type: BIGINT
               - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_enterprise_to_users
+                    references: users(id)
                   name: userId
                   type: BIGINT
 
@@ -169,20 +195,28 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_enterprise_to_providers
+                    references: enterprise(id)
                   name: enterpriseId
                   type: BIGINT
               - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_providers_to_enterprise
+                    references: providers(id)
                   name: providerId
                   type: BIGINT
 
 
   ## EnterpriseServices Table
   - changeSet:
-      id: create_enterprise_service_table
+      id: create_enterprise_reserves_table
       author: max_olivero
       changes:
         - createTable:
-            tableName: enterprise_service
+            tableName: enterprise_reserves
             columns:
               - column:
                   autoIncrement: true
@@ -191,10 +225,18 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_enterprise_to_reserves
+                    references: enterprise(id)
                   name: enterpriseId
                   type: BIGINT
               - column:
-                  name: serviceId
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_reserves_to_enterprise
+                    references: reserves(id)
+                  name: reserveId
                   type: BIGINT
 
   ## RatingScore Table
@@ -221,7 +263,7 @@ databaseChangeLog:
                   name: count
                   type: INT
 
-  ## RatingScore Table
+  ## Days to Work Table
   - changeSet:
       id: create_days_to_work_table
       author: max_olivero
@@ -245,21 +287,37 @@ databaseChangeLog:
                   name: closeTime
                   type: VARCHAR
 
- # - changeSet:
- #    id: QUE_SE_HACE_EN_ESTE_CHANGESET
- #    author: AUTHOR
- #    changes:
- #      - addForeignKeyConstraint:
- #          baseColumnNames: table
- #          baseTableName: days_to_work
- #          constraintName: name_fk
- #          deferrable: false
- #          initiallyDeferred: false
- #          onDelete: RESTRICT
- #          onUpdate: RESTRICT
- #          referencedColumnNames: id
- #          referencedTableName: table
- #          validate: true
+  - changeSet:
+     id: add-enterprise-shop-time-fk
+     author: molivero
+     changes:
+       - addForeignKeyConstraint:
+           baseColumnNames: shopTimeId
+           baseTableName: enterprise
+           constraintName: fk_enterprise_to_shop_time
+           deferrable: false
+           initiallyDeferred: false
+           onDelete: RESTRICT
+           onUpdate: RESTRICT
+           referencedColumnNames: id
+           referencedTableName: shop_time
+           validate: true
+
+  - changeSet:
+     id: add-enterprise-rating-score-fk
+     author: molivero
+     changes:
+       - addForeignKeyConstraint:
+           baseColumnNames: ratingScoreId
+           baseTableName: enterprise
+           constraintName: fk_enterprise_to_rating_score
+           deferrable: false
+           initiallyDeferred: false
+           onDelete: RESTRICT
+           onUpdate: RESTRICT
+           referencedColumnNames: id
+           referencedTableName: rating_score
+           validate: true
 
   #  - changeSet:
   #      id: QUE_SE_HACE_EN_ESTE_CHANGESET

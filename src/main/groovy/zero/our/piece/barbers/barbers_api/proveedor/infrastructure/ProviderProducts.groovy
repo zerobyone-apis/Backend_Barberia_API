@@ -1,4 +1,4 @@
-package zero.our.piece.barbers.barbers_api.enterprise.infrastructure
+package zero.our.piece.barbers.barbers_api.proveedor.infrastructure
 
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
@@ -10,11 +10,11 @@ import javax.persistence.Table
 @Entity
 @ToString
 @EqualsAndHashCode
-@Table(name = "enterprise_services")
-class EnterpriseServices {
+@Table(name = "provider_products")
+class ProviderProducts {
 
     @Id
     Long id
-    Long enterpriseId
-    Long serviceId
+    Long providerId
+    Long productId
 }

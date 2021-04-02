@@ -4,10 +4,17 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import org.hibernate.validator.constraints.Length
 import org.joda.time.DateTime
+import zero.our.piece.barbers.barbers_api.enterprise.infrastructure.EnterpriseStatus
+import zero.our.piece.barbers.barbers_api.producto.model.Product
+import zero.our.piece.barbers.barbers_api.proveedor.model.Provider
+import zero.our.piece.barbers.barbers_api.reserve.model.Reserves
+import zero.our.piece.barbers.barbers_api.services.model.WorkServices
+import zero.our.piece.barbers.barbers_api.user.model.Users
 
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
+import javax.persistence.Transient
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 
@@ -20,6 +27,7 @@ class Enterprise {
     @Id
     Long id
 
+    // Enterprise info
     @NotEmpty(message = "INVALID_NAME")
     @Length(min = 3, max = 200)
     String name
@@ -50,17 +58,17 @@ class Enterprise {
     Long addressId
 
     Long ratingScoreId
+    EnterpriseStatus status
 
-//    List<Services> services //TODO: SE RESUELVE HACIENDO UNA TABLA CON EL ID DE LA EMPRESA Y ID DE CADA UNO DE LOS SERVICIOS QUE ESTA EMPRESA PROVEEA - Lista de servicios que la empresa brinda
-
-//    List<Provider> providers //TODO: SE RESUELVE HACIENDO UNA TABLA CON EL ID DE LA EMPRESA Y ID DE CADA UNO DE LOS SERVICIOS QUE ESTA EMPRESA PROVEEA - Lista de servicios que la empresa brinda
-
-//    List<Product> products //TODO: SE RESUELVE HACIENDO UNA TABLA CON EL ID DE LA EMPRESA Y ID DE CADA UNO DE LOS SERVICIOS QUE ESTA EMPRESA PROVEEA - Lista de servicios que la empresa brinda
-
-//    List<Users> users //TODO: SE RESUELVE HACIENDO UNA TABLA CON EL ID DE LA EMPRESA Y ID DE CADA UNO DE LOS SERVICIOS QUE ESTA EMPRESA PROVEEA - Lista de servicios que la empresa brinda
-
-    String enterpriseStatus
-    //? me queda duda del tipo de status que espero, imagino que es un control, del estado de CREATED - PENDING - ACCEPTED.
+    // Transient attributes
+    @Transient
+    List<Reserves> reserves  // fillear este campo cuando se busque a la empresa, consultando las respectivas tablas por id
+    @Transient
+    List<Provider> providers // fillear este campo cuando se busque a la empresa, consultando las respectivas tablas por id
+    @Transient
+    List<Product> products // fillear este campo cuando se busque a la empresa, consultando las respectivas tablas por id
+    @Transient
+    List<Users> users // fillear este campo cuando se busque a la empresa, consultando las respectivas tablas por id
 
     DateTime createdOn
     DateTime updatedOn

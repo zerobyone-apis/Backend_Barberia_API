@@ -1,186 +1,103 @@
 databaseChangeLog:
   - changeSet:
-      id: LO_QUE_HACE_EL_SQL_FILE
-      author: ZERITO
-      dbms: mysql
-      runOnChange: true
+      id: create_reserves_table
+      author: max_olivero
       changes:
-        - sqlFile:
-            dbms: mysql
-            path: /db/changelog/sql/EXAMPLE.sql
+        - createTable:
+            tableName: reserves
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_reserves_to_users
+                    references: users(id)
+                  name: userId
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_reserves_to_enterprise
+                    references: enterprise(id)
+                  name: enterpriseId
+                  type: BIGINT
+              - column:
+                  name: employeeUsername
+                  type: VARCHAR
+              - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_reserves_to_clients
+                    references: clients(id)
+                  name: clientId
+                  type: BIGINT
+              - column:
+                  name: clientName
+                  type: VARCHAR
+              - column:
+                  name: clientPhone
+                  type: VARCHAR
+              - column:
+                  name: emailClient
+                  type: VARCHAR
+              - column:
+                  name: socialNumber
+                  type: VARCHAR
+              - column:
+                  name: duration
+                  type: DATETIME
+              - column:
+                  name: reserveDatetime
+                  type: DATETIME
+              - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_reserves_to_work_services
+                    references: work_services(id)
+                  name: workServiceId
+                  type: BIGINT
+              - column:
+                  name: barberService
+                  type: VARCHAR
+              - column:
+                  name: hairdresserService
+                  type: VARCHAR
+              - column:
+                  name: promos
+                  type: VARCHAR
+              - column:
+                  name: priceService
+                  type: DOUBLE
+              - column:
+                  name: productCost
+                  type: DOUBLE
+              - column:
+                  name: externalServicesCost
+                  type: DOUBLE
+              - column:
+                  name: totalCost
+                  type: DOUBLE
+              - column:
+                  name: underPromotion
+                  type: BIT
+              - column:
+                  name: createdOn
+                  type: DATETIME
+              - column:
+                  name: updateOn
+                  type: DATETIME
+              - column:
+                  name: cancelOn
+                  type: DATETIME
+              - column:
+                  name: reserveStatus
+                  type: VARCHAR
+              - column:
+                  name: isActive
+                  type: BIT
 
-        - changeSet:
-            id: LO_QUE_HACE_EL_SQL_FILE
-            author: ZERITO
-            dbms: mysql
-            runOnChange: true
-            changes:
-              - sqlFile:
-                  dbms: mysql
-                  path: /db/changelog/sql/EXAMPLE.sql
-
-        - changeSet:
-            id: QUE_SE_HACE_EN_ESTE_CHANGESET
-            author: AUTHOR
-            changes:
-              - createTable:
-                  tableName: NAME_TABLE
-                  columns:
-                    - column:
-                        autoIncrement: true
-                        constraints:
-                          primaryKey: true
-                        name: id
-                        type: BIGINT
-                    - column:
-                        constraints:
-                          nullable: false
-                          foreignKeyName: promo_fk_1
-                          references: algo(id)
-                        name: algo_id
-                        type: BIGINT
-                    - column:
-                        name: algo_id
-                        constraints:
-                          foreignKeyName: algo_fk_3
-                          references: algo(id)
-                          nullable: false
-                        type: BIGINT
-                    - column:
-                        name: algo_list_id
-                        type: BIGINT
-                        constraints:
-                          foreignKeyName: algo_fk_2
-                          references: algo_lists(id)
-                          nullable: false
-                    - column:
-                        name: valid_from
-                        type: DATETIME
-                    - column:
-                        name: valid_to
-                        type: DATETIME
-                    - column:
-                        name: algo_code
-                        type: VARCHAR(200)
-                    - column:
-                        name: description
-                        type: VARCHAR(300)
-                    - column:
-                        name: type
-                        type: VARCHAR(100)
-                    - column:
-                        name: message
-                        type: VARCHAR(8)
-                    - column:
-                        name: min_units_single
-                        type: int
-                    - column:
-                        name: min_units_case
-                        type: int
-                    - column:
-                        name: algo_single
-                        type: DOUBLE
-                    - column:
-                        name: algo_case
-                        type: DOUBLE
-                    - column:
-                        name: metadata
-                        type: text
-
-        - changeSet:
-            id: QUE_SE_HACE_EN_ESTE_CHANGESET
-            author: AUTHOR
-            changes:
-              - renameColumn:
-                  columnDataType: DOUBLE
-                  oldColumnName: max_amount
-                  newColumnName: algo_max_amount
-                  tableName: algo_delivery_zones
-              - renameColumn:
-                  columnDataType: DOUBLE
-                  oldColumnName: min_amount
-                  newColumnName: algo_min_amount
-                  tableName: algo_delivery_zones
-              - renameColumn:
-                  columnDataType: DOUBLE
-                  oldColumnName: algo_cost
-                  newColumnName: algo_delivery_cost
-                  tableName: algo_delivery_zones
-              - addColumn:
-                  columns:
-                    - column:
-                        name: algo_max_amount
-                        type: DOUBLE
-                        constraints:
-                          nullable: false
-                        defaultValueNumeric: 0
-                    - column:
-                        name: algo_min_amount
-                        type: DOUBLE
-                        constraints:
-                          nullable: false
-                        defaultValueNumeric: 0
-                    - column:
-                        name: algo_delivery_cost
-                        type: DOUBLE
-                        constraints:
-                          nullable: false
-                        defaultValueNumeric: 0
-                    - column:
-                        name: algo_zone_name
-                        type: TEXT
-                        constraints:
-                          nullable: false
-                    - column:
-                        name: algo_lead_time
-                        type: varchar(50)
-                        constraints:
-                          nullable: false
-                    - column:
-                        name: algo_lead_time
-                        type: varchar(50)
-                        constraints:
-                          nullable: false
-                    - column:
-                        name: algo_delivery_calendar
-                        type: TEXT
-                        constraints:
-                          nullable: false
-                    - column:
-                        name: algo_delivery_calendar
-                        type: TEXT
-                        constraints:
-                          nullable: false
-                    - column:
-                        name: cut_off
-                        type: varchar(50)
-                        constraints:
-                          nullable: false
-                    - column:
-                        name: algo_delivery_window
-                        type: varchar(50)
-                        constraints:
-                          nullable: false
-                    - column:
-                        name: algo_delivery_window
-                        type: varchar(50)
-                        constraints:
-                          nullable: false
-                  tableName: TABLE_NAME
-
-
-        - changeSet:
-            id: QUE_SE_HACE_EN_ESTE_CHANGESET
-            author: AUTHOR
-            changes:
-              - addForeignKeyConstraint:
-                  baseColumnNames: table
-                  baseTableName: other_table
-                  constraintName: name_fk
-                  deferrable: false
-                  initiallyDeferred: false
-                  onDelete: RESTRICT
-                  onUpdate: RESTRICT
-                  referencedColumnNames: id
-                  referencedTableName: table
-                  validate: true

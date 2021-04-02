@@ -1,87 +1,5 @@
 databaseChangeLog:
-  - changeSet:
-      id: create_products_table
-      author: max_olivero
-      changes:
-        - createTable:
-            tableName: prodcuts
-            columns:
-              - column:
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                  name: id
-                  type: BIGINT
-              - column:
-                  name: name
-                  type: VARCHAR
-              - column:
-                  name: brandId
-                  type: BIGINT
-              - column:
-                  name: priceId
-                  type: BIGINT
-              - column:
-                  name: countryId
-                  type: VARCHAR
-              - column:
-                  name: providerId
-                  type: VARCHAR
-              - column:
-                  name: categoryId
-                  type: VARCHAR
-              - column:
-                  name: createdOn
-                  type: DATETIME
-              - column:
-                  name: updatedOn
-                  type: DATETIME
-              - column:
-                  name: deletedOn
-                  type: DATETIME
-              - column:
-                  name: enabled
-                  type: BIT
-
-  #########################################################################################################
-  ## TODO: Añadir las foreign keys entre:
-  ##       brandId -> Brand table
-  ##       priceId -> Price table
-  ##       countryId -> Country table
-  ##       providerId -> Provider table
-  ##       categoryId -> Category table
-  ##       (id) Products table -> Images table - las images associates a este producto 1 a n
-  #########################################################################################################
-
-  ## ShopTime Table
-  - changeSet:
-      id: create_product_images_table
-      author: max_olivero
-      changes:
-        - createTable:
-            tableName: product_images
-            columns:
-              - column:
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                  name: id
-                  type: BIGINT
-              - column:
-                  name: productId
-                  type: BIGINT
-              - column:
-                  name: imageId
-                  type: BIGINT
-
-
-  #########################################################################################################
-  ## TODO: Añadir las foreign keys entre:
-  ##       productId -> Product table
-  ##       imageId -> Image table
-  #########################################################################################################
-
-  ## ShopTime Table
+  ## Category Table
   - changeSet:
       id: create_category_table
       author: max_olivero
@@ -99,6 +17,10 @@ databaseChangeLog:
                   name: parentId
                   type: BIGINT
               - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_category_to_countries
+                    references: countries(id)
                   name: countryId
                   type: BIGINT
               - column:
@@ -110,37 +32,14 @@ databaseChangeLog:
               - column:
                   name: isLeaf
                   type: BIT
-  ## ShopTime Table
-  - changeSet:
-      id: create_category_childrens_table
-      author: max_olivero
-      changes:
-        - createTable:
-            tableName: category_childrens
-            columns:
-              - column:
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                  name: id
-                  type: BIGINT
-              - column:
-                  name: categoryId
-                  type: BIGINT
-              - column:
-                  name: parentId
-                  type: BIGINT
-              - column:
-                  name: name
-                  type: VARCHAR
 
-  ## ShopTime Table
+  ## Product_Price Table
   - changeSet:
-      id: create_price_table
+      id: create_product_price_table
       author: max_olivero
       changes:
         - createTable:
-            tableName: price
+            tableName: product_price
             columns:
               - column:
                   autoIncrement: true
@@ -149,6 +48,10 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_product_price_to_category
+                    references: category(id)
                   name: categoryId
                   type: BIGINT
               - column:
@@ -176,22 +79,165 @@ databaseChangeLog:
                   name: enabled
                   type: BIT
 
+  - changeSet:
+      id: create_products_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: products
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR
+              - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_product_to_brand
+                    references: brand(id)
+                  name: brandId
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_product_to_product_price
+                    references: product_price(id)
+                  name: priceId
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_product_to_countries
+                    references: countries(id)
+                  name: countryId
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_products_to_providers
+                    references: providers(id)
+                  name: providerId
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_products_to_category
+                    references: category(id)
+                  name: categoryId
+                  type: BIGINT
+              - column:
+                  name: createdOn
+                  type: DATETIME
+              - column:
+                  name: updatedOn
+                  type: DATETIME
+              - column:
+                  name: deletedOn
+                  type: DATETIME
+              - column:
+                  name: enabled
+                  type: BIT
+
+  #########################################################################################################
+  ## TODO: Añadir las foreign keys entre:
+  ##       brandId -> Brand table
+  ##       priceId -> Price table
+  ##       countryId -> Country table
+  ##       providerId -> Provider table
+  ##       categoryId -> Category table
+  ##       (id) Products table -> Images table - las images associates a este producto 1 a n
+  #########################################################################################################
+
+  ## ProductImages Table
+  - changeSet:
+      id: create_product_images_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: product_images
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_product_images_to_products
+                    references: products(id)
+                  name: productId
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_product_images_to_images
+                    references: images(id)
+                  name: imageId
+                  type: BIGINT
+
+
+  #########################################################################################################
+  ## TODO: Añadir las foreign keys entre:
+  ##       productId -> Product table
+  ##       imageId -> Image table
+  #########################################################################################################
+
+
+
+  ## Category Childrens Table
+  ## esta tabla puede eliminarse porque el parentID debe ser de la misma tabla.
+  # - changeSet:
+  #     id: create_category_childrens_table
+  #     author: max_olivero
+  #     changes:
+  #       - createTable:
+  #           tableName: category_childrens
+  #           columns:
+  #             - column:
+  #                 autoIncrement: true
+  #                 constraints:
+  #                   primaryKey: true
+  #                 name: id
+  #                 type: BIGINT
+  #             - column:
+  #                 constraints:
+  #                   nullable: false
+  #                   foreignKeyName: fk_category_childrens_to_category
+  #                   references: category(id)
+  #                 name: categoryId
+  #                 type: BIGINT
+  #             - column:
+  #                 name: parentId
+  #                 type: BIGINT
+  #             - column:
+  #                 name: name
+  #                 type: VARCHAR
+
+
+
 
   # - changeSet:
- #    id: QUE_SE_HACE_EN_ESTE_CHANGESET
- #    author: AUTHOR
- #    changes:
- #      - addForeignKeyConstraint:
- #          baseColumnNames: table
- #          baseTableName: days_to_work
- #          constraintName: name_fk
- #          deferrable: false
- #          initiallyDeferred: false
- #          onDelete: RESTRICT
- #          onUpdate: RESTRICT
- #          referencedColumnNames: id
- #          referencedTableName: table
- #          validate: true
+  #    id: QUE_SE_HACE_EN_ESTE_CHANGESET
+  #    author: AUTHOR
+  #    changes:
+  #      - addForeignKeyConstraint:
+  #          baseColumnNames: table
+  #          baseTableName: days_to_work
+  #          constraintName: name_fk
+  #          deferrable: false
+  #          initiallyDeferred: false
+  #          onDelete: RESTRICT
+  #          onUpdate: RESTRICT
+  #          referencedColumnNames: id
+  #          referencedTableName: table
+  #          validate: true
 
   #  - changeSet:
   #      id: QUE_SE_HACE_EN_ESTE_CHANGESET

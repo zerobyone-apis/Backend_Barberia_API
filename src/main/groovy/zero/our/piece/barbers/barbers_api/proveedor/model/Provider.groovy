@@ -4,6 +4,8 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import org.hibernate.validator.constraints.Length
 import org.joda.time.DateTime
+import zero.our.piece.barbers.barbers_api.enterprise.model.Enterprise
+import zero.our.piece.barbers.barbers_api.producto.model.Product
 
 import javax.persistence.*
 import javax.validation.constraints.NotEmpty
@@ -29,11 +31,14 @@ class Provider{
     @Length(min = 5, max = 40)
     String internalPhone
 
-    Long categoryId //todo: probar si va con Long -> me refiero a si conviene string o long
     Long brandId
     Long countryId
 
-    // List<Customers> tiendas *//todo: crear tabal de customer asociados a los que entrega.
+    @Transient
+    List<Enterprise> enterprises
+
+    @Transient
+    List<Product> products
 
     DateTime createdOn
     DateTime updatedOn

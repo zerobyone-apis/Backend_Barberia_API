@@ -8,6 +8,7 @@ import org.joda.time.DateTime
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
+import javax.persistence.Transient
 import javax.validation.constraints.NotEmpty
 
 @Entity
@@ -23,13 +24,28 @@ class Product {
     @Length(min = 3, max = 200)
     String name
 
-    Long brandId    //todo: hacer el fk
-    Long priceId    //todo: hacer el fk y la tabla price
-    Long countryId  //todo: hacer el fk
-    Long providerId //todo: hacer el fk
-    Long categoryId //todo: hacer el fk
+    Long brandId
+    Long priceId
+    Long countryId
+    Long providerId
+    Long categoryId
 
-//    List<Image> images //TODO: SE RESUELVE HACIENDO UNA TABLA CON EL ID DEL PRODUCTO Y ID DE CADA UNO DE LOS IMAGENES QUE ESTA EMPRESA PROVEEA - Lista de Imagenes que la producto tiene
+    @Transient
+    List<Image> images
+
+    // Metrics data product
+    @Transient
+    Double amountProductSeller
+    @Transient
+    Double bestPriceSeller
+    @Transient
+    Double averageAmountPerProduct
+    @Transient
+    List<Map<String,Double>> providerMostSellerProduct
+    @Transient
+    List<Map<String,Double>> lifeTimeProductInShops
+    @Transient
+    List<Map<String,Double>> howMuchTimeToRenovateProductByShop
 
     DateTime createdOn
     DateTime updatedOn
@@ -37,23 +53,9 @@ class Product {
 
     Boolean enabled = Boolean.TRUE
 
-
-    //TODO: Queda temrinar varios de las entidades y realizar todas las tablas en liquibase.
     /*
-    Price highlightedPrice
-
-
-    //@JsonIgnore
-    //List<Price> prices
-
-    @NotNull(message = "INVALID_DISPLAYS")
-    List<Display> displays
-
-    @JsonProperty(value = "title")
-    String getTitle() {
-        name
-    }
-
+    // todo: tener en cuenta a futuro de hacer un listado de precios modificable
+            con grandes cualidades al POR MAYOR Y AL POR MENOR PARA TIENDAS Y PROVEEDORES.
 
     @JsonProperty("priceFrom")
     Price getPriceFrom() {
@@ -79,7 +81,5 @@ class Product {
         }
         null
     }
-
-
      */
 }

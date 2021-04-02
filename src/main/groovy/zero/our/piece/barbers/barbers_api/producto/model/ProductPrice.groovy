@@ -12,8 +12,8 @@ import javax.persistence.Table
 @Entity
 @ToString
 @EqualsAndHashCode
-@Table(name = "category")
-class Price {
+@Table(name = "product_price")
+class ProductPrice {
 
     @Id
     Long id
@@ -21,7 +21,7 @@ class Price {
     Double price
     Double highlightedPrice
 
-    Boolean isInOffert // si esta en offerta
+    Boolean isInOffert
     String nameOffert
 
     Double haveDiscountPercentage // porcentaje de descuente ej: 10%

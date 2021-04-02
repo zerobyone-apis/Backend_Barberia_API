@@ -4,6 +4,7 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import org.hibernate.type.TrueFalseType
 import org.joda.time.DateTime
+import zero.our.piece.barbers.barbers_api.enterprise.infrastructure.DaysToWork
 import zero.our.piece.barbers.barbers_api.enterprise.infrastructure.WeekDays
 
 import javax.persistence.ElementCollection
@@ -14,6 +15,7 @@ import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.Table
+import javax.persistence.Transient
 import java.time.Instant
 
 //@Embeddable
@@ -27,7 +29,9 @@ class ShopTime {
     Long addressId
     Long enterpriseId
 
-   // List<DaysToWork> workDays //todo: Tabla con id y lista de dias to work o ver la forma luego
+    @Transient
+    List<DaysToWork> workDays
+
     DateTime createdOn
     DateTime deletedOn
     Boolean enabled = Boolean.TRUE

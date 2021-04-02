@@ -1,0 +1,203 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_work_services_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: work_services
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: serviceName
+                  type: VARCHAR
+              - column:
+                  name: barberService
+                  type: VARCHAR
+              - column:
+                  name: hairdresserService
+                  type: VARCHAR
+              - column:
+                  name: promos
+                  type: VARCHAR
+              - column:
+                  name: priceService
+                  type: DOUBLE
+              - column:
+                  name: totalCost
+                  type: DOUBLE
+              - column:
+                  name: underPromotion
+                  type: BIT
+              - column:
+                  name: durationOfService
+                  type: DATETIME
+              - column:
+                  name: start
+                  type: DATETIME
+              - column:
+                  name: end
+                  type: DATETIME
+              - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_work_services_to_users
+                    references: users(id)
+                  name: userId
+                  type: BIGINT
+              - column:
+                  name: username
+                  type: VARCHAR
+              - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_work_services_to_clients
+                    references: clients(id)
+                  name: clientId
+                  type: BIGINT
+              - column:
+                  name: createdOn
+                  type: DATETIME
+              - column:
+                  name: updatedOn
+                  type: DATETIME
+              - column:
+                  name: status
+                  type: VARCHAR
+
+
+  # - changeSet:
+ #    id: QUE_SE_HACE_EN_ESTE_CHANGESET
+ #    author: AUTHOR
+ #    changes:
+ #      - addForeignKeyConstraint:
+ #          baseColumnNames: table
+ #          baseTableName: days_to_work
+ #          constraintName: name_fk
+ #          deferrable: false
+ #          initiallyDeferred: false
+ #          onDelete: RESTRICT
+ #          onUpdate: RESTRICT
+ #          referencedColumnNames: id
+ #          referencedTableName: table
+ #          validate: true
+
+  #  - changeSet:
+  #      id: QUE_SE_HACE_EN_ESTE_CHANGESET
+  #      author: AUTHOR
+  #      changes:
+  #        - renameColumn:
+  #            columnDataType: DOUBLE
+  #            oldColumnName: max_amount
+  #            newColumnName: algo_max_amount
+  #            tableName: algo_delivery_zones
+  #        - renameColumn:
+  #            columnDataType: DOUBLE
+  #            oldColumnName: min_amount
+  #            newColumnName: algo_min_amount
+  #            tableName: algo_delivery_zones
+  #        - renameColumn:
+  #            columnDataType: DOUBLE
+  #            oldColumnName: algo_cost
+  #            newColumnName: algo_delivery_cost
+  #           tableName: algo_delivery_zones
+  #      - addColumn:
+  #           columns:
+  #             - column:
+  #                 name: algo_max_amount
+  #                type: DOUBLE
+  #                constraints:
+  #                 nullable: false
+  #                defaultValueNumeric: 0
+  #           - column:
+  #                name: algo_min_amount
+  #               type: DOUBLE
+  #                constraints:
+  #                defaultValueNumeric: 0
+  #            - column:
+  #               name: algo_delivery_cost
+  #                type: DOUBLE
+  #               constraints:
+  #                 nullable: false
+  #                defaultValueNumeric: 0
+  #            - column:
+  #             name: algo_zone_name
+  #               type: TEXT
+  #               constraints:
+  #                 nullable: false
+  #            - column:
+  #              name: algo_lead_time
+  #                type: varchar(50)
+  #              constraints:
+  #                  nullable: false
+  #           - column:
+  #                name: algo_lead_time
+  #                type: varchar(50)
+  #               constraints:
+  #                  nullable: false
+  #           - column:
+  #                name: algo_delivery_calendar
+  #                type: TEXT
+  #                constraints:
+  #                 nullable: false
+  #           - column:
+  #                name: algo_delivery_calendar
+  #               type: TEXT
+  #               constraints:
+  #                 nullable: false
+  #            - column:
+  #               name: cut_off
+  #                type: varchar(50)
+  #               constraints:
+  #                 nullable: false
+  #           - column:
+  #               type: varchar(50)
+  #               constraints:
+  #                 nullable: false
+  #          - column:
+  #               name: algo_delivery_window
+  #               type: varchar(50)
+  #               constraints:
+  #                 nullable: false
+  #          tableName: TABLE_NAME
+
+
+  # - changeSet:
+  #     id: QUE_SE_HACE_EN_ESTE_CHANGESET
+  #     author: AUTHOR
+  #     changes:
+  #       - addForeignKeyConstraint:
+  #           baseColumnNames: table
+  #           baseTableName: other_table
+  #           constraintName: name_fk
+  #           deferrable: false
+  #           initiallyDeferred: false
+  #           onDelete: RESTRICT
+  #           onUpdate: RESTRICT
+  #           referencedColumnNames: id
+  #           referencedTableName: table
+  #           validate: true
+
+  # - changeSet:
+  #     id: LO_QUE_HACE_EL_SQL_FILE
+  #     author: ZERITO
+  #     dbms: mysql
+  #     runOnChange: true
+  #     changes:
+  #       - sqlFile:
+  #           dbms: mysql
+  #           path: /db/changelog/sql/EXAMPLE.sql
+
+  # - changeSet:
+  #     id: LO_QUE_HACE_EL_SQL_FILE
+  #     author: ZERITO
+  #     dbms: mysql
+  #     runOnChange: true
+  #     changes:
+  #       - sqlFile:
+  #           dbms: mysql
+  #           path: /db/changelog/sql/EXAMPLE.sql
