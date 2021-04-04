@@ -4,7 +4,10 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
 import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
 import javax.persistence.Id
+import javax.persistence.SequenceGenerator
 import javax.persistence.Table
 
 @Entity
@@ -14,7 +17,10 @@ import javax.persistence.Table
 class EnterpriseUsers {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "enterprise_users_sequence")
+    @SequenceGenerator(name = "enterprise_users_sequence", sequenceName = "enterprise_users_sequence", allocationSize = 1)
     Long id
-    Long enterpriseId
-    Long userId
+    Long enterprise_id
+    Long user_id
+    Long social_number
 }

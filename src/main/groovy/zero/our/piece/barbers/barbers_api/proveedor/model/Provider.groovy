@@ -3,20 +3,28 @@ package zero.our.piece.barbers.barbers_api.proveedor.model
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import org.hibernate.validator.constraints.Length
-import org.joda.time.DateTime
 import zero.our.piece.barbers.barbers_api.enterprise.model.Enterprise
 import zero.our.piece.barbers.barbers_api.producto.model.Product
 
-import javax.persistence.*
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.SequenceGenerator
+import javax.persistence.Table
+import javax.persistence.Transient
 import javax.validation.constraints.NotEmpty
+import java.time.Instant
 
 @Entity
 @ToString
 @EqualsAndHashCode
-@Table(name="providers")
-class Provider{
+@Table(name = "providers")
+class Provider {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "providers_sequence")
+    @SequenceGenerator(name = "providers_sequence", sequenceName = "providers_sequence", allocationSize = 1)
     Long id
 
     @NotEmpty(message = "INVALID_NAME")
@@ -40,9 +48,9 @@ class Provider{
     @Transient
     List<Product> products
 
-    DateTime createdOn
-    DateTime updatedOn
-    DateTime deletedOn
+    Instant createdOn
+    Instant updatedOn
+    Instant deletedOn
     Boolean enabled = Boolean.TRUE
 
 }

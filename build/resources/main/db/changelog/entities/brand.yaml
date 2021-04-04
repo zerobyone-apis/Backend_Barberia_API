@@ -22,17 +22,17 @@ databaseChangeLog:
                   name: slogan
                   type: VARCHAR
               - column:
-                  name: preferredPhone
+                  name: preferred_phone
                   type: VARCHAR
               - column:
-                  name: createdOn
-                  type: DATETIME
+                  name: created_on
+                  type: TIMESTAMP
               - column:
-                  name: updateOn
-                  type: DATETIME
+                  name: update_on
+                  type: TIMESTAMP
               - column:
-                  name: deletedOn
-                  type: DATETIME
+                  name: deleted_on
+                  type: TIMESTAMP
               - column:
                   name: enabled
                   type: BIT
@@ -56,23 +56,23 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  name: imgName
+                  name: img_name
                   type: VARCHAR
               - column:
-                  name: urlAvatar
+                  name: url_avatar
                   type: VARCHAR
               - column:
                   name: banner
                   type: VARCHAR
               - column:
-                  name: imageOrder
+                  name: image_order
                   type: BIGINT
               - column:
-                  name: createdOn
-                  type: DATETIME
+                  name: created_on
+                  type: TIMESTAMP
               - column:
-                  name: deletedOn
-                  type: DATETIME
+                  name: deleted_on
+                  type: TIMESTAMP
 
   ################################################################################################
   ##  TODO: Crear la clave foranea entre users:
@@ -94,10 +94,10 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  name: brandId
+                  name: brand_id
                   type: BIGINT
               - column:
-                  name: imageId
+                  name: image_id
                   type: BIGINT
 
   ## BrandProducts Table
@@ -115,29 +115,8 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  name: brandId
+                  name: brand_id
                   type: BIGINT
               - column:
-                  name: productId
+                  name: product_id
                   type: BIGINT
-
-
-  # - changeSet:
-  #     id: LO_QUE_HACE_EL_SQL_FILE
-  #     author: ZERITO
-  #     dbms: mysql
-  #     runOnChange: true
-  #     changes:
-  #       - sqlFile:
-  #           dbms: mysql
-  #           path: /db/changelog/sql/EXAMPLE.sql
-  #
-  #       - changeSet:
-  #           id: LO_QUE_HACE_EL_SQL_FILE
-  #           author: ZERITO
-  #           dbms: mysql
-  #           runOnChange: true
-  #           changes:
-  #             - sqlFile:
-  #                 dbms: mysql
-  #                 path: /db/changelog/sql/EXAMPLE.sql

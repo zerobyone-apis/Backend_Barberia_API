@@ -13,191 +13,50 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  name: serviceName
+                  name: service_name
                   type: VARCHAR
               - column:
-                  name: barberService
+                  name: barber_service
                   type: VARCHAR
               - column:
-                  name: hairdresserService
+                  name: hairdresser_service
                   type: VARCHAR
               - column:
                   name: promos
                   type: VARCHAR
               - column:
-                  name: priceService
+                  name: price_Service
                   type: DOUBLE
               - column:
-                  name: totalCost
+                  name: total_cost
                   type: DOUBLE
               - column:
-                  name: underPromotion
+                  name: under_promotion
                   type: BIT
               - column:
-                  name: durationOfService
-                  type: DATETIME
+                  name: duration_of_service
+                  type: TIMESTAMP
               - column:
                   name: start
-                  type: DATETIME
+                  type: TIMESTAMP
               - column:
                   name: end
-                  type: DATETIME
+                  type: TIMESTAMP
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_work_services_to_users
-                    references: users(id)
-                  name: userId
+                  name: user_id
                   type: BIGINT
               - column:
                   name: username
                   type: VARCHAR
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_work_services_to_clients
-                    references: clients(id)
-                  name: clientId
+                  name: client_id
                   type: BIGINT
               - column:
-                  name: createdOn
-                  type: DATETIME
+                  name: created_on
+                  type: TIMESTAMP
               - column:
-                  name: updatedOn
-                  type: DATETIME
+                  name: updated_on
+                  type: TIMESTAMP
               - column:
                   name: status
                   type: VARCHAR
-
-
-  # - changeSet:
- #    id: QUE_SE_HACE_EN_ESTE_CHANGESET
- #    author: AUTHOR
- #    changes:
- #      - addForeignKeyConstraint:
- #          baseColumnNames: table
- #          baseTableName: days_to_work
- #          constraintName: name_fk
- #          deferrable: false
- #          initiallyDeferred: false
- #          onDelete: RESTRICT
- #          onUpdate: RESTRICT
- #          referencedColumnNames: id
- #          referencedTableName: table
- #          validate: true
-
-  #  - changeSet:
-  #      id: QUE_SE_HACE_EN_ESTE_CHANGESET
-  #      author: AUTHOR
-  #      changes:
-  #        - renameColumn:
-  #            columnDataType: DOUBLE
-  #            oldColumnName: max_amount
-  #            newColumnName: algo_max_amount
-  #            tableName: algo_delivery_zones
-  #        - renameColumn:
-  #            columnDataType: DOUBLE
-  #            oldColumnName: min_amount
-  #            newColumnName: algo_min_amount
-  #            tableName: algo_delivery_zones
-  #        - renameColumn:
-  #            columnDataType: DOUBLE
-  #            oldColumnName: algo_cost
-  #            newColumnName: algo_delivery_cost
-  #           tableName: algo_delivery_zones
-  #      - addColumn:
-  #           columns:
-  #             - column:
-  #                 name: algo_max_amount
-  #                type: DOUBLE
-  #                constraints:
-  #                 nullable: false
-  #                defaultValueNumeric: 0
-  #           - column:
-  #                name: algo_min_amount
-  #               type: DOUBLE
-  #                constraints:
-  #                defaultValueNumeric: 0
-  #            - column:
-  #               name: algo_delivery_cost
-  #                type: DOUBLE
-  #               constraints:
-  #                 nullable: false
-  #                defaultValueNumeric: 0
-  #            - column:
-  #             name: algo_zone_name
-  #               type: TEXT
-  #               constraints:
-  #                 nullable: false
-  #            - column:
-  #              name: algo_lead_time
-  #                type: varchar(50)
-  #              constraints:
-  #                  nullable: false
-  #           - column:
-  #                name: algo_lead_time
-  #                type: varchar(50)
-  #               constraints:
-  #                  nullable: false
-  #           - column:
-  #                name: algo_delivery_calendar
-  #                type: TEXT
-  #                constraints:
-  #                 nullable: false
-  #           - column:
-  #                name: algo_delivery_calendar
-  #               type: TEXT
-  #               constraints:
-  #                 nullable: false
-  #            - column:
-  #               name: cut_off
-  #                type: varchar(50)
-  #               constraints:
-  #                 nullable: false
-  #           - column:
-  #               type: varchar(50)
-  #               constraints:
-  #                 nullable: false
-  #          - column:
-  #               name: algo_delivery_window
-  #               type: varchar(50)
-  #               constraints:
-  #                 nullable: false
-  #          tableName: TABLE_NAME
-
-
-  # - changeSet:
-  #     id: QUE_SE_HACE_EN_ESTE_CHANGESET
-  #     author: AUTHOR
-  #     changes:
-  #       - addForeignKeyConstraint:
-  #           baseColumnNames: table
-  #           baseTableName: other_table
-  #           constraintName: name_fk
-  #           deferrable: false
-  #           initiallyDeferred: false
-  #           onDelete: RESTRICT
-  #           onUpdate: RESTRICT
-  #           referencedColumnNames: id
-  #           referencedTableName: table
-  #           validate: true
-
-  # - changeSet:
-  #     id: LO_QUE_HACE_EL_SQL_FILE
-  #     author: ZERITO
-  #     dbms: mysql
-  #     runOnChange: true
-  #     changes:
-  #       - sqlFile:
-  #           dbms: mysql
-  #           path: /db/changelog/sql/EXAMPLE.sql
-
-  # - changeSet:
-  #     id: LO_QUE_HACE_EL_SQL_FILE
-  #     author: ZERITO
-  #     dbms: mysql
-  #     runOnChange: true
-  #     changes:
-  #       - sqlFile:
-  #           dbms: mysql
-  #           path: /db/changelog/sql/EXAMPLE.sql

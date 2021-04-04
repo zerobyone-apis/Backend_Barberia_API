@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
+import javax.persistence.*
 import java.math.RoundingMode
 
 @Entity
@@ -16,6 +14,9 @@ import java.math.RoundingMode
 class RatingScore {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rating_score_sequence")
+    @SequenceGenerator(name = "rating_score_sequence", sequenceName = "rating_score_sequence", allocationSize = 1)
+
     Long id
     Long percentage
     BigDecimal average

@@ -13,18 +13,10 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_providers_to_brands
-                    references: brand(id)
-                  name: brandId
+                  name: brand_id
                   type: BIGINT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_providers_to_countries
-                    references: countries(id)
-                  name: countryId
+                  name: country_id
                   type: BIGINT
               - column:
                   name: name
@@ -33,14 +25,14 @@ databaseChangeLog:
                   name: email
                   type: VARCHAR
               - column:
-                  name: internalPhone
+                  name: internal_phone
                   type: VARCHAR
               - column:
-                  name: createdOn
-                  type: DATETIME
+                  name: created_on
+                  type: TIMESTAMP
               - column:
-                  name: updatedOn
-                  type: DATETIME
+                  name: updated_on
+                  type: TIMESTAMP
               - column:
                   name: enabled
                   type: BIT
@@ -59,14 +51,10 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_providers_products_to_providers
-                    references: providers(id)
-                  name: providerId
+                  name: provider_id
                   type: BIGINT
               - column:
-                  name: productId
+                  name: product_id
                   type: BIGINT
 
   - changeSet:
@@ -83,149 +71,8 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_providers_enterprise_to_enterprise
-                    references: enterprise(id)
-                  name: enterpriseId
+                  name: enterprise_id
                   type: BIGINT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_providers_enterprise_to_providers
-                    references: providers(id)
-                  name: providerId
+                  name: provider_id
                   type: BIGINT
-
-  - changeSet:
-      id: add-provider-products-to-products-fk
-      author: molivero
-      changes:
-        - addForeignKeyConstraint:
-            baseColumnNames: productId
-            baseTableName: provider_products
-            constraintName: fk_providers_products_to_products
-            deferrable: false
-            initiallyDeferred: false
-            onDelete: RESTRICT
-            onUpdate: RESTRICT
-            referencedColumnNames: id
-            referencedTableName: products
-            validate: true
-
-
-  #  - changeSet:
-  #      id: QUE_SE_HACE_EN_ESTE_CHANGESET
-  #      author: AUTHOR
-  #      changes:
-  #        - renameColumn:
-  #            columnDataType: DOUBLE
-  #            oldColumnName: max_amount
-  #            newColumnName: algo_max_amount
-  #            tableName: algo_delivery_zones
-  #        - renameColumn:
-  #            columnDataType: DOUBLE
-  #            oldColumnName: min_amount
-  #            newColumnName: algo_min_amount
-  #            tableName: algo_delivery_zones
-  #        - renameColumn:
-  #            columnDataType: DOUBLE
-  #            oldColumnName: algo_cost
-  #            newColumnName: algo_delivery_cost
-  #           tableName: algo_delivery_zones
-  #      - addColumn:
-  #           columns:
-  #             - column:
-  #                 name: algo_max_amount
-  #                type: DOUBLE
-  #                constraints:
-  #                 nullable: false
-  #                defaultValueNumeric: 0
-  #           - column:
-  #                name: algo_min_amount
-  #               type: DOUBLE
-  #                constraints:
-  #                defaultValueNumeric: 0
-  #            - column:
-  #               name: algo_delivery_cost
-  #                type: DOUBLE
-  #               constraints:
-  #                 nullable: false
-  #                defaultValueNumeric: 0
-  #            - column:
-  #             name: algo_zone_name
-  #               type: TEXT
-  #               constraints:
-  #                 nullable: false
-  #            - column:
-  #              name: algo_lead_time
-  #                type: varchar(50)
-  #              constraints:
-  #                  nullable: false
-  #           - column:
-  #                name: algo_lead_time
-  #                type: varchar(50)
-  #               constraints:
-  #                  nullable: false
-  #           - column:
-  #                name: algo_delivery_calendar
-  #                type: TEXT
-  #                constraints:
-  #                 nullable: false
-  #           - column:
-  #                name: algo_delivery_calendar
-  #               type: TEXT
-  #               constraints:
-  #                 nullable: false
-  #            - column:
-  #               name: cut_off
-  #                type: varchar(50)
-  #               constraints:
-  #                 nullable: false
-  #           - column:
-  #               type: varchar(50)
-  #               constraints:
-  #                 nullable: false
-  #          - column:
-  #               name: algo_delivery_window
-  #               type: varchar(50)
-  #               constraints:
-  #                 nullable: false
-  #          tableName: TABLE_NAME
-
-
-  # - changeSet:
-  #     id: QUE_SE_HACE_EN_ESTE_CHANGESET
-  #     author: AUTHOR
-  #     changes:
-  #       - addForeignKeyConstraint:
-  #           baseColumnNames: table
-  #           baseTableName: other_table
-  #           constraintName: name_fk
-  #           deferrable: false
-  #           initiallyDeferred: false
-  #           onDelete: RESTRICT
-  #           onUpdate: RESTRICT
-  #           referencedColumnNames: id
-  #           referencedTableName: table
-  #           validate: true
-
-  # - changeSet:
-  #     id: LO_QUE_HACE_EL_SQL_FILE
-  #     author: ZERITO
-  #     dbms: mysql
-  #     runOnChange: true
-  #     changes:
-  #       - sqlFile:
-  #           dbms: mysql
-  #           path: /db/changelog/sql/EXAMPLE.sql
-
-  # - changeSet:
-  #     id: LO_QUE_HACE_EL_SQL_FILE
-  #     author: ZERITO
-  #     dbms: mysql
-  #     runOnChange: true
-  #     changes:
-  #       - sqlFile:
-  #           dbms: mysql
-  #           path: /db/changelog/sql/EXAMPLE.sql

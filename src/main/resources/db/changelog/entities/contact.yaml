@@ -13,11 +13,7 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_contact_user_to_user
-                    references: users(id)
-                  name: userId
+                  name: user_id
                   type: BIGINT
               - column:
                   name: name
@@ -29,158 +25,26 @@ databaseChangeLog:
                   name: phone
                   type: VARCHAR
               - column:
-                  name: subjectEmail
+                  name: subject_email
                   type: VARCHAR
               - column:
-                  name: descriptionEmail
+                  name: description_email
                   type: VARCHAR
               - column:
-                  name: emailFrom
+                  name: email_from
                   type: VARCHAR
               - column:
-                  name: emailTo
+                  name: email_to
                   type: VARCHAR
               - column:
-                  name: timesRequestByEmail
+                  name: times_request_by_email
                   type: BIGINT
               - column:
-                  name: isAdvisedForBadConduct
+                  name: is_advised_for_bad_conduct
                   type: BIGINT
               - column:
-                  name: createdOn
-                  type: DATETIME
+                  name: created_on
+                  type: TIMESTAMP
               - column:
-                  name: isActive
+                  name: is_active
                   type: BIT
-
-  # - changeSet:
- #    id: QUE_SE_HACE_EN_ESTE_CHANGESET
- #    author: AUTHOR
- #    changes:
- #      - addForeignKeyConstraint:
- #          baseColumnNames: table
- #          baseTableName: days_to_work
- #          constraintName: name_fk
- #          deferrable: false
- #          initiallyDeferred: false
- #          onDelete: RESTRICT
- #          onUpdate: RESTRICT
- #          referencedColumnNames: id
- #          referencedTableName: table
- #          validate: true
-
-  #  - changeSet:
-  #      id: QUE_SE_HACE_EN_ESTE_CHANGESET
-  #      author: AUTHOR
-  #      changes:
-  #        - renameColumn:
-  #            columnDataType: DOUBLE
-  #            oldColumnName: max_amount
-  #            newColumnName: algo_max_amount
-  #            tableName: algo_delivery_zones
-  #        - renameColumn:
-  #            columnDataType: DOUBLE
-  #            oldColumnName: min_amount
-  #            newColumnName: algo_min_amount
-  #            tableName: algo_delivery_zones
-  #        - renameColumn:
-  #            columnDataType: DOUBLE
-  #            oldColumnName: algo_cost
-  #            newColumnName: algo_delivery_cost
-  #           tableName: algo_delivery_zones
-  #      - addColumn:
-  #           columns:
-  #             - column:
-  #                 name: algo_max_amount
-  #                type: DOUBLE
-  #                constraints:
-  #                 nullable: false
-  #                defaultValueNumeric: 0
-  #           - column:
-  #                name: algo_min_amount
-  #               type: DOUBLE
-  #                constraints:
-  #                defaultValueNumeric: 0
-  #            - column:
-  #               name: algo_delivery_cost
-  #                type: DOUBLE
-  #               constraints:
-  #                 nullable: false
-  #                defaultValueNumeric: 0
-  #            - column:
-  #             name: algo_zone_name
-  #               type: TEXT
-  #               constraints:
-  #                 nullable: false
-  #            - column:
-  #              name: algo_lead_time
-  #                type: varchar(50)
-  #              constraints:
-  #                  nullable: false
-  #           - column:
-  #                name: algo_lead_time
-  #                type: varchar(50)
-  #               constraints:
-  #                  nullable: false
-  #           - column:
-  #                name: algo_delivery_calendar
-  #                type: TEXT
-  #                constraints:
-  #                 nullable: false
-  #           - column:
-  #                name: algo_delivery_calendar
-  #               type: TEXT
-  #               constraints:
-  #                 nullable: false
-  #            - column:
-  #               name: cut_off
-  #                type: varchar(50)
-  #               constraints:
-  #                 nullable: false
-  #           - column:
-  #               type: varchar(50)
-  #               constraints:
-  #                 nullable: false
-  #          - column:
-  #               name: algo_delivery_window
-  #               type: varchar(50)
-  #               constraints:
-  #                 nullable: false
-  #          tableName: TABLE_NAME
-
-
-  # - changeSet:
-  #     id: QUE_SE_HACE_EN_ESTE_CHANGESET
-  #     author: AUTHOR
-  #     changes:
-  #       - addForeignKeyConstraint:
-  #           baseColumnNames: table
-  #           baseTableName: other_table
-  #           constraintName: name_fk
-  #           deferrable: false
-  #           initiallyDeferred: false
-  #           onDelete: RESTRICT
-  #           onUpdate: RESTRICT
-  #           referencedColumnNames: id
-  #           referencedTableName: table
-  #           validate: true
-
-  # - changeSet:
-  #     id: LO_QUE_HACE_EL_SQL_FILE
-  #     author: ZERITO
-  #     dbms: mysql
-  #     runOnChange: true
-  #     changes:
-  #       - sqlFile:
-  #           dbms: mysql
-  #           path: /db/changelog/sql/EXAMPLE.sql
-
-  # - changeSet:
-  #     id: LO_QUE_HACE_EL_SQL_FILE
-  #     author: ZERITO
-  #     dbms: mysql
-  #     runOnChange: true
-  #     changes:
-  #       - sqlFile:
-  #           dbms: mysql
-  #           path: /db/changelog/sql/EXAMPLE.sql

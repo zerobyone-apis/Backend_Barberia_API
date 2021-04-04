@@ -16,64 +16,45 @@ databaseChangeLog:
                   name: name
                   type: VARCHAR
               - column:
-                  name: legalName
+                  name: legal_name
                   type: VARCHAR
               - column:
                   name: email
                   type: VARCHAR
               - column:
-                  name: internalPhone
+                  name: internal_phone
                   type: VARCHAR
               - column:
-                  name: legalNumber
+                  name: legal_number
                   type: VARCHAR
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_enterprise_to_brand
-                    references: brand(id)
-                  name: brandId
+                  name: brand_id
                   type: BIGINT
               - column:
-                  name: shopTimeId
+                  name: shop_time_id
                   type: BIGINT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_enterprise_to_address
-                    references: address(id)
-                  name: addressId
+                  name: address_id
                   type: BIGINT
               - column:
-                  name: ratingScoreId
+                  name: rating_score_id
                   type: BIGINT
               - column:
                   name: status
                   type: VARCHAR
               - column:
-                  name: createdOn
-                  type: DATETIME
+                  name: created_on
+                  type: TIMESTAMP
               - column:
-                  name: updatedOn
-                  type: DATETIME
+                  name: updated_on
+                  type: TIMESTAMP
               - column:
-                  name: hasIntegration
+                  name: has_integration
                   type: BIT
               - column:
                   name: enabled
                   type: BIT
 
-  #########################################################################################################
-  ## TODO: Añadir las foreign keys entre:
-  ##       brandId -> Brand table
-  ##       shopTimeId -> ShopTime table
-  ##       addressId -> Brand table
-  ##       ratingId -> Rating table
-  ##       (id) Enterprise table -> WorkServices.groovy table - los servicios asociados a esta empresa 1 a n
-  ##       (id) Enterprise table -> Providers table - los Providers asociados a esta empresa 1 a n
-  ##       (id) Enterprise table -> Products table - los Products asociados a esta empresa 1 a n
-  ##       (id) Enterprise table -> Users table - los Users asociados a esta empresa 1 a n
-  #########################################################################################################
 
   ## ShopTime Table
   - changeSet:
@@ -90,35 +71,20 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_shop_time_to_address
-                    references: address(id)
-                  name: addressId
+                  name: address_id
                   type: BIGINT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_shop_time_to_enterprise
-                    references: enterprise(id)
-                  name: enterpriseId
+                  name: enterprise_id
                   type: BIGINT
               - column:
-                  name: createdOn
-                  type: DATETIME
+                  name: created_on
+                  type: TIMESTAMP
               - column:
-                  name: deletedOn
-                  type: DATETIME
+                  name: deleted_on
+                  type: TIMESTAMP
               - column:
                   name: enabled
                   type: BIT
-
-  #########################################################################################################
-  ## TODO: Añadir las foreign keys entre:
-  ##       addressId -> Address table
-  ##       enterpriseId -> Enterprise table
-  ##       (id) ShopTime table -> Enterprise table  1 a 1
-  #########################################################################################################
 
   ## EnterpriseProducts Table
   - changeSet:
@@ -135,18 +101,10 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_enterprise_to_products
-                    references: enterprise(id)
-                  name: enterpriseId
+                  name: enterprise_id
                   type: BIGINT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_products_to_enterprise
-                    references: products(id)
-                  name: productId
+                  name: product_id
                   type: BIGINT
 
 
@@ -165,18 +123,13 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_users_to_enterprise
-                    references: enterprise(id)
-                  name: enterpriseId
+                  name: enterprise_id
                   type: BIGINT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_enterprise_to_users
-                    references: users(id)
-                  name: userId
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: social_number
                   type: BIGINT
 
 
@@ -195,18 +148,10 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_enterprise_to_providers
-                    references: enterprise(id)
-                  name: enterpriseId
+                  name: enterprise_id
                   type: BIGINT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_providers_to_enterprise
-                    references: providers(id)
-                  name: providerId
+                  name: provider_id
                   type: BIGINT
 
 
@@ -225,18 +170,10 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_enterprise_to_reserves
-                    references: enterprise(id)
-                  name: enterpriseId
+                  name: enterprise_id
                   type: BIGINT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_reserves_to_enterprise
-                    references: reserves(id)
-                  name: reserveId
+                  name: reserve_id
                   type: BIGINT
 
   ## RatingScore Table
@@ -278,159 +215,12 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  name: dayName
+                  name: day_name
                   type: VARCHAR
               - column:
-                  name: openTime
+                  name: open_time
                   type: VARCHAR
               - column:
-                  name: closeTime
+                  name: close_time
                   type: VARCHAR
 
-  - changeSet:
-     id: add-enterprise-shop-time-fk
-     author: molivero
-     changes:
-       - addForeignKeyConstraint:
-           baseColumnNames: shopTimeId
-           baseTableName: enterprise
-           constraintName: fk_enterprise_to_shop_time
-           deferrable: false
-           initiallyDeferred: false
-           onDelete: RESTRICT
-           onUpdate: RESTRICT
-           referencedColumnNames: id
-           referencedTableName: shop_time
-           validate: true
-
-  - changeSet:
-     id: add-enterprise-rating-score-fk
-     author: molivero
-     changes:
-       - addForeignKeyConstraint:
-           baseColumnNames: ratingScoreId
-           baseTableName: enterprise
-           constraintName: fk_enterprise_to_rating_score
-           deferrable: false
-           initiallyDeferred: false
-           onDelete: RESTRICT
-           onUpdate: RESTRICT
-           referencedColumnNames: id
-           referencedTableName: rating_score
-           validate: true
-
-  #  - changeSet:
-  #      id: QUE_SE_HACE_EN_ESTE_CHANGESET
-  #      author: AUTHOR
-  #      changes:
-  #        - renameColumn:
-  #            columnDataType: DOUBLE
-  #            oldColumnName: max_amount
-  #            newColumnName: algo_max_amount
-  #            tableName: algo_delivery_zones
-  #        - renameColumn:
-  #            columnDataType: DOUBLE
-  #            oldColumnName: min_amount
-  #            newColumnName: algo_min_amount
-  #            tableName: algo_delivery_zones
-  #        - renameColumn:
-  #            columnDataType: DOUBLE
-  #            oldColumnName: algo_cost
-  #            newColumnName: algo_delivery_cost
-  #           tableName: algo_delivery_zones
-  #      - addColumn:
-  #           columns:
-  #             - column:
-  #                 name: algo_max_amount
-  #                type: DOUBLE
-  #                constraints:
-  #                 nullable: false
-  #                defaultValueNumeric: 0
-  #           - column:
-  #                name: algo_min_amount
-  #               type: DOUBLE
-  #                constraints:
-  #                defaultValueNumeric: 0
-  #            - column:
-  #               name: algo_delivery_cost
-  #                type: DOUBLE
-  #               constraints:
-  #                 nullable: false
-  #                defaultValueNumeric: 0
-  #            - column:
-  #             name: algo_zone_name
-  #               type: TEXT
-  #               constraints:
-  #                 nullable: false
-  #            - column:
-  #              name: algo_lead_time
-  #                type: varchar(50)
-  #              constraints:
-  #                  nullable: false
-  #           - column:
-  #                name: algo_lead_time
-  #                type: varchar(50)
-  #               constraints:
-  #                  nullable: false
-  #           - column:
-  #                name: algo_delivery_calendar
-  #                type: TEXT
-  #                constraints:
-  #                 nullable: false
-  #           - column:
-  #                name: algo_delivery_calendar
-  #               type: TEXT
-  #               constraints:
-  #                 nullable: false
-  #            - column:
-  #               name: cut_off
-  #                type: varchar(50)
-  #               constraints:
-  #                 nullable: false
-  #           - column:
-  #               type: varchar(50)
-  #               constraints:
-  #                 nullable: false
-  #          - column:
-  #               name: algo_delivery_window
-  #               type: varchar(50)
-  #               constraints:
-  #                 nullable: false
-  #          tableName: TABLE_NAME
-
-
-  # - changeSet:
-  #     id: QUE_SE_HACE_EN_ESTE_CHANGESET
-  #     author: AUTHOR
-  #     changes:
-  #       - addForeignKeyConstraint:
-  #           baseColumnNames: table
-  #           baseTableName: other_table
-  #           constraintName: name_fk
-  #           deferrable: false
-  #           initiallyDeferred: false
-  #           onDelete: RESTRICT
-  #           onUpdate: RESTRICT
-  #           referencedColumnNames: id
-  #           referencedTableName: table
-  #           validate: true
-
-  # - changeSet:
-  #     id: LO_QUE_HACE_EL_SQL_FILE
-  #     author: ZERITO
-  #     dbms: mysql
-  #     runOnChange: true
-  #     changes:
-  #       - sqlFile:
-  #           dbms: mysql
-  #           path: /db/changelog/sql/EXAMPLE.sql
-
-  # - changeSet:
-  #     id: LO_QUE_HACE_EL_SQL_FILE
-  #     author: ZERITO
-  #     dbms: mysql
-  #     runOnChange: true
-  #     changes:
-  #       - sqlFile:
-  #           dbms: mysql
-  #           path: /db/changelog/sql/EXAMPLE.sql

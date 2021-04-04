@@ -13,91 +13,75 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_reserves_to_users
-                    references: users(id)
-                  name: userId
+                  name: user_id
                   type: BIGINT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_reserves_to_enterprise
-                    references: enterprise(id)
-                  name: enterpriseId
+                  name: enterprise_id
                   type: BIGINT
               - column:
-                  name: employeeUsername
+                  name: employee_username
                   type: VARCHAR
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_reserves_to_clients
-                    references: clients(id)
-                  name: clientId
+                  name: client_id
                   type: BIGINT
               - column:
-                  name: clientName
+                  name: client_name
                   type: VARCHAR
               - column:
-                  name: clientPhone
+                  name: client_phone
                   type: VARCHAR
               - column:
-                  name: emailClient
+                  name: email_client
                   type: VARCHAR
               - column:
-                  name: socialNumber
+                  name: social_number
                   type: VARCHAR
               - column:
                   name: duration
-                  type: DATETIME
+                  type: TIMESTAMP
               - column:
-                  name: reserveDatetime
-                  type: DATETIME
+                  name: reserve_datetime
+                  type: TIMESTAMP
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_reserves_to_work_services
-                    references: work_services(id)
-                  name: workServiceId
+                  name: work_service_id
                   type: BIGINT
               - column:
-                  name: barberService
+                  name: barber_service
                   type: VARCHAR
               - column:
-                  name: hairdresserService
+                  name: hairdresser_service
                   type: VARCHAR
               - column:
                   name: promos
                   type: VARCHAR
               - column:
-                  name: priceService
+                  name: price_service
                   type: DOUBLE
               - column:
-                  name: productCost
+                  name: product_cost
                   type: DOUBLE
               - column:
-                  name: externalServicesCost
+                  name: external_services_cost
                   type: DOUBLE
               - column:
-                  name: totalCost
+                  name: total_cost
                   type: DOUBLE
               - column:
-                  name: underPromotion
+                  name: under_promotion
                   type: BIT
               - column:
-                  name: createdOn
-                  type: DATETIME
+                  name: created_on
+                  type: TIMESTAMP
               - column:
-                  name: updateOn
-                  type: DATETIME
+                  name: update_on
+                  type: TIMESTAMP
               - column:
-                  name: cancelOn
-                  type: DATETIME
+                  name: cancel_on
+                  type: TIMESTAMP
               - column:
-                  name: reserveStatus
+                  name: reserve_status
                   type: VARCHAR
               - column:
-                  name: isActive
+                  name: is_active
                   type: BIT
 

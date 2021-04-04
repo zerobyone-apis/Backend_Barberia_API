@@ -1,5 +1,4 @@
 databaseChangeLog:
-  ## Category Table
   - changeSet:
       id: create_category_table
       author: max_olivero
@@ -14,14 +13,10 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  name: parentId
+                  name: parent_id
                   type: BIGINT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_category_to_countries
-                    references: countries(id)
-                  name: countryId
+                  name: country_id
                   type: BIGINT
               - column:
                   name: name
@@ -30,7 +25,7 @@ databaseChangeLog:
                   name: enabled
                   type: BIT
               - column:
-                  name: isLeaf
+                  name: is_leaf
                   type: BIT
 
   ## Product_Price Table
@@ -48,33 +43,29 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_product_price_to_category
-                    references: category(id)
-                  name: categoryId
+                  name: category_id
                   type: BIGINT
               - column:
                   name: price
                   type: DOUBLE
               - column:
-                  name: highlightedPrice
+                  name: highlighted_price
                   type: DOUBLE
               - column:
-                  name: isInOffert
+                  name: is_in_offert
                   type: BIT
               - column:
-                  name: nameOffert
+                  name: name_offert
                   type: VARCHAR
               - column:
-                  name: haveDiscountPercentage
+                  name: have_discount_percentage
                   type: DOUBLE
               - column:
-                  name: createdOn
-                  type: DATETIME
+                  name: created_on
+                  type: TIMESTAMP
               - column:
-                  name: updatedOn
-                  type: DATETIME
+                  name: updated_on
+                  type: TIMESTAMP
               - column:
                   name: enabled
                   type: BIT
@@ -96,62 +87,32 @@ databaseChangeLog:
                   name: name
                   type: VARCHAR
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_product_to_brand
-                    references: brand(id)
-                  name: brandId
+                  name: brand_id
                   type: BIGINT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_product_to_product_price
-                    references: product_price(id)
-                  name: priceId
+                  name: price_id
                   type: BIGINT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_product_to_countries
-                    references: countries(id)
-                  name: countryId
+                  name: country_id
                   type: BIGINT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_products_to_providers
-                    references: providers(id)
-                  name: providerId
+                  name: provider_id
                   type: BIGINT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_products_to_category
-                    references: category(id)
-                  name: categoryId
+                  name: category_id
                   type: BIGINT
               - column:
-                  name: createdOn
-                  type: DATETIME
+                  name: created_on
+                  type: TIMESTAMP
               - column:
-                  name: updatedOn
-                  type: DATETIME
+                  name: updated_on
+                  type: TIMESTAMP
               - column:
-                  name: deletedOn
-                  type: DATETIME
+                  name: deleted_on
+                  type: TIMESTAMP
               - column:
                   name: enabled
                   type: BIT
-
-  #########################################################################################################
-  ## TODO: Añadir las foreign keys entre:
-  ##       brandId -> Brand table
-  ##       priceId -> Price table
-  ##       countryId -> Country table
-  ##       providerId -> Provider table
-  ##       categoryId -> Category table
-  ##       (id) Products table -> Images table - las images associates a este producto 1 a n
-  #########################################################################################################
 
   ## ProductImages Table
   - changeSet:
@@ -168,189 +129,9 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_product_images_to_products
-                    references: products(id)
-                  name: productId
+                  name: product_id
                   type: BIGINT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_product_images_to_images
-                    references: images(id)
-                  name: imageId
+                  name: image_id
                   type: BIGINT
 
-
-  #########################################################################################################
-  ## TODO: Añadir las foreign keys entre:
-  ##       productId -> Product table
-  ##       imageId -> Image table
-  #########################################################################################################
-
-
-
-  ## Category Childrens Table
-  ## esta tabla puede eliminarse porque el parentID debe ser de la misma tabla.
-  # - changeSet:
-  #     id: create_category_childrens_table
-  #     author: max_olivero
-  #     changes:
-  #       - createTable:
-  #           tableName: category_childrens
-  #           columns:
-  #             - column:
-  #                 autoIncrement: true
-  #                 constraints:
-  #                   primaryKey: true
-  #                 name: id
-  #                 type: BIGINT
-  #             - column:
-  #                 constraints:
-  #                   nullable: false
-  #                   foreignKeyName: fk_category_childrens_to_category
-  #                   references: category(id)
-  #                 name: categoryId
-  #                 type: BIGINT
-  #             - column:
-  #                 name: parentId
-  #                 type: BIGINT
-  #             - column:
-  #                 name: name
-  #                 type: VARCHAR
-
-
-
-
-  # - changeSet:
-  #    id: QUE_SE_HACE_EN_ESTE_CHANGESET
-  #    author: AUTHOR
-  #    changes:
-  #      - addForeignKeyConstraint:
-  #          baseColumnNames: table
-  #          baseTableName: days_to_work
-  #          constraintName: name_fk
-  #          deferrable: false
-  #          initiallyDeferred: false
-  #          onDelete: RESTRICT
-  #          onUpdate: RESTRICT
-  #          referencedColumnNames: id
-  #          referencedTableName: table
-  #          validate: true
-
-  #  - changeSet:
-  #      id: QUE_SE_HACE_EN_ESTE_CHANGESET
-  #      author: AUTHOR
-  #      changes:
-  #        - renameColumn:
-  #            columnDataType: DOUBLE
-  #            oldColumnName: max_amount
-  #            newColumnName: algo_max_amount
-  #            tableName: algo_delivery_zones
-  #        - renameColumn:
-  #            columnDataType: DOUBLE
-  #            oldColumnName: min_amount
-  #            newColumnName: algo_min_amount
-  #            tableName: algo_delivery_zones
-  #        - renameColumn:
-  #            columnDataType: DOUBLE
-  #            oldColumnName: algo_cost
-  #            newColumnName: algo_delivery_cost
-  #           tableName: algo_delivery_zones
-  #      - addColumn:
-  #           columns:
-  #             - column:
-  #                 name: algo_max_amount
-  #                type: DOUBLE
-  #                constraints:
-  #                 nullable: false
-  #                defaultValueNumeric: 0
-  #           - column:
-  #                name: algo_min_amount
-  #               type: DOUBLE
-  #                constraints:
-  #                defaultValueNumeric: 0
-  #            - column:
-  #               name: algo_delivery_cost
-  #                type: DOUBLE
-  #               constraints:
-  #                 nullable: false
-  #                defaultValueNumeric: 0
-  #            - column:
-  #             name: algo_zone_name
-  #               type: TEXT
-  #               constraints:
-  #                 nullable: false
-  #            - column:
-  #              name: algo_lead_time
-  #                type: varchar(50)
-  #              constraints:
-  #                  nullable: false
-  #           - column:
-  #                name: algo_lead_time
-  #                type: varchar(50)
-  #               constraints:
-  #                  nullable: false
-  #           - column:
-  #                name: algo_delivery_calendar
-  #                type: TEXT
-  #                constraints:
-  #                 nullable: false
-  #           - column:
-  #                name: algo_delivery_calendar
-  #               type: TEXT
-  #               constraints:
-  #                 nullable: false
-  #            - column:
-  #               name: cut_off
-  #                type: varchar(50)
-  #               constraints:
-  #                 nullable: false
-  #           - column:
-  #               type: varchar(50)
-  #               constraints:
-  #                 nullable: false
-  #          - column:
-  #               name: algo_delivery_window
-  #               type: varchar(50)
-  #               constraints:
-  #                 nullable: false
-  #          tableName: TABLE_NAME
-
-
-  # - changeSet:
-  #     id: QUE_SE_HACE_EN_ESTE_CHANGESET
-  #     author: AUTHOR
-  #     changes:
-  #       - addForeignKeyConstraint:
-  #           baseColumnNames: table
-  #           baseTableName: other_table
-  #           constraintName: name_fk
-  #           deferrable: false
-  #           initiallyDeferred: false
-  #           onDelete: RESTRICT
-  #           onUpdate: RESTRICT
-  #           referencedColumnNames: id
-  #           referencedTableName: table
-  #           validate: true
-
-  # - changeSet:
-  #     id: LO_QUE_HACE_EL_SQL_FILE
-  #     author: ZERITO
-  #     dbms: mysql
-  #     runOnChange: true
-  #     changes:
-  #       - sqlFile:
-  #           dbms: mysql
-  #           path: /db/changelog/sql/EXAMPLE.sql
-
-  # - changeSet:
-  #     id: LO_QUE_HACE_EL_SQL_FILE
-  #     author: ZERITO
-  #     dbms: mysql
-  #     runOnChange: true
-  #     changes:
-  #       - sqlFile:
-  #           dbms: mysql
-  #           path: /db/changelog/sql/EXAMPLE.sql

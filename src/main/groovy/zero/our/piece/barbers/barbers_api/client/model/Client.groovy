@@ -2,15 +2,17 @@ package zero.our.piece.barbers.barbers_api.client.model
 
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
-import org.joda.time.DateTime
 import zero.our.piece.barbers.barbers_api.client.infrastructure.ClientType
 import zero.our.piece.barbers.barbers_api.client.infrastructure.Interaction
-import zero.our.piece.barbers.barbers_api.services.infrastructure.WorkServiceStatus
 
 import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
 import javax.persistence.Id
+import javax.persistence.SequenceGenerator
 import javax.persistence.Table
 import javax.persistence.Transient
+import java.time.Instant
 
 @Entity
 @ToString
@@ -19,72 +21,79 @@ import javax.persistence.Transient
 class Client {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "client_sequence")
+    @SequenceGenerator(name = "client_sequence", sequenceName = "client_sequence", allocationSize = 1)
+
     Long id
 
-    // user - barber or hairdresser info
-    Long userId
+    // user - client info
+    Long user_id
     String name
     String username
     String phone
     String email
-    String socialNumber
+    Long social_number
 
     // Social Media - Instagram.
-    String instUsername         //TODO: Encriptar estos datos
-    URI instImageProfileUrl     //TODO: Encriptar estos datos
-    URI instPhotoUrl            //TODO: Encriptar estos datos
-    Boolean acceptIntegration   //TODO: Encriptar estos datos
+    String inst_username         //TODO: Encriptar estos datos
+    String inst_image_profile_url     //TODO: Encriptar estos datos
+    String inst_photo_url            //TODO: Encriptar estos datos
+    Boolean accept_integration   //TODO: Encriptar estos datos
+    ClientType client_type       // create logic by the metrics to know which type of client is.
+
 
     // Analytics data - This data is only required when it necessary do the metrics by batch operation or on hand.
     @Transient
     List<Interaction> interactions // list of interactions
     @Transient
-    Long amountReserves
+    Long amount_reserves
     @Transient
-    Long amountComments
+    Long amount_comments
     @Transient
-    Long amountCancelReserves
+    Long amount_cancel_reserves
     @Transient
-    Long amountLikes
+    Long amount_likes
     @Transient
-    Long amountShares
+    Long amount_shares
     @Transient
-    Long amountUpdateReserves
+    Long amount_update_reserves
     @Transient
-    Long amountUpdateProfile
+    Long amount_update_profile
     @Transient
-    Long amountUpdateSignOn
+    Long amount_update_sign_on
     @Transient
-    Long amountUpdateSignOff
+    Long amount_update_sign_off
     @Transient
-    Double durationSession
+    Double duration_session
 
     // todo: Estos calculos se pueden hacer en base a la cantidad de reservas que haya tenido el cliente.
     // Preferred Barber
     @Transient
-    Long preferredBarberId
+    Long preferred_barber_id
     @Transient
-    String preferredBarberName
+    String preferred_barber_name
     @Transient
-    Double timesSelectedBarber
+    Double times_selected_barber
 
     // Preferred Hairdresser
     @Transient
-    Long preferredHairdresserId
+    Long preferred_hairdresser_id
     @Transient
-    String preferredHairdresserName
+    String preferred_hairdresser_name
     @Transient
-    Double timesSelectedHairdresser
+    Double times_selected_hairdresser
 
     // Preferred Enterprise - BarberShop or StyleShop (HairdresserShops)
     @Transient
-    Double timesSelectedEnterprise
+    Double times_selected_enterprise
+
+    // Bad conduct times
+    Long bad_conduct_notifications
 
     // Creation data
-    DateTime createdOn
-    DateTime updateOn
+    Instant created_on
+    Instant updated_on
 
-    ClientType clientType // create logic by the metrics to know which type of client is.
-    Boolean isActive = Boolean.TRUE
+    Boolean is_active = Boolean.TRUE
 }
 

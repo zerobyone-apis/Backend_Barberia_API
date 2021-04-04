@@ -13,11 +13,7 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_barber_to_users
-                    references: users(id)
-                  name: userId
+                  name: user_id
                   type: BIGINT
               - column:
                   name: name
@@ -35,177 +31,41 @@ databaseChangeLog:
                   name: description
                   type: TEXT
               - column:
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_barber_to_enterprise
-                    references: enterprise(id)
-                  name: enterpriseId
+                  name: enterprise_id
                   type: BIGINT
               - column:
                   name: roll
                   type: TEXT
               - column:
-                  name: openWorkTime
+                  name: open_work_time
                   type: VARCHAR
               - column:
-                  name: durationCutsTime
+                  name: duration_cut_time
                   type: VARCHAR
               - column:
-                  name: instUsername
+                  name: inst_username
                   type: VARCHAR
               - column:
-                  name: instImageProfileUrl
+                  name: inst_image_profile_url
                   type: TEXT
               - column:
-                  name: acceptIntegration
+                  name: accept_integration
                   type: BIT
               - column:
-                  name: facebookUsername
+                  name: facebook_username
                   type: VARCHAR
               - column:
-                  name: fbImageProfileUrl
+                  name: fb_image_profile_url
                   type: TEXT
               - column:
-                  name: acceptFacebookIntegration
+                  name: accept_facebook_integration
                   type: BIT
               - column:
-                  name: createdOn
-                  type: DATETIME
+                  name: created_on
+                  type: TIMESTAMP
               - column:
-                  name: updatedOn
-                  type: DATETIME
+                  name: updated_on
+                  type: TIMESTAMP
               - column:
-                  name: isActive
+                  name: is_active
                   type: BIT
-
-  # - changeSet:
-  #    id: QUE_SE_HACE_EN_ESTE_CHANGESET
-  #    author: AUTHOR
-  #    changes:
-  #      - addForeignKeyConstraint:
-  #          baseColumnNames: table
-  #          baseTableName: days_to_work
-  #          constraintName: name_fk
-  #          deferrable: false
-  #          initiallyDeferred: false
-  #          onDelete: RESTRICT
-  #          onUpdate: RESTRICT
-  #          referencedColumnNames: id
-  #          referencedTableName: table
-  #          validate: true
-
-  #  - changeSet:
-  #      id: QUE_SE_HACE_EN_ESTE_CHANGESET
-  #      author: AUTHOR
-  #      changes:
-  #        - renameColumn:
-  #            columnDataType: DOUBLE
-  #            oldColumnName: max_amount
-  #            newColumnName: algo_max_amount
-  #            tableName: algo_delivery_zones
-  #        - renameColumn:
-  #            columnDataType: DOUBLE
-  #            oldColumnName: min_amount
-  #            newColumnName: algo_min_amount
-  #            tableName: algo_delivery_zones
-  #        - renameColumn:
-  #            columnDataType: DOUBLE
-  #            oldColumnName: algo_cost
-  #            newColumnName: algo_delivery_cost
-  #           tableName: algo_delivery_zones
-  #      - addColumn:
-  #           columns:
-  #             - column:
-  #                 name: algo_max_amount
-  #                type: DOUBLE
-  #                constraints:
-  #                 nullable: false
-  #                defaultValueNumeric: 0
-  #           - column:
-  #                name: algo_min_amount
-  #               type: DOUBLE
-  #                constraints:
-  #                defaultValueNumeric: 0
-  #            - column:
-  #               name: algo_delivery_cost
-  #                type: DOUBLE
-  #               constraints:
-  #                 nullable: false
-  #                defaultValueNumeric: 0
-  #            - column:
-  #             name: algo_zone_name
-  #               type: TEXT
-  #               constraints:
-  #                 nullable: false
-  #            - column:
-  #              name: algo_lead_time
-  #                type: varchar(50)
-  #              constraints:
-  #                  nullable: false
-  #           - column:
-  #                name: algo_lead_time
-  #                type: varchar(50)
-  #               constraints:
-  #                  nullable: false
-  #           - column:
-  #                name: algo_delivery_calendar
-  #                type: TEXT
-  #                constraints:
-  #                 nullable: false
-  #           - column:
-  #                name: algo_delivery_calendar
-  #               type: TEXT
-  #               constraints:
-  #                 nullable: false
-  #            - column:
-  #               name: cut_off
-  #                type: varchar(50)
-  #               constraints:
-  #                 nullable: false
-  #           - column:
-  #               type: varchar(50)
-  #               constraints:
-  #                 nullable: false
-  #          - column:
-  #               name: algo_delivery_window
-  #               type: varchar(50)
-  #               constraints:
-  #                 nullable: false
-  #          tableName: TABLE_NAME
-
-
-  # - changeSet:
-  #     id: QUE_SE_HACE_EN_ESTE_CHANGESET
-  #     author: AUTHOR
-  #     changes:
-  #       - addForeignKeyConstraint:
-  #           baseColumnNames: table
-  #           baseTableName: other_table
-  #           constraintName: name_fk
-  #           deferrable: false
-  #           initiallyDeferred: false
-  #           onDelete: RESTRICT
-  #           onUpdate: RESTRICT
-  #           referencedColumnNames: id
-  #           referencedTableName: table
-  #           validate: true
-
-  # - changeSet:
-  #     id: LO_QUE_HACE_EL_SQL_FILE
-  #     author: ZERITO
-  #     dbms: mysql
-  #     runOnChange: true
-  #     changes:
-  #       - sqlFile:
-  #           dbms: mysql
-  #           path: /db/changelog/sql/EXAMPLE.sql
-
-  # - changeSet:
-  #     id: LO_QUE_HACE_EL_SQL_FILE
-  #     author: ZERITO
-  #     dbms: mysql
-  #     runOnChange: true
-  #     changes:
-  #       - sqlFile:
-  #           dbms: mysql
-  #           path: /db/changelog/sql/EXAMPLE.sql

@@ -5,7 +5,10 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
 import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
 import javax.persistence.Id
+import javax.persistence.SequenceGenerator
 import javax.persistence.Table
 import javax.persistence.Transient
 
@@ -16,12 +19,14 @@ import javax.persistence.Transient
 class Category {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_sequence")
+    @SequenceGenerator(name = "category_sequence", sequenceName = "category_sequence", allocationSize = 1)
     Long id
-    Long parentId
-    Long countryId
+    Long parent_id
+    Long country_id
     String name
     Boolean enabled
-    Boolean isLeaf
+    Boolean is_leaf
 
     @Transient
     List<Category> childrens

@@ -2,24 +2,29 @@ package zero.our.piece.barbers.barbers_api.reserve.model
 
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
-import org.joda.time.DateTime
 import zero.our.piece.barbers.barbers_api.services.infrastructure.Promos
 import zero.our.piece.barbers.barbers_api.services.infrastructure.ServicesBarber
 import zero.our.piece.barbers.barbers_api.services.infrastructure.ServicesHairdresser
 import zero.our.piece.barbers.barbers_api.services.infrastructure.WorkServiceStatus
 
 import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
 import javax.persistence.Id
+import javax.persistence.SequenceGenerator
 import javax.persistence.Table
 import java.sql.Time
+import java.time.Instant
 
 @Entity
 @ToString
 @EqualsAndHashCode
 @Table(name = "reserves")
+@SequenceGenerator(name = "reserves_sequence", sequenceName = "reserves_sequence", allocationSize = 1)
 class Reserves {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reserves_sequence")
     Long id
 
     // user - barber or hairdresser info
@@ -36,7 +41,7 @@ class Reserves {
 
     // DateTime info
     Time duration
-    DateTime reserveDatetime // Las dos cosas, el dia y la hora.
+    Instant reserveDatetime // Las dos cosas, el dia y la hora.
 
     // Reserve Description Info
     Long workServiceId
@@ -52,15 +57,13 @@ class Reserves {
     Double totalCost //todo: Validar o aplicar la promocion en el servicio o costo total dependiendo de la promo.
 
     // Creation data
-    DateTime createdOn
-    DateTime updateOn
-    DateTime cancelOn
+    Instant createdOn
+    Instant updateOn
+    Instant cancelOn
 
     WorkServiceStatus reserveStatus
 
     Boolean isActive = Boolean.TRUE // Esto deberia reemplazarse por el RESERVED
-
-
 
 
 }

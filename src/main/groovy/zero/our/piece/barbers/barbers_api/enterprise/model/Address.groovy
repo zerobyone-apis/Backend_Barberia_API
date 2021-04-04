@@ -1,14 +1,16 @@
 package zero.our.piece.barbers.barbers_api.enterprise.model
 
-
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
-import org.joda.time.DateTime
 
 import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
 import javax.persistence.Id
+import javax.persistence.SequenceGenerator
 import javax.persistence.Table
 import javax.validation.constraints.NotNull
+import java.time.Instant
 
 @Entity
 @EqualsAndHashCode
@@ -17,12 +19,13 @@ import javax.validation.constraints.NotNull
 class Address {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_sequence")
+    @SequenceGenerator(name = "address_sequence", sequenceName = "address_sequence", allocationSize = 1)
     Long id
-    Long countryId
-    Long placeId
-    // example: referencia de lugar, zona o barrio, crear a futuro un listado con las zonas conocidas para poder comparar.
-    String additionalInfo
-    String postalCode
+    Long country_id
+    Long place_id // example: referencia de lugar, zona o barrio, crear a futuro un listado con las zonas conocidas para poder comparar.
+    String additional_info
+    String postal_code
 
     @NotNull(message = "INVALID_GOOGLE_ADDRESS")
     String formatted
@@ -33,9 +36,9 @@ class Address {
     @NotNull(message = "INVALID_GOOGLE_ADDRESS")
     BigDecimal lon
 
-    DateTime createdOn
-    DateTime updatedOn
-    DateTime deletedOn
+    Instant created_on
+    Instant updated_on
+    Instant deleted_on
 
     Boolean enabled = Boolean.TRUE
 
