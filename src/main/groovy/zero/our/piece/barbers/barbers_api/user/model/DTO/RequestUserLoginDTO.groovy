@@ -2,6 +2,6 @@ package zero.our.piece.barbers.barbers_api.user.model.DTO
 
 class RequestUserLoginDTO {
      String email
-     Long socialNumber
+     Long social_number
      String password
 }

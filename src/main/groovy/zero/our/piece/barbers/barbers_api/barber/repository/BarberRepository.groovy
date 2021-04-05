@@ -14,6 +14,6 @@ interface BarberRepository extends JpaRepository<Barber, Long> {
     Optional<List<Barber>> findByName(@Param("name") final String name);
 
 
-    @Query(value = "SELECT b.* FROM barber b WHERE b.userId = :user_id", nativeQuery = true)
+    @Query(value = "SELECT b.* FROM barber b WHERE b.user_id = :user_id", nativeQuery = true)
     Barber findByUserId(@Param("user_id") Long user_id);
 }

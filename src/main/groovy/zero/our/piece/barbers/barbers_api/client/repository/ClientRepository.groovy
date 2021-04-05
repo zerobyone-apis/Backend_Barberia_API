@@ -10,6 +10,6 @@ import zero.our.piece.barbers.barbers_api.contact.model.ClientContact
 @Repository
 interface ClientRepository extends JpaRepository<Client, Long> {
 
-    @Query(value = "SELECT c.* FROM users u INNER JOIN clients c on (u.id = c.userId) WHERE u.id = :userId", nativeQuery=true)
-    Client findByUserId(@Param("userId") Long userId);
+    @Query(value = "SELECT c.* FROM users u INNER JOIN clients c on (u.id = c.user_id) WHERE u.id = :user_id", nativeQuery=true)
+    Client findByUserId(@Param("user_id") Long user_id);
 }

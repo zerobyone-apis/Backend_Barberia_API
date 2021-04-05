@@ -167,13 +167,13 @@ class UserService {
     protected User loginProcess(RequestUserLoginDTO user) {
         try {
             User foundUser = new User()
-            if (user?.socialNumber && user?.password) {
-                foundUser = userRepository.findBySocialNumberAndPassword(user.socialNumber, user?.password)
+            if (user?.social_number && user?.password) {
+                foundUser = userRepository.findBySocialNumberAndPassword(user.social_number, user.password)
                 if (!foundUser?.id) throw new CreateResourceException("Social number or Password are wrong.")
             }
 
             if (user?.email && user?.password) {
-                foundUser = userRepository.findByEmailAndPassword(user.email, user?.password)
+                foundUser = userRepository.findByEmailAndPassword(user.email, user.password)
                 if (!foundUser?.id) throw new CreateResourceException("Email or Password are wrong.")
             }
 

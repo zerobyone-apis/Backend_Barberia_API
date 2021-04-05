@@ -30,7 +30,7 @@ class ClientService {
 
     ClientResponseDTO findByUserId(Long userId) {
         Client client = clientRepository.findByUserId(userId)
-        if (!client?.id) throw new ResourceNotFoundException("Barber with this User ID Not found: " + userId)
+        if (!client?.id) throw new ResourceNotFoundException("Client with this User ID Not found: " + userId)
 
         return decoratorPatternClient(client)
     }
