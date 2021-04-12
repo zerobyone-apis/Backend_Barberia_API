@@ -23,7 +23,6 @@ class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "client_sequence")
     @SequenceGenerator(name = "client_sequence", sequenceName = "client_sequence", allocationSize = 1)
-
     Long id
 
     // user - client info
@@ -35,11 +34,11 @@ class Client {
     Long social_number
 
     // Social Media - Instagram.
-    String inst_username         //TODO: Encriptar estos datos
+    String inst_username              //TODO: Encriptar estos datos
     String inst_image_profile_url     //TODO: Encriptar estos datos
-    String inst_photo_url            //TODO: Encriptar estos datos
-    Boolean accept_integration   //TODO: Encriptar estos datos
-    ClientType client_type       // create logic by the metrics to know which type of client is.
+    String inst_photo_url             //TODO: Encriptar estos datos
+    Boolean accept_integration        //TODO: Encriptar estos datos
+    ClientType client_type            //      create logic by the metrics to know which type of client is.
 
 
     // Analytics data - This data is only required when it necessary do the metrics by batch operation or on hand.

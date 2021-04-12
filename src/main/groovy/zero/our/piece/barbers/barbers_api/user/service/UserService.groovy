@@ -20,6 +20,7 @@ import zero.our.piece.barbers.barbers_api.user.model.User
 import zero.our.piece.barbers.barbers_api.user.repository.UserRepository
 
 import java.time.Instant
+import java.util.stream.Collectors
 
 @Service
 @Slf4j
@@ -43,21 +44,43 @@ class UserService {
     private Long FIRST_SOCIAL_NUMBER = 600L
 
     List<UserResponseDTO> findAll() {
-       try{
-           userRepository.findAll().each { it ->
-            decoratorPatternUser(it)
-        } as List<UserResponseDTO>
-
-        } catch (ResourceNotFoundException | NoSuchElementException ex){
-           throw new ResourceNotFoundException(ex.message)
+        try {
+            userRepository.findAll()
+                    .stream()
+                    .map({ it -> decoratorPatternUser(it) })
+                    .collect(Collectors.toList())
+        } catch (ResourceNotFoundException | NoSuchElementException ex) {
+            throw new ResourceNotFoundException(ex.message)
         }
     }
 
     UserResponseDTO findById(Long id) {
-        try{
+        try {
             def foundUser = userRepository.findById(id).get()
             return decoratorPatternUser(foundUser)
-        } catch (ResourceNotFoundException | NoSuchElementException ex){
+        } catch (ResourceNotFoundException | NoSuchElementException ex) {
+            throw new ResourceNotFoundException(ex.message)
+        }
+    }
+
+    User findByEmail(String email) {
+        try {
+            Optional<User> foundUser = userRepository.findByEmail(email)
+            if (foundUser.isPresent()) {
+                return foundUser.get()
+            }
+        } catch (ResourceNotFoundException | NoSuchElementException ex) {
+            throw new ResourceNotFoundException(ex.message)
+        }
+    }
+
+    User findByUsername(String username) {
+        try {
+            Optional<User> foundUser = userRepository.findByUsername(username)
+            if (foundUser.isPresent()) {
+                return foundUser.get()
+            }
+        } catch (ResourceNotFoundException | NoSuchElementException ex) {
             throw new ResourceNotFoundException(ex.message)
         }
     }
