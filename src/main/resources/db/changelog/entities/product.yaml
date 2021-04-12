@@ -1,10 +1,81 @@
 databaseChangeLog:
   - changeSet:
+      id: create_category_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: category
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: parent_id
+                  type: BIGINT
+              - column:
+                  name: country_id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR
+              - column:
+                  name: enabled
+                  type: BIT
+              - column:
+                  name: is_leaf
+                  type: BIT
+
+  ## Product_Price Table
+  - changeSet:
+      id: create_product_price_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: product_price
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: category_id
+                  type: BIGINT
+              - column:
+                  name: price
+                  type: DOUBLE
+              - column:
+                  name: highlighted_price
+                  type: DOUBLE
+              - column:
+                  name: is_in_offert
+                  type: BIT
+              - column:
+                  name: name_offert
+                  type: VARCHAR
+              - column:
+                  name: have_discount_percentage
+                  type: DOUBLE
+              - column:
+                  name: created_on
+                  type: TIMESTAMP
+              - column:
+                  name: updated_on
+                  type: TIMESTAMP
+              - column:
+                  name: enabled
+                  type: BIT
+
+  - changeSet:
       id: create_products_table
       author: max_olivero
       changes:
         - createTable:
-            tableName: prodcuts
+            tableName: products
             columns:
               - column:
                   autoIncrement: true
@@ -16,44 +87,34 @@ databaseChangeLog:
                   name: name
                   type: VARCHAR
               - column:
-                  name: brandId
+                  name: brand_id
                   type: BIGINT
               - column:
-                  name: priceId
+                  name: price_id
                   type: BIGINT
               - column:
-                  name: countryId
-                  type: VARCHAR
+                  name: country_id
+                  type: BIGINT
               - column:
-                  name: providerId
-                  type: VARCHAR
+                  name: provider_id
+                  type: BIGINT
               - column:
-                  name: categoryId
-                  type: VARCHAR
+                  name: category_id
+                  type: BIGINT
               - column:
-                  name: createdOn
-                  type: DATETIME
+                  name: created_on
+                  type: TIMESTAMP
               - column:
-                  name: updatedOn
-                  type: DATETIME
+                  name: updated_on
+                  type: TIMESTAMP
               - column:
-                  name: deletedOn
-                  type: DATETIME
+                  name: deleted_on
+                  type: TIMESTAMP
               - column:
                   name: enabled
                   type: BIT
 
-  #########################################################################################################
-  ## TODO: Añadir las foreign keys entre:
-  ##       brandId -> Brand table
-  ##       priceId -> Price table
-  ##       countryId -> Country table
-  ##       providerId -> Provider table
-  ##       categoryId -> Category table
-  ##       (id) Products table -> Images table - las images associates a este producto 1 a n
-  #########################################################################################################
-
-  ## ShopTime Table
+  ## ProductImages Table
   - changeSet:
       id: create_product_images_table
       author: max_olivero
@@ -68,243 +129,9 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  name: productId
+                  name: product_id
                   type: BIGINT
               - column:
-                  name: imageId
+                  name: image_id
                   type: BIGINT
 
-
-  #########################################################################################################
-  ## TODO: Añadir las foreign keys entre:
-  ##       productId -> Product table
-  ##       imageId -> Image table
-  #########################################################################################################
-
-  ## ShopTime Table
-  - changeSet:
-      id: create_category_table
-      author: max_olivero
-      changes:
-        - createTable:
-            tableName: category
-            columns:
-              - column:
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                  name: id
-                  type: BIGINT
-              - column:
-                  name: parentId
-                  type: BIGINT
-              - column:
-                  name: countryId
-                  type: BIGINT
-              - column:
-                  name: name
-                  type: VARCHAR
-              - column:
-                  name: enabled
-                  type: BIT
-              - column:
-                  name: isLeaf
-                  type: BIT
-  ## ShopTime Table
-  - changeSet:
-      id: create_category_childrens_table
-      author: max_olivero
-      changes:
-        - createTable:
-            tableName: category_childrens
-            columns:
-              - column:
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                  name: id
-                  type: BIGINT
-              - column:
-                  name: categoryId
-                  type: BIGINT
-              - column:
-                  name: parentId
-                  type: BIGINT
-              - column:
-                  name: name
-                  type: VARCHAR
-
-  ## ShopTime Table
-  - changeSet:
-      id: create_price_table
-      author: max_olivero
-      changes:
-        - createTable:
-            tableName: price
-            columns:
-              - column:
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                  name: id
-                  type: BIGINT
-              - column:
-                  name: categoryId
-                  type: BIGINT
-              - column:
-                  name: price
-                  type: DOUBLE
-              - column:
-                  name: highlightedPrice
-                  type: DOUBLE
-              - column:
-                  name: isInOffert
-                  type: BIT
-              - column:
-                  name: nameOffert
-                  type: VARCHAR
-              - column:
-                  name: haveDiscountPercentage
-                  type: DOUBLE
-              - column:
-                  name: createdOn
-                  type: DATETIME
-              - column:
-                  name: updatedOn
-                  type: DATETIME
-              - column:
-                  name: enabled
-                  type: BIT
-
-
-  # - changeSet:
- #    id: QUE_SE_HACE_EN_ESTE_CHANGESET
- #    author: AUTHOR
- #    changes:
- #      - addForeignKeyConstraint:
- #          baseColumnNames: table
- #          baseTableName: days_to_work
- #          constraintName: name_fk
- #          deferrable: false
- #          initiallyDeferred: false
- #          onDelete: RESTRICT
- #          onUpdate: RESTRICT
- #          referencedColumnNames: id
- #          referencedTableName: table
- #          validate: true
-
-  #  - changeSet:
-  #      id: QUE_SE_HACE_EN_ESTE_CHANGESET
-  #      author: AUTHOR
-  #      changes:
-  #        - renameColumn:
-  #            columnDataType: DOUBLE
-  #            oldColumnName: max_amount
-  #            newColumnName: algo_max_amount
-  #            tableName: algo_delivery_zones
-  #        - renameColumn:
-  #            columnDataType: DOUBLE
-  #            oldColumnName: min_amount
-  #            newColumnName: algo_min_amount
-  #            tableName: algo_delivery_zones
-  #        - renameColumn:
-  #            columnDataType: DOUBLE
-  #            oldColumnName: algo_cost
-  #            newColumnName: algo_delivery_cost
-  #           tableName: algo_delivery_zones
-  #      - addColumn:
-  #           columns:
-  #             - column:
-  #                 name: algo_max_amount
-  #                type: DOUBLE
-  #                constraints:
-  #                 nullable: false
-  #                defaultValueNumeric: 0
-  #           - column:
-  #                name: algo_min_amount
-  #               type: DOUBLE
-  #                constraints:
-  #                defaultValueNumeric: 0
-  #            - column:
-  #               name: algo_delivery_cost
-  #                type: DOUBLE
-  #               constraints:
-  #                 nullable: false
-  #                defaultValueNumeric: 0
-  #            - column:
-  #             name: algo_zone_name
-  #               type: TEXT
-  #               constraints:
-  #                 nullable: false
-  #            - column:
-  #              name: algo_lead_time
-  #                type: varchar(50)
-  #              constraints:
-  #                  nullable: false
-  #           - column:
-  #                name: algo_lead_time
-  #                type: varchar(50)
-  #               constraints:
-  #                  nullable: false
-  #           - column:
-  #                name: algo_delivery_calendar
-  #                type: TEXT
-  #                constraints:
-  #                 nullable: false
-  #           - column:
-  #                name: algo_delivery_calendar
-  #               type: TEXT
-  #               constraints:
-  #                 nullable: false
-  #            - column:
-  #               name: cut_off
-  #                type: varchar(50)
-  #               constraints:
-  #                 nullable: false
-  #           - column:
-  #               type: varchar(50)
-  #               constraints:
-  #                 nullable: false
-  #          - column:
-  #               name: algo_delivery_window
-  #               type: varchar(50)
-  #               constraints:
-  #                 nullable: false
-  #          tableName: TABLE_NAME
-
-
-  # - changeSet:
-  #     id: QUE_SE_HACE_EN_ESTE_CHANGESET
-  #     author: AUTHOR
-  #     changes:
-  #       - addForeignKeyConstraint:
-  #           baseColumnNames: table
-  #           baseTableName: other_table
-  #           constraintName: name_fk
-  #           deferrable: false
-  #           initiallyDeferred: false
-  #           onDelete: RESTRICT
-  #           onUpdate: RESTRICT
-  #           referencedColumnNames: id
-  #           referencedTableName: table
-  #           validate: true
-
-  # - changeSet:
-  #     id: LO_QUE_HACE_EL_SQL_FILE
-  #     author: ZERITO
-  #     dbms: mysql
-  #     runOnChange: true
-  #     changes:
-  #       - sqlFile:
-  #           dbms: mysql
-  #           path: /db/changelog/sql/EXAMPLE.sql
-
-  # - changeSet:
-  #     id: LO_QUE_HACE_EL_SQL_FILE
-  #     author: ZERITO
-  #     dbms: mysql
-  #     runOnChange: true
-  #     changes:
-  #       - sqlFile:
-  #           dbms: mysql
-  #           path: /db/changelog/sql/EXAMPLE.sql

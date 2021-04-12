@@ -11,7 +11,13 @@ spring:
       default-page-size: 40
       max-page-size: 1000
       default-media-type: application/json
+  jpa:
+   database: POSTGRESQL
+   show-sql: true
+   hibernate:
+      ddl-auto: update
   datasource:
+    platform: postgres
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/barbers_api
     username: postgres
@@ -21,9 +27,7 @@ spring:
     #  url:
     #  username:
     #  password:
-  jpa:
-    properties:
-      hibernate.jdbc.time_zone: UTC
+
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
 
@@ -37,9 +41,9 @@ reports-reserves:
     cron: 0 3 * * * *
 
 mail:
-  username: #**********@gmail.com
-  password: #**************
-  to: # damianezetiel1@gmail.com, mitsuki-kun@hotmail.com, max3.1994@gmail.com, smtp.test.zero@gmail.com,
+  username: smtp.test.zero@gmail.com
+  password: Asterisc0
+  to:  damianezetiel1@gmail.com, mitsuki-kun@hotmail.com, max3.1994@gmail.com, smtp.test.zero@gmail.com,
   host: smtp.gmail.com
   port: 587
   auth: true
@@ -51,3 +55,5 @@ mail:
   content:
     subject: "Confirmación de Reserva" #subject-email
     description: "Hola [USERNAME], \n\n Gracias por formar parte de Art Experience :rocket: \n Su reserva ah sido agendada correctamente!! \n\nDetalle de la Reserva: \n " #content-text of email
+
+

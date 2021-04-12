@@ -13,13 +13,19 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  name: enterpriseId
+                  name: enterprise_id
                   type: BIGINT
               - column:
-                  name: barberId
+                  name: barber_id
                   type: BIGINT
               - column:
-                  name: hairdresserId
+                  name: hairdresser_id
+                  type: BIGINT
+              - column:
+                  name: client_id
+                  type: BIGINT
+              - column:
+                  name: social_number
                   type: BIGINT
               - column:
                   name: username
@@ -31,41 +37,89 @@ databaseChangeLog:
                   name: email
                   type: VARCHAR
               - column:
-                  name: createdOn
-                  type: DATETIME
+                  name: permission
+                  type: VARCHAR
               - column:
-                  name: updateOn
-                  type: DATETIME
+                  name: created_on
+                  type: TIMESTAMP
               - column:
-                  name: isAdmin
+                  name: update_on
+                  type: TIMESTAMP
+              - column:
+                  name: is_active
                   type: BIT
+
+
+  ## ClientUsers Table
+  - changeSet:
+      id: create_client_users_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: client_users
+            columns:
               - column:
-                  name: status
-                  type: BIT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: client_id
+                  type: BIGINT
+              - column:
+                  name: user_id
+                  type: BIGINT
+
+
+  - changeSet:
+      id: create_register_logins_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: register_logins
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: barber_id
+                  type: BIGINT
+              - column:
+                  name: hairdresser_id
+                  type: BIGINT
+              - column:
+                  name: client_id
+                  type: BIGINT
+              - column:
+                  name: username
+                  type: VARCHAR
+              - column:
+                  name: email
+                  type: VARCHAR
+              - column:
+                  name: social_number
+                  type: BIGINT
+              - column:
+                  name: action
+                  type: VARCHAR
+              - column:
+                  name: permission
+                  type: VARCHAR
+              - column:
+                  name: init_session
+                  type: TIMESTAMP
+              - column:
+                  name: end_session
+                  type: TIMESTAMP
 
 ################################################################################################
 ##  TODO: Crear la clave foranea entre users:
-##  enterpriseId  -> Enterprise table 1 a 1
-##  barberId  -> Barber table 1 a 1
-##  hairdresserId  -> Hairdresser table 1 a 1
+##  enterprise_id  -> Enterprise table 1 a 1
+##  client_id  -> Client table 1 a 1
+##  barber_id  -> Barber table 1 a 1
+##  hairdresser_id  -> Hairdresser table 1 a 1
 ################################################################################################
-
- # - changeSet:
- #     id: LO_QUE_HACE_EL_SQL_FILE
- #     author: ZERITO
- #     dbms: mysql
- #     runOnChange: true
- #     changes:
- #       - sqlFile:
- #           dbms: mysql
- #           path: /db/changelog/sql/EXAMPLE.sql
- #
- #       - changeSet:
- #           id: LO_QUE_HACE_EL_SQL_FILE
- #           author: ZERITO
- #           dbms: mysql
- #           runOnChange: true
- #           changes:
- #             - sqlFile:
- #                 dbms: mysql
- #                 path: /db/changelog/sql/EXAMPLE.sql

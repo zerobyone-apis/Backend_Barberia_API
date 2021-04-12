@@ -13,16 +13,16 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  name: countryId
+                  name: country_id
                   type: BIGINT
               - column:
-                  name: placeId
+                  name: place_id
                   type: VARCHAR
               - column:
-                  name: postalCode
+                  name: postal_code
                   type: VARCHAR
               - column:
-                  name: additionalInfo
+                  name: additional_info
                   type: VARCHAR
               - column:
                   name: formatted
@@ -34,21 +34,21 @@ databaseChangeLog:
                   name: lon
                   type: VARCHAR
               - column:
-                  name: createdOn
-                  type: DATETIME
+                  name: created_on
+                  type: TIMESTAMP
               - column:
-                  name: updateOn
-                  type: DATETIME
+                  name: update_on
+                  type: TIMESTAMP
               - column:
-                  name: deletedOn
-                  type: DATETIME
+                  name: deleted_on
+                  type: TIMESTAMP
               - column:
                   name: enabled
                   type: BIT
 
   ################################################################################################
   ##  TODO: Crear la clave foranea entre users:
-  ##  countryId  -> Countries table n a 1
+  ##  country_id  -> Countries table n a 1
   ##  (id) Address -> Enterprise table 1 a 1
   ################################################################################################
 
@@ -76,23 +76,3 @@ databaseChangeLog:
   ##  TODO: Crear la clave foranea entre users:
   ##  (id) Countries -> Address table 1 a n
   ################################################################################################
-
-  # - changeSet:
-  #     id: LO_QUE_HACE_EL_SQL_FILE
-  #     author: ZERITO
-  #     dbms: mysql
-  #     runOnChange: true
-  #     changes:
-  #       - sqlFile:
-  #           dbms: mysql
-  #           path: /db/changelog/sql/EXAMPLE.sql
-  #
-  #       - changeSet:
-  #           id: LO_QUE_HACE_EL_SQL_FILE
-  #           author: ZERITO
-  #           dbms: mysql
-  #           runOnChange: true
-  #           changes:
-  #             - sqlFile:
-  #                 dbms: mysql
-  #                 path: /db/changelog/sql/EXAMPLE.sql

@@ -2,34 +2,28 @@ package zero.our.piece.barbers.barbers_api.enterprise.model
 
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
-import org.hibernate.type.TrueFalseType
-import org.joda.time.DateTime
-import zero.our.piece.barbers.barbers_api.enterprise.infrastructure.WeekDays
+import zero.our.piece.barbers.barbers_api.enterprise.infrastructure.DaysToWork
 
-import javax.persistence.ElementCollection
-import javax.persistence.Embeddable
-import javax.persistence.Embedded
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.persistence.Table
+import javax.persistence.*
 import java.time.Instant
 
-//@Embeddable
 @ToString
 @EqualsAndHashCode
 @Entity
 @Table(name = "shop_time")
+@SequenceGenerator(name = "shop_time_sequence", sequenceName = "shop_time_sequence", allocationSize = 1)
 class ShopTime {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "shop_time_sequence")
     Long id
-    Long addressId
-    Long enterpriseId
+    Long address_id
+    Long enterprise_id
 
-   // List<DaysToWork> workDays //todo: Tabla con id y lista de dias to work o ver la forma luego
-    DateTime createdOn
-    DateTime deletedOn
+    @Transient
+    List<DaysToWork> workDays
+
+    Instant created_on
+    Instant deleted_on
     Boolean enabled = Boolean.TRUE
 
 }

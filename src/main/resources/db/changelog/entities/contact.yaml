@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_client_contact_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: client_contact
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR
+              - column:
+                  name: username
+                  type: VARCHAR
+              - column:
+                  name: phone
+                  type: VARCHAR
+              - column:
+                  name: subject_email
+                  type: VARCHAR
+              - column:
+                  name: description_email
+                  type: VARCHAR
+              - column:
+                  name: email_from
+                  type: VARCHAR
+              - column:
+                  name: email_to
+                  type: VARCHAR
+              - column:
+                  name: times_request_by_email
+                  type: BIGINT
+              - column:
+                  name: is_advised_for_bad_conduct
+                  type: BIGINT
+              - column:
+                  name: created_on
+                  type: TIMESTAMP
+              - column:
+                  name: is_active
+                  type: BIT
