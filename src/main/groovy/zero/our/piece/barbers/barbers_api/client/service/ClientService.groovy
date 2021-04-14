@@ -13,6 +13,7 @@ import zero.our.piece.barbers.barbers_api.magicCube.exception.ResourceNotFoundEx
 import zero.our.piece.barbers.barbers_api.user.model.User
 import zero.our.piece.barbers.barbers_api.user.service.UserService
 
+import java.time.Instant
 import java.util.stream.Collectors
 
 @Service
@@ -58,6 +59,43 @@ class ClientService {
         }
     }
 
+    ClientResponseDTO findByEmail(String email) {
+        try {
+            Client client = clientRepository.findByEmail(email)
+            if (!client?.id) throw new ResourceNotFoundException("Client with this Email Not found: " + email)
+
+            return decoratorPatternClient(client)
+        } catch (ResourceNotFoundException | NoSuchElementException ex) {
+            throw new ResourceNotFoundException(ex.message)
+        }
+    }
+
+    ClientResponseDTO findByUsername(String username) {
+        try {
+            Client client = clientRepository.findByUsername(username)
+            if (!client?.id) throw new ResourceNotFoundException("Client with this Username Not found: " + username)
+
+            return decoratorPatternClient(client)
+        } catch (ResourceNotFoundException | NoSuchElementException ex) {
+            throw new ResourceNotFoundException(ex.message)
+        }
+    }
+
+    void logicalDeleted(Long id) {
+        try {
+            Optional<Client> client = clientRepository.findById(id)
+            if (!client.isPresent()) throw new ResourceNotFoundException("CLIENT NOT FOUND")
+            client.get().is_active = false
+            client.get().updated_on = Instant.now()
+
+            userService.delete(client.get().user_id)
+            clientRepository.save(client.get())
+            log.info("Logical delete successfully")
+        } catch (ResourceNotFoundException | NoSuchElementException ex) {
+            throw new ResourceNotFoundException(ex.message)
+        }
+    }
+
     ClientResponseDTO create(ClientRequestDTO body) {
         Client client = createClient(body)
         User user = createUser(body)
@@ -70,6 +108,22 @@ class ClientService {
 
         return decoratorPatternClient(savedClient)
     }
+
+    ClientResponseDTO update(ClientRequestDTO body, Long clientId) {
+        def existentClient = clientRepository.findById(clientId)
+        if (!existentClient.isPresent()) throw new ResourceNotFoundException("CLIENT NOT FOUND")
+
+        Client client = updateClient(existentClient.get(), body)
+        updateUser(body)
+
+        def savedClient = clientRepository.save(client)
+        return decoratorPatternClient(savedClient)
+    }
+
+    //TODO: Algunos metodos para hacer.
+    void updateAmountReserve (){}
+    void updateMetrics(){}
+    void generateMetrics(){}
 
     protected static Client createClient(client) {
         new Client(
@@ -85,6 +139,22 @@ class ClientService {
         )
     }
 
+    protected static Client updateClient(Client existent, newClient) {
+
+        existent.name = newClient.name
+        existent.username = newClient.username
+        existent.phone = newClient.phone
+        existent.email = newClient.email
+        existent.inst_username = newClient?.inst_username
+        existent.inst_image_profile_url = newClient?.inst_image_profile_url
+        existent.inst_photo_url = newClient?.inst_photo_url
+        existent.accept_integration = newClient.accept_integration ?: false
+        //existent.client_type =  ClientType.NEW_CLIENT //todo count reserve to evaluete type of client
+
+
+        existent
+    }
+
     protected User createUser(client) {
         def user = userService.createUser(
                 new User(
@@ -95,6 +165,18 @@ class ClientService {
                 ))
 
         return userService.saveUser(user, 'CREATE')
+    }
+
+    protected User updateUser(client) {
+        def user = userService.updateUser(
+                new User(
+                        username: client.username,
+                        password: client.password,
+                        email: client.email,
+                        enterprise_id: client.enterprise_id
+                ))
+
+        return userService.saveUser(user, 'UPDATE')
     }
 
     protected static ClientResponseDTO decoratorPatternClient(Client client) {

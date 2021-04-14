@@ -12,4 +12,11 @@ interface ClientRepository extends JpaRepository<Client, Long> {
 
     @Query(value = "SELECT c.* FROM users u INNER JOIN clients c on (u.id = c.user_id) WHERE u.id = :user_id", nativeQuery=true)
     Client findByUserId(@Param("user_id") Long user_id);
+
+    @Query(value = "SELECT c.* FROM clients c WHERE u.email = :email", nativeQuery=true)
+    Client findByEmail(@Param("email") String email);
+
+    @Query(value = "SELECT c.* FROM users u INNER JOIN clients c on (u.username = c.username) WHERE c.username = :username", nativeQuery=true)
+    Client findByUsername(@Param("username") String username);
+
 }

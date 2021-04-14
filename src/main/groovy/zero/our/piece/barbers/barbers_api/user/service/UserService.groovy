@@ -132,7 +132,8 @@ class UserService {
 
         log.info("Delete user.. ${foundUser.username}")
         //userRepository.delete(DUMMY) //TODO: -> nosotros borramos logicamente no en DB , se deja esta linea para vaciar base de datos a futuro.
-        foundUser.isActive = Boolean.FALSE
+        foundUser.is_active = Boolean.FALSE
+        foundUser.update_on = Instant.now()
         update(foundUser)
     }
 
@@ -164,7 +165,7 @@ class UserService {
                 password: user?.password,
                 permission: user?.permission ?: UsersPermission.CLIENT,
                 barber_id: existentUser?.barber_id ?: user?.barber_id,
-                enterprise_id: existentUser?.enterprise_id ?: user?.enterprise_id,
+                enterprise_id: user?.enterprise_id ?: existentUser?.enterprise_id,
                 hairdresser_id: existentUser?.hairdresser_id ?: user?.hairdresser_id,
                 client_id: user?.client_id,
                 created_on: existentUser.created_on,
