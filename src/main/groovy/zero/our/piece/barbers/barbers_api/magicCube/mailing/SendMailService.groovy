@@ -1,8 +1,6 @@
 package zero.our.piece.barbers.barbers_api.magicCube.mailing
 
 import groovy.util.logging.Slf4j
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
