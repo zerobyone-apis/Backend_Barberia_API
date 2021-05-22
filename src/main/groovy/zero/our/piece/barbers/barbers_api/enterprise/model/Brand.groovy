@@ -6,13 +6,7 @@ import org.hibernate.validator.constraints.Length
 import zero.our.piece.barbers.barbers_api.producto.model.Image
 import zero.our.piece.barbers.barbers_api.producto.model.Product
 
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.persistence.SequenceGenerator
-import javax.persistence.Table
-import javax.persistence.Transient
+import javax.persistence.*
 import javax.validation.constraints.NotEmpty
 import java.time.Instant
 

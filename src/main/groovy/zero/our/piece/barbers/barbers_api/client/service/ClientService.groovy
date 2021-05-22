@@ -13,6 +13,7 @@ import zero.our.piece.barbers.barbers_api.magicCube.exception.ResourceNotFoundEx
 import zero.our.piece.barbers.barbers_api.user.model.User
 import zero.our.piece.barbers.barbers_api.user.service.UserService
 
+import java.time.Instant
 import java.util.stream.Collectors
 
 @Service
@@ -71,6 +72,26 @@ class ClientService {
         return decoratorPatternClient(savedClient)
     }
 
+    ClientResponseDTO update(ClientRequestDTO body) {
+        Client client = updateClient(body)
+        updateUser(body)
+        def savedClient = clientRepository.save(client)
+        return decoratorPatternClient(savedClient)
+    }
+
+    void logicDelete(Long clientId) {
+        try{
+            Client client = clientRepository.findById(clientId).get()
+            client.is_active = false
+            userService.delete(client.user_id)
+            clientRepository.save(client)
+        } catch(Exception ex) {
+            log.error("ERROR: Trying to save User due to: ${ex.getMessage()}")
+            throw new CreateResourceException("Error: ${ex.getMessage()}")
+        }
+
+    }
+
     protected static Client createClient(client) {
         new Client(
                 name: client.name,
@@ -81,7 +102,23 @@ class ClientService {
                 inst_image_profile_url: client?.inst_image_profile_url,
                 inst_photo_url: client?.inst_photo_url,
                 accept_integration: client.accept_integration ?: false,
-                client_type: ClientType.NEW_CLIENT
+                client_type: ClientType.NEW_CLIENT,
+                created_on: Instant.now()
+        )
+    }
+
+    protected static Client updateClient(client) {
+        new Client(
+                name: client.name,
+                username: client.username,
+                phone: client.phone,
+                email: client.email,
+                inst_username: client?.inst_username,
+                inst_image_profile_url: client?.inst_image_profile_url,
+                inst_photo_url: client?.inst_photo_url,
+                accept_integration: client.accept_integration ?: false,
+                client_type: ClientType.NEW_CLIENT,
+                updated_on: Instant.now()
         )
     }
 
@@ -95,6 +132,17 @@ class ClientService {
                 ))
 
         return userService.saveUser(user, 'CREATE')
+    }
+
+    protected User updateUser(client) {
+        def user = userService.findByEmail(client.username)
+            user.username = client?.username ?: user.username
+            user.password = client?.password ?: user.password
+            user.email = client?.email ?: user.email
+            user.enterprise_id = client?.enterprise_id ?: user.enterprise_id
+
+        def updatedUser = userService.updateUser(user)
+        return userService.saveUser(updatedUser, 'UPDATE')
     }
 
     protected static ClientResponseDTO decoratorPatternClient(Client client) {

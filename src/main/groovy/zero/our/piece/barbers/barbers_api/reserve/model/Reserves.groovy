@@ -7,12 +7,7 @@ import zero.our.piece.barbers.barbers_api.services.infrastructure.ServicesBarber
 import zero.our.piece.barbers.barbers_api.services.infrastructure.ServicesHairdresser
 import zero.our.piece.barbers.barbers_api.services.infrastructure.WorkServiceStatus
 
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.persistence.SequenceGenerator
-import javax.persistence.Table
+import javax.persistence.*
 import java.sql.Time
 import java.time.Instant
 

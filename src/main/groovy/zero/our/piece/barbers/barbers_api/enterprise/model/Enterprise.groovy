@@ -9,13 +9,7 @@ import zero.our.piece.barbers.barbers_api.proveedor.model.Provider
 import zero.our.piece.barbers.barbers_api.reserve.model.Reserves
 import zero.our.piece.barbers.barbers_api.user.model.User
 
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.persistence.SequenceGenerator
-import javax.persistence.Table
-import javax.persistence.Transient
+import javax.persistence.*
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 import java.time.Instant

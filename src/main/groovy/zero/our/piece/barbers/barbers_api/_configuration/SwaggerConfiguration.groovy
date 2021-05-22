@@ -1,9 +1,4 @@
-package zero.our.piece.barbers.barbers_api._configuration;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
-
+package zero.our.piece.barbers.barbers_api._configuration
 /*@Configuration
 @EnableSwagger2
 public class SwaggerConfiguration {

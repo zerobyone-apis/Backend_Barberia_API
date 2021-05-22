@@ -1,21 +1,13 @@
 package zero.our.piece.barbers.barbers_api.barber.service
 
 import groovy.util.logging.Slf4j
-import org.hibernate.exception.SQLGrammarException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import zero.our.piece.barbers.barbers_api.barber.infrastructure.EnterpriseRoll
 import zero.our.piece.barbers.barbers_api.barber.model.Barber
 import zero.our.piece.barbers.barbers_api.barber.model.DTO.BarberResponseDTO
 import zero.our.piece.barbers.barbers_api.barber.repository.BarberRepository
-import zero.our.piece.barbers.barbers_api.enterprise.infrastructure.EnterpriseUsers
-import zero.our.piece.barbers.barbers_api.magicCube.exception.CreateResourceException
 import zero.our.piece.barbers.barbers_api.magicCube.exception.ResourceNotFoundException
-import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersPermission
-import zero.our.piece.barbers.barbers_api.user.model.DTO.RequestUserLoginDTO
-import zero.our.piece.barbers.barbers_api.user.model.User
-
-import java.time.Instant
 
 @Service
 @Slf4j
