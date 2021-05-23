@@ -117,23 +117,25 @@ class ClientService {
         Client client = updateClient(existentClient.get(), body)
         updateUser(body)
 
-    def savedClient = clientRepository.save(client)
+        def savedClient = clientRepository.save(client)
         return decoratorPatternClient(savedClient)
     }
 
 
     //TODO: Algunos metodos para hacer.
-    void updateAmountReserve (){}
-    void updateMetrics(){}
-    void generateMetrics(){}
+    void updateAmountReserve() {}
+
+    void updateMetrics() {}
+
+    void generateMetrics() {}
 
     void logicDelete(Long clientId) {
-        try{
+        try {
             Client client = clientRepository.findById(clientId).get()
             client.is_active = false
             userService.delete(client.user_id)
             clientRepository.save(client)
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             log.error("ERROR: Trying to save User due to: ${ex.getMessage()}")
             throw new CreateResourceException("Error: ${ex.getMessage()}")
         }
@@ -180,20 +182,26 @@ class ClientService {
                         email: client.email,
                         enterprise_id: client.enterprise_id
                 ))
-
         return userService.saveUser(user, 'CREATE')
     }
 
     protected User updateUser(client) {
-        def user = userService.updateUser(
-                new User(
-                        username: client.username,
-                        password: client.password,
-                        email: client.email,
-                        enterprise_id: client.enterprise_id
-                ))
+        User existentUser
+        try {
+            existentUser = userService.findByEmail(client.username)
+            def user = userService.updateUser(
+                    new User(
+                            id: existentUser.id,
+                            username: client.username,
+                            password: client.password,
+                            email: client.email,
+                            enterprise_id: client.enterprise_id
+                    ))
 
-        return userService.saveUser(user, 'UPDATE')
+            return userService.saveUser(user, 'UPDATE')
+        } catch (Exception ex) {
+            throw new CreateResourceException("User with Username: ${client.username} Not Exists... ERROR: $ex.message",)
+        }
     }
 
     protected static ClientResponseDTO decoratorPatternClient(Client client) {
