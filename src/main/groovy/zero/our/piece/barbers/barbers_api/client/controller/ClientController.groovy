@@ -36,10 +36,10 @@ class ClientController {
     }
 
 
-    @PutMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    def update(@RequestBody ClientRequestDTO client) {
-        clientService.update(client);
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    def update(@RequestBody ClientRequestDTO client, @PathVariable("id") Long id) {
+        clientService.update(client, id);
     }
 
     @PatchMapping("/{id}")
@@ -54,15 +54,21 @@ class ClientController {
     //todo: get by email
     @GetMapping("/{email}")
     @ResponseStatus(HttpStatus.OK)
-    def getClientByEmail(@PathVariable("email") String email) {
-       // clientService.findByEmailId(email);
+    def findByEmail(@PathVariable("email") String email) {
+        clientService.findByEmail(email);
     }
 
-    //todo: get by username
     @GetMapping("/{username}")
     @ResponseStatus(HttpStatus.OK)
     def getClientByUsername(@PathVariable("username") String username) {
-       // clientService.findByEmailId(username);
+        clientService.findByUsername(username);
+    }
+
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    void deleteById(@PathVariable("id") Long id) {
+        clientService.logicalDeleted(id);
     }
 */
 
