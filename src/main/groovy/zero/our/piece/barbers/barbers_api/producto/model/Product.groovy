@@ -4,13 +4,7 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import org.hibernate.validator.constraints.Length
 
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.persistence.SequenceGenerator
-import javax.persistence.Table
-import javax.persistence.Transient
+import javax.persistence.*
 import javax.validation.constraints.NotEmpty
 import java.time.Instant
 

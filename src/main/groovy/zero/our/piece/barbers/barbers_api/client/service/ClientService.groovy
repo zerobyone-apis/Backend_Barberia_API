@@ -109,6 +109,7 @@ class ClientService {
         return decoratorPatternClient(savedClient)
     }
 
+
     ClientResponseDTO update(ClientRequestDTO body, Long clientId) {
         def existentClient = clientRepository.findById(clientId)
         if (!existentClient.isPresent()) throw new ResourceNotFoundException("CLIENT NOT FOUND")
@@ -116,14 +117,29 @@ class ClientService {
         Client client = updateClient(existentClient.get(), body)
         updateUser(body)
 
-        def savedClient = clientRepository.save(client)
+    def savedClient = clientRepository.save(client)
         return decoratorPatternClient(savedClient)
     }
+
 
     //TODO: Algunos metodos para hacer.
     void updateAmountReserve (){}
     void updateMetrics(){}
     void generateMetrics(){}
+
+    void logicDelete(Long clientId) {
+        try{
+            Client client = clientRepository.findById(clientId).get()
+            client.is_active = false
+            userService.delete(client.user_id)
+            clientRepository.save(client)
+        } catch(Exception ex) {
+            log.error("ERROR: Trying to save User due to: ${ex.getMessage()}")
+            throw new CreateResourceException("Error: ${ex.getMessage()}")
+        }
+
+    }
+
 
     protected static Client createClient(client) {
         new Client(
@@ -135,9 +151,11 @@ class ClientService {
                 inst_image_profile_url: client?.inst_image_profile_url,
                 inst_photo_url: client?.inst_photo_url,
                 accept_integration: client.accept_integration ?: false,
-                client_type: ClientType.NEW_CLIENT
+                client_type: ClientType.NEW_CLIENT,
+                created_on: Instant.now()
         )
     }
+
 
     protected static Client updateClient(Client existent, newClient) {
 
@@ -150,7 +168,6 @@ class ClientService {
         existent.inst_photo_url = newClient?.inst_photo_url
         existent.accept_integration = newClient.accept_integration ?: false
         //existent.client_type =  ClientType.NEW_CLIENT //todo count reserve to evaluete type of client
-
 
         existent
     }

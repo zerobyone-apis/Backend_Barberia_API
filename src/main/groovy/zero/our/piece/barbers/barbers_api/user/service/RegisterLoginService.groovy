@@ -7,7 +7,6 @@ import zero.our.piece.barbers.barbers_api.magicCube.exception.ResourceNotFoundEx
 import zero.our.piece.barbers.barbers_api.user.model.RegisterLogins
 import zero.our.piece.barbers.barbers_api.user.model.User
 import zero.our.piece.barbers.barbers_api.user.repository.RegisterLoginRepository
-
 import java.time.Instant
 
 @Service
@@ -52,7 +51,7 @@ class RegisterLoginService {
                 barber_id: login?.barber_id,
                 hairdresser_id: login?.hairdresser_id,
                 client_id: login?.client_id,
-                init_session: Instant.now(),
+                init_session:  Instant.now(),
                 end_session: action == Action.LOGOUT ? Instant.now() : null,
                 permission: login.permission,
                 action: action

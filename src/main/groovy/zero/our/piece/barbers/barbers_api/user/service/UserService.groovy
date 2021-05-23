@@ -223,9 +223,9 @@ class UserService {
         try {
             if (!user?.social_number) {
                 //todo: El enterprise ID se obtiene de la pagina o Empresa a la que el usuario ser registro, cada barberia o peluqueria va a tener su propio
-                // Sitio web por lo que tendra su propio EnterpriseID al registrarse de un sitio , se consigue el Enterprise ID de esa EMpresa,
-                // ESto nos ayuda a tener claro de que empresa es cada usuario y calcular las metricas correctas con estos datos.
-                // En este caso separamos tambien el Numero Social de los usuarios por sus respectivas Empresas.
+                //      Sitio web por lo que tendra su propio EnterpriseID al registrarse de un sitio , se consigue el Enterprise ID de esa EMpresa,
+                //      Esto nos ayuda a tener claro de que empresa es cada usuario y calcular las metricas correctas con estos datos.
+                //      En este caso separamos tambien el Numero Social de los usuarios por sus respectivas Empresas.
 
                 Long maxValue = enterpriseUsersRepository.findMaxSocialNumber(user.enterprise_id)
                 if (!maxValue) {

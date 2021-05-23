@@ -1,6 +1,6 @@
 package zero.our.piece.barbers.barbers_api.client.model.DTO
 
-import zero.our.piece.barbers.barbers_api.barber.infrastructure.EnterpriseRoll
+
 import zero.our.piece.barbers.barbers_api.client.infrastructure.ClientType
 
 class ClientResponseDTO {

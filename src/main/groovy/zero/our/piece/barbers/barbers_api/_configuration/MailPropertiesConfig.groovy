@@ -6,7 +6,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
-import javax.mail.*
+import javax.mail.Authenticator
+import javax.mail.PasswordAuthentication
+import javax.mail.Session
 import java.security.GeneralSecurityException
 
 @Configuration
