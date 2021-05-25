@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - include:
+      file: /db/changelog/entities/address.yaml
+  - include:
+      file: /db/changelog/entities/user.yaml
+  - include:
+      file: /db/changelog/entities/brand.yaml
+  - include:
+      file: /db/changelog/entities/providers.yaml
+  - include:
+      file: /db/changelog/entities/product.yaml
+  - include:
+      file: /db/changelog/entities/client.yaml
+  - include:
+      file: /db/changelog/entities/workServices.yaml
+  - include:
+      file: /db/changelog/entities/reserve.yaml
+  - include:
+      file: /db/changelog/entities/enterprise.yaml
+  - include:
+      file: /db/changelog/entities/barber.yaml
+  - include:
+      file: /db/changelog/entities/hairdresser.yaml
+  - include:
+      file: /db/changelog/entities/contact.yaml
+  - include:
+      file: /db/changelog/entities/foreignkeys.yaml
+
+
+

@@ -1,0 +1,59 @@
+server:
+  port: 8080 #PORT
+  tomcat:
+    max-threads: 300
+
+spring:
+  application:
+    name: Barbers_Api
+  data:
+    rest:
+      default-page-size: 40
+      max-page-size: 1000
+      default-media-type: application/json
+  jpa:
+   database: POSTGRESQL
+   show-sql: true
+   hibernate:
+      ddl-auto: update
+  datasource:
+    platform: postgres
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/barber_api
+    username: postgres
+    password: password
+
+    #  Production DB Connections
+    #  url:
+    #  username:
+    #  password:
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
+logging:
+  level:
+    org.hibernate.engine.jdbc.env.internal.LobCreatorBuilderImpl: ERROR
+
+reports-reserves:
+  scheduler:
+    enabled: true
+    cron: 0 3 * * * *
+
+mail:
+  username: smtp.test.zero@gmail.com
+  password: Asterisc0
+  to:  damianezetiel1@gmail.com, mitsuki-kun@hotmail.com, max3.1994@gmail.com, smtp.test.zero@gmail.com,
+  host: smtp.gmail.com
+  port: 587
+  auth: true
+  enable: true
+  required: true
+  contact:
+    recipient:
+      to: #new_test_email@gmail.com
+  content:
+    subject: "Confirmación de Reserva" #subject-email
+    description: "Hola [USERNAME], \n\n Gracias por formar parte de Art Experience :rocket: \n Su reserva ah sido agendada correctamente!! \n\nDetalle de la Reserva: \n " #content-text of email
+
+
