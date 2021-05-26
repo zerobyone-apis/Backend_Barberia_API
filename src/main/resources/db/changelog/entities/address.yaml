@@ -2,7 +2,7 @@ databaseChangeLog:
   - changeSet:
       id: create_address_table
       author: max_olivero
-      runOnChange: true
+
       changes:
         - createTable:
             tableName: address
@@ -45,7 +45,7 @@ databaseChangeLog:
                   type: TIMESTAMP
               - column:
                   name: enabled
-                  type: BIT
+                  type: BOOLEAN
 
   ################################################################################################
   ##  TODO: Crear la clave foranea entre users:
@@ -56,7 +56,7 @@ databaseChangeLog:
   - changeSet:
       id: create_countries_table
       author: max_olivero
-      runOnChange: true
+
       changes:
         - createTable:
             tableName: countries

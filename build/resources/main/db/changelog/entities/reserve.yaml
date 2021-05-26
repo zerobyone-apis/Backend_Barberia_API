@@ -2,7 +2,6 @@ databaseChangeLog:
   - changeSet:
       id: create_reserves_table
       author: max_olivero
-      runOnChange: true
       changes:
         - createTable:
             tableName: reserves
@@ -69,7 +68,7 @@ databaseChangeLog:
                   type: DOUBLE
               - column:
                   name: under_promotion
-                  type: BIT
+                  type: BOOLEAN
               - column:
                   name: created_on
                   type: TIMESTAMP
@@ -84,5 +83,5 @@ databaseChangeLog:
                   type: VARCHAR
               - column:
                   name: is_active
-                  type: BIT
+                  type: BOOLEAN
 

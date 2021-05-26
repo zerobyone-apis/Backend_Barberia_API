@@ -2,7 +2,7 @@ databaseChangeLog:
   - changeSet:
       id: create_brand_table
       author: max_olivero
-      runOnChange: true
+
       changes:
         - createTable:
             tableName: brand
@@ -36,7 +36,7 @@ databaseChangeLog:
                   type: TIMESTAMP
               - column:
                   name: enabled
-                  type: BIT
+                  type: BOOLEAN
 
   ################################################################################################
   ##  TODO: Crear la clave foranea entre users:
@@ -46,7 +46,7 @@ databaseChangeLog:
   - changeSet:
       id: create_images_table
       author: max_olivero
-      runOnChange: true
+
       changes:
         - createTable:
             tableName: images
@@ -85,7 +85,7 @@ databaseChangeLog:
   - changeSet:
       id: create_brand_images_table
       author: max_olivero
-      runOnChange: true
+
       changes:
         - createTable:
             tableName: brand_images
@@ -107,7 +107,7 @@ databaseChangeLog:
   - changeSet:
       id: create_brand_products_table
       author: max_olivero
-      runOnChange: true
+
       changes:
         - createTable:
             tableName: brand_products

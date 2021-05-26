@@ -2,7 +2,7 @@ databaseChangeLog:
   - changeSet:
       id: create_enterprise_table
       author: max_olivero
-      runOnChange: true
+
       changes:
         - createTable:
             tableName: enterprise
@@ -51,17 +51,16 @@ databaseChangeLog:
                   type: TIMESTAMP
               - column:
                   name: has_integration
-                  type: BIT
+                  type: BOOLEAN
               - column:
                   name: enabled
-                  type: BIT
+                  type: BOOLEAN
 
 
   ## ShopTime Table
   - changeSet:
       id: create_shop_time_table
       author: max_olivero
-      runOnChange: true
       changes:
         - createTable:
             tableName: shop_time
@@ -86,13 +85,13 @@ databaseChangeLog:
                   type: TIMESTAMP
               - column:
                   name: enabled
-                  type: BIT
+                  type: BOOLEAN
 
   ## EnterpriseProducts Table
   - changeSet:
       id: create_enterprise_products_table
       author: max_olivero
-      runOnChange: true
+
       changes:
         - createTable:
             tableName: enterprise_products
@@ -115,7 +114,7 @@ databaseChangeLog:
   - changeSet:
       id: create_enterprise_users_table
       author: max_olivero
-      runOnChange: true
+
       changes:
         - createTable:
             tableName: enterprise_users
@@ -141,7 +140,7 @@ databaseChangeLog:
   - changeSet:
       id: create_enterprise_providers_table
       author: max_olivero
-      runOnChange: true
+
       changes:
         - createTable:
             tableName: enterprise_providers
@@ -164,7 +163,7 @@ databaseChangeLog:
   - changeSet:
       id: create_enterprise_reserves_table
       author: max_olivero
-      runOnChange: true
+
       changes:
         - createTable:
             tableName: enterprise_reserves
@@ -186,7 +185,7 @@ databaseChangeLog:
   - changeSet:
       id: create_rating_score_table
       author: max_olivero
-      runOnChange: true
+
       changes:
         - createTable:
             tableName: rating_score
@@ -211,7 +210,7 @@ databaseChangeLog:
   - changeSet:
       id: create_days_to_work_table
       author: max_olivero
-      runOnChange: true
+
       changes:
         - createTable:
             tableName: days_to_work

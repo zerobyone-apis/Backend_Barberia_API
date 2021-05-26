@@ -36,7 +36,7 @@ class WorkServices {
     // Time Service
     Time duration_of_service //todo: esto puede ser un enum con los horarios prestablecidos de tiempo
     Instant start //fecha y hora
-    Instant end   //fecha y hora se puede calcular en base a la duration pero para persivir mejor el tiempo
+    Instant finish   //fecha y hora se puede calcular en base a la duration pero para persivir mejor el tiempo
 
     // user & client info
     Long user_id

@@ -15,18 +15,17 @@ spring:
    database: POSTGRESQL
    show-sql: true
    hibernate:
-      ddl-auto: update
+     ddl-auto: update
   datasource:
     platform: postgres
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/barber_api
     username: postgres
     password: password
-
-    #  Production DB Connections
-    #  url:
-    #  username:
-    #  password:
+  #  Production DB Connections
+  #  url:
+  #  username:
+  #  password:
 
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml

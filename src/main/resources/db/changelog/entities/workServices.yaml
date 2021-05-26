@@ -2,7 +2,6 @@ databaseChangeLog:
   - changeSet:
       id: create_work_services_table
       author: max_olivero
-      runOnChange: true
       changes:
         - createTable:
             tableName: work_services
@@ -33,7 +32,7 @@ databaseChangeLog:
                   type: DOUBLE
               - column:
                   name: under_promotion
-                  type: BIT
+                  type: BOOLEAN
               - column:
                   name: duration_of_service
                   type: TIMESTAMP
@@ -41,7 +40,7 @@ databaseChangeLog:
                   name: start
                   type: TIMESTAMP
               - column:
-                  name: end
+                  name: finish
                   type: TIMESTAMP
               - column:
                   name: user_id

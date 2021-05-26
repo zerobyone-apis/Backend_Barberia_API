@@ -2,7 +2,6 @@ databaseChangeLog:
   - changeSet:
       id: create_user_table
       author: max_olivero
-      runOnChange: true
       changes:
         - createTable:
             tableName: users
@@ -48,14 +47,13 @@ databaseChangeLog:
                   type: TIMESTAMP
               - column:
                   name: is_active
-                  type: BIT
+                  type: BOOLEAN
 
 
   ## ClientUsers Table
   - changeSet:
       id: create_client_users_table
       author: max_olivero
-      runOnChange: true
       changes:
         - createTable:
             tableName: client_users
@@ -77,7 +75,6 @@ databaseChangeLog:
   - changeSet:
       id: create_register_logins_table
       author: max_olivero
-      runOnChange: true
       changes:
         - createTable:
             tableName: register_logins

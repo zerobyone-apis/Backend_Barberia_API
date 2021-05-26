@@ -2,7 +2,6 @@ databaseChangeLog:
   - changeSet:
       id: create_category_table
       author: max_olivero
-      runOnChange: true
       changes:
         - createTable:
             tableName: category
@@ -24,16 +23,15 @@ databaseChangeLog:
                   type: VARCHAR
               - column:
                   name: enabled
-                  type: BIT
+                  type: BOOLEAN
               - column:
                   name: is_leaf
-                  type: BIT
+                  type: BOOLEAN
 
   ## Product_Price Table
   - changeSet:
       id: create_product_price_table
       author: max_olivero
-      runOnChange: true
       changes:
         - createTable:
             tableName: product_price
@@ -55,7 +53,7 @@ databaseChangeLog:
                   type: DOUBLE
               - column:
                   name: is_in_offert
-                  type: BIT
+                  type: BOOLEAN
               - column:
                   name: name_offert
                   type: VARCHAR
@@ -70,12 +68,11 @@ databaseChangeLog:
                   type: TIMESTAMP
               - column:
                   name: enabled
-                  type: BIT
+                  type: BOOLEAN
 
   - changeSet:
       id: create_products_table
       author: max_olivero
-      runOnChange: true
       changes:
         - createTable:
             tableName: products
@@ -115,13 +112,12 @@ databaseChangeLog:
                   type: TIMESTAMP
               - column:
                   name: enabled
-                  type: BIT
+                  type: BOOLEAN
 
   ## ProductImages Table
   - changeSet:
       id: create_product_images_table
       author: max_olivero
-      runOnChange: true
       changes:
         - createTable:
             tableName: product_images

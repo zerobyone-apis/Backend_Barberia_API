@@ -2,7 +2,6 @@ databaseChangeLog:
   - changeSet:
       id: create_providers_table
       author: max_olivero
-      runOnChange: true
       changes:
         - createTable:
             tableName: providers
@@ -36,12 +35,11 @@ databaseChangeLog:
                   type: TIMESTAMP
               - column:
                   name: enabled
-                  type: BIT
+                  type: BOOLEAN
 
   - changeSet:
       id: create_provider_products_table
       author: max_olivero
-      runOnChange: true
       changes:
         - createTable:
             tableName: provider_products
@@ -62,7 +60,6 @@ databaseChangeLog:
   - changeSet:
       id: create_provider_enterprise_table
       author: max_olivero
-      runOnChange: true
       changes:
         - createTable:
             tableName: provider_enterprise

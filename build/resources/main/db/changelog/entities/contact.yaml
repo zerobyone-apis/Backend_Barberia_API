@@ -2,7 +2,7 @@ databaseChangeLog:
   - changeSet:
       id: create_client_contact_table
       author: max_olivero
-      runOnChange: true
+
       changes:
         - createTable:
             tableName: client_contact
@@ -48,4 +48,4 @@ databaseChangeLog:
                   type: TIMESTAMP
               - column:
                   name: is_active
-                  type: BIT
+                  type: BOOLEAN

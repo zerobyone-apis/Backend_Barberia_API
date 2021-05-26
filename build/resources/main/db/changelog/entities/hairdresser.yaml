@@ -2,7 +2,6 @@ databaseChangeLog:
   - changeSet:
       id: create_hairdresser_table
       author: max_olivero
-      runOnChange: true
       changes:
         - createTable:
             tableName: hairdresser
@@ -51,7 +50,7 @@ databaseChangeLog:
                   type: TEXT
               - column:
                   name: accept_integration
-                  type: BIT
+                  type: BOOLEAN
               - column:
                   name: facebook_username
                   type: VARCHAR
@@ -60,7 +59,7 @@ databaseChangeLog:
                   type: TEXT
               - column:
                   name: accept_facebook_integration
-                  type: BIT
+                  type: BOOLEAN
               - column:
                   name: created_on
                   type: TIMESTAMP
@@ -69,5 +68,5 @@ databaseChangeLog:
                   type: TIMESTAMP
               - column:
                   name: is_active
-                  type: BIT
+                  type: BOOLEAN
 

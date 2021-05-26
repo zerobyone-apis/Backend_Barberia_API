@@ -54,7 +54,7 @@ databaseChangeLog:
                   type: VARCHAR
               - column:
                   name: accept_integration
-                  type: BIT
+                  type: BOOLEAN
               - column:
                   name: enabled
-                  type: BIT
+                  type: BOOLEAN

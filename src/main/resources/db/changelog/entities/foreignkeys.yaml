@@ -2,7 +2,7 @@ databaseChangeLog:
   - changeSet:
       id: add-providers-to-countries-fk
       author: molivero
-      runOnChange: true
+
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: country_id
@@ -19,7 +19,7 @@ databaseChangeLog:
   - changeSet:
       id: add-providers-to-brands-fk
       author: molivero
-      runOnChange: true
+
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: brand_id
@@ -36,7 +36,7 @@ databaseChangeLog:
   - changeSet:
       id: add-provider-products-to-products-fk
       author: molivero
-      runOnChange: true
+
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: product_id
@@ -53,7 +53,7 @@ databaseChangeLog:
   - changeSet:
       id: add-providers-enterprise-to-providers-fk
       author: molivero
-      runOnChange: true
+
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: provider_id
@@ -70,7 +70,7 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_provider_enterprise_to_enterprise
       author: molivero
-      runOnChange: true
+
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: enterprise_id
@@ -87,7 +87,7 @@ databaseChangeLog:
   - changeSet:
       id: add-fk-category-to-countries
       author: molivero
-      runOnChange: true
+
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: country_id
@@ -104,7 +104,7 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_product_price_to_category
       author: molivero
-      runOnChange: true
+
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: category_id
@@ -121,7 +121,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_product_to_brand
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: brand_id
@@ -138,7 +137,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_product_to_product_price
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: price_id
@@ -156,7 +154,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_product_to_countries
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: country_id
@@ -173,7 +170,7 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_products_to_providers
       author: molivero
-      runOnChange: true
+
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: provider_id
@@ -190,7 +187,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_products_to_category
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: category_id
@@ -207,7 +203,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_product_images_to_products
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: product_id
@@ -224,7 +219,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_product_images_to_images
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: image_id
@@ -241,7 +235,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_barber_to_users
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: user_id
@@ -258,7 +251,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_barber_to_enterprise
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: enterprise_id
@@ -275,7 +267,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_product_images_to_images
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: image_id
@@ -292,7 +283,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_clients_to_users
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: user_id
@@ -309,7 +299,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_contact_user_to_user
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: user_id
@@ -327,7 +316,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_enterprise_to_brand
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: brand_id
@@ -345,7 +333,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_enterprise_to_address
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: address_id
@@ -362,7 +349,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_shop_time_to_address
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: address_id
@@ -379,7 +365,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_shop_time_to_address
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: address_id
@@ -396,7 +381,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_shop_time_to_address
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: address_id
@@ -413,7 +397,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_shop_time_to_address
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: address_id
@@ -430,7 +413,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_enterprise_to_products
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: enterprise_id
@@ -447,7 +429,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_users_to_enterprise
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: user_id
@@ -464,7 +445,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_enterprise_to_providers
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: enterprise_id
@@ -481,7 +461,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_enterprise_providers_to_providers
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: provider_id
@@ -498,7 +477,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_enterprise_to_reserves
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: enterprise_id
@@ -516,7 +494,6 @@ databaseChangeLog:
   - changeSet:
       id: add-enterprise-shop-time-fk
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: shop_time_id
@@ -533,7 +510,6 @@ databaseChangeLog:
   - changeSet:
       id: add-enterprise-rating-score-fk
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: rating_score_id
@@ -550,7 +526,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_hairdresser_to_users-fk
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: user_id
@@ -567,7 +542,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_hairdresser_to_enterprise
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: enterprise_id
@@ -585,7 +559,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_reserves_to_users
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: user_id
@@ -602,7 +575,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_reserves_to_clients
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: client_id
@@ -619,7 +591,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_reserves_to_enterprise
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: enterprise_id
@@ -636,7 +607,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_reserves_to_enterprise
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: enterprise_id
@@ -653,7 +623,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk-reserves_to_work_services
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: work_service_id
@@ -670,7 +639,6 @@ databaseChangeLog:
   - changeSet:
       id: add-fk_work_services_to_users
       author: molivero
-      runOnChange: true
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: user_id
