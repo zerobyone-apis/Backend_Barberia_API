@@ -3,6 +3,7 @@ package zero.our.piece.barbers.barbers_api.user.model
 
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
+import org.hibernate.annotations.Type
 import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersPermission
 
 import javax.persistence.*

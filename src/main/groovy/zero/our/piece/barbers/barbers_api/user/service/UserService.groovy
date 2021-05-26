@@ -1,7 +1,10 @@
 package zero.our.piece.barbers.barbers_api.user.service
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.BooleanType
 import groovy.util.logging.Slf4j
 import org.hibernate.exception.SQLGrammarException
+import org.hibernate.type.BinaryType
+import org.hibernate.type.NumericBooleanType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import zero.our.piece.barbers.barbers_api.barber.model.DTO.BarberResponseDTO
@@ -152,7 +155,7 @@ class UserService {
                 created_on: Instant.now(),
                 social_number: setSocialNumber(user),
                 update_on: user?.is_active == Boolean.FALSE ? Instant.now() : null,
-                is_active: user?.is_active == Boolean.FALSE ?: true
+                is_active: !user?.is_active ?: true
         )
     }
 
