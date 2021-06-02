@@ -48,9 +48,7 @@ class ClientController {
            clientService.logicDelete(id);
     }
 
-
 /*
-
     //todo: get by email
     @GetMapping("/{email}")
     @ResponseStatus(HttpStatus.OK)

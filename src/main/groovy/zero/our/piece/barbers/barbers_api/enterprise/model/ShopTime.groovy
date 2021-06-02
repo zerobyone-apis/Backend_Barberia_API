@@ -19,6 +19,11 @@ class ShopTime {
     Long address_id
     Long enterprise_id
 
+    /** TODO: Se podria detallar los dias feriados o que no se trabajen o directamente que el local cierre
+     *        la idea es que puedan manejar to_do lo relacionado a el horario, asi como timezone, y actualizaciones de horarios
+     *        dias libres o feriados.
+     **/
+
     @Transient
     List<DaysToWork> workDays
 

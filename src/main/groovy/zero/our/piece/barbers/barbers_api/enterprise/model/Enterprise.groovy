@@ -77,6 +77,5 @@ class Enterprise {
     Boolean has_integration // Integration with others apis
     Boolean enabled = Boolean.TRUE
 
-    //TODO: Queda temrinar varios de las entidades y realizar todas las tablas en liquibase.
     // See: https://web.archive.org/web/20161108113341/https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
 }

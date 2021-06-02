@@ -28,10 +28,7 @@ class ClientService {
 
     List<ClientResponseDTO> findAll() {
         try {
-            clientRepository.findAll()
-                    .stream()
-                    .map({ it -> decoratorPatternClient(it) })
-                    .collect(Collectors.toList())
+            clientRepository.findAll().collect {it -> decoratorPatternClient(it)}
         } catch (ResourceNotFoundException | NoSuchElementException ex) {
             throw new ResourceNotFoundException(ex.message)
         }
@@ -108,7 +105,6 @@ class ClientService {
 
         return decoratorPatternClient(savedClient)
     }
-
 
     ClientResponseDTO update(ClientRequestDTO body, Long clientId) {
         def existentClient = clientRepository.findById(clientId)

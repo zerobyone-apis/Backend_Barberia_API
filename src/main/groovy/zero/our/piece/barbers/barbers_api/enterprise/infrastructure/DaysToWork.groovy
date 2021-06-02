@@ -9,11 +9,12 @@ import javax.persistence.*
 @EqualsAndHashCode
 @Entity
 @Table(name = "days_to_work")
+@SequenceGenerator(name = "days_to_work_sequence", sequenceName = "days_to_work_sequence", allocationSize = 1)
 class DaysToWork {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "days_to_work_sequence")
-    @SequenceGenerator(name = "days_to_work_sequence", sequenceName = "days_to_work_sequence", allocationSize = 1)
     Long id
+    Long shop_time_id
     WeekDays day_name
     String open_time
     String close_time

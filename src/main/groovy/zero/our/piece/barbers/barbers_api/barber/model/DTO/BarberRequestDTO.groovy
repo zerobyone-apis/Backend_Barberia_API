@@ -2,10 +2,9 @@ package zero.our.piece.barbers.barbers_api.barber.model.DTO
 
 import zero.our.piece.barbers.barbers_api.barber.infrastructure.EnterpriseRoll
 
-class BarberResponseDTO {
+class BarberRequestDTO {
 
     // barber info;
-    Long id
     String name
     String phone
     String open_work_time
@@ -13,6 +12,7 @@ class BarberResponseDTO {
     Long enterprise_id
 
     String username
+    String password
     String email
     String description
     EnterpriseRoll roll
@@ -25,5 +25,4 @@ class BarberResponseDTO {
     String fb_image_profile_url
     String inst_username
     String inst_image_profile_url
-    Boolean is_admin
 }
