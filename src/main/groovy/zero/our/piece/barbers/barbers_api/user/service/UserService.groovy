@@ -58,9 +58,13 @@ class UserService {
     }
 
     UserResponseDTO findById(Long id) {
+        User foundUser = findUserById(id)
+        return decoratorPatternUser(foundUser)
+    }
+
+    User findUserById(Long id) {
         try {
-            def foundUser = userRepository.findById(id).get()
-            return decoratorPatternUser(foundUser)
+            userRepository.findById(id).get()
         } catch (ResourceNotFoundException | NoSuchElementException ex) {
             throw new ResourceNotFoundException(ex.message)
         }
@@ -91,8 +95,23 @@ class UserService {
     ResponseUserLoginDTO login(RequestUserLoginDTO login) {
         ResponseUserLoginDTO response = new ResponseUserLoginDTO()
         User user = loginProcess(login)
+        response = getUserByPermission(user)
         response.user = decoratorPatternUser(user)
 
+        response
+    }
+
+
+    // Used by Reserves to find user data info
+    public ResponseUserLoginDTO findUserToFillReserve(Long userId) {
+        def user = this.findUserById(userId)
+        def response = getUserByPermission(user)
+        response.user = decoratorPatternUser(user)
+        response
+    }
+
+    protected ResponseUserLoginDTO getUserByPermission(User user){
+        ResponseUserLoginDTO response = new ResponseUserLoginDTO()
         switch (user.permission) {
             case UsersPermission.CLIENT:
                 response.client = checkUserIsClient(user)
@@ -101,12 +120,15 @@ class UserService {
                 response.barber = checkUserIsBarber(user)
                 break
             case UsersPermission.HAIRDRESSER:
+                //todo: hairdresser search
                 response.barber = checkUserIsBarber(user)
                 break
             case UsersPermission.SUPERVISOR:
+                //todo: Supervisor search
                 response.barber = checkUserIsBarber(user)
                 break
             case UsersPermission.ADMIN:
+                //todo: Admin search
                 response.barber = checkUserIsBarber(user)
                 break
             default:
@@ -218,9 +240,7 @@ class UserService {
         barberService.findByUserId(user.id)
     }
 
-    protected ClientResponseDTO checkUserIsClient(User user) {
-        clientService.findByUserId(user.id)
-    }
+    protected ClientResponseDTO checkUserIsClient(User user) {clientService.findByUserId(user.id)}
 
     protected Long setSocialNumber(User user) {
         try {

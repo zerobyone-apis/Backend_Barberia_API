@@ -8,9 +8,6 @@ import zero.our.piece.barbers.barbers_api.barber.model.Barber
 import zero.our.piece.barbers.barbers_api.barber.model.DTO.BarberRequestDTO
 import zero.our.piece.barbers.barbers_api.barber.model.DTO.BarberResponseDTO
 import zero.our.piece.barbers.barbers_api.barber.repository.BarberRepository
-import zero.our.piece.barbers.barbers_api.client.model.Client
-import zero.our.piece.barbers.barbers_api.client.model.DTO.ClientRequestDTO
-import zero.our.piece.barbers.barbers_api.client.model.DTO.ClientResponseDTO
 import zero.our.piece.barbers.barbers_api.enterprise.service.ShopTimeService
 import zero.our.piece.barbers.barbers_api.magicCube.exception.CreateResourceException
 import zero.our.piece.barbers.barbers_api.magicCube.exception.ResourceNotFoundException
@@ -33,44 +30,72 @@ class BarberService {
     UserService userService
 
     List<BarberResponseDTO> findAll() {
-        barberRepository.findAll().collect { it ->  decoratorPatternBarber(it)  }
+        try {
+            barberRepository.findAll().collect { it -> decoratorPatternBarber(it) }
+        } catch (ResourceNotFoundException | NoSuchElementException ex) {
+            throw new ResourceNotFoundException(ex.message)
+        }
+    }
+
+    List<BarberResponseDTO> findAllActives() {
+        try {
+            barberRepository.findAll().stream().filter { it.is_active }.collect { it -> decoratorPatternBarber(it) }
+        } catch (ResourceNotFoundException | NoSuchElementException ex) {
+            throw new ResourceNotFoundException(ex.message)
+        }
     }
 
     BarberResponseDTO findById(Long id) {
-        def foundUser = barberRepository.findById(id).get()
-        if (!foundUser?.id) throw new ResourceNotFoundException("USER_NOT_FOUND")
+        try {
+            def foundUser = barberRepository.findById(id).get()
+            if (!foundUser?.id) throw new ResourceNotFoundException("USER_NOT_FOUND")
 
-        return decoratorPatternBarber(foundUser)
+            return decoratorPatternBarber(foundUser)
+        } catch (ResourceNotFoundException | NoSuchElementException ex) {
+            throw new ResourceNotFoundException(ex.message)
+        }
     }
 
     BarberResponseDTO findByUserId(Long user_id) {
-        Barber barber = barberRepository.findByUserId(user_id)
-        if (!barber?.id) throw new ResourceNotFoundException("Barber with this User ID Not found: " + user_id)
+        try {
+            Barber barber = barberRepository.findByUserId(user_id)
+            if (!barber?.id) throw new ResourceNotFoundException("Barber with this User ID Not found: " + user_id)
 
-        return decoratorPatternBarber(barber)
+            return decoratorPatternBarber(barber)
+        } catch (ResourceNotFoundException | NoSuchElementException ex) {
+            throw new ResourceNotFoundException(ex.message)
+        }
     }
 
     BarberResponseDTO create(BarberRequestDTO body) {
-        Barber barber = createBarber(body)
-        User user = createUser(body)
-        barber.user_id = user.id
+        try {
+            Barber barber = createBarber(body)
+            User user = createUser(body)
+            barber.user_id = user.id
 
-        def savedBarber = barberRepository.save(barber)
-        user.barber_id = savedBarber.id
-        userService.saveUser(user, 'Updating barberID')
+            def savedBarber = barberRepository.save(barber)
+            user.barber_id = savedBarber.id
+            userService.saveUser(user, 'Updating barberID')
 
-        return decoratorPatternBarber(savedBarber)
+            return decoratorPatternBarber(savedBarber)
+        } catch (ResourceNotFoundException | NoSuchElementException ex) {
+            throw new ResourceNotFoundException(ex.message)
+        }
     }
 
     BarberResponseDTO update(BarberRequestDTO body, Long barberId) {
-        def existentBarber = barberRepository.findById(barberId)
-        if (!existentBarber.isPresent()) throw new ResourceNotFoundException("CLIENT NOT FOUND")
+        try {
+            def existentBarber = barberRepository.findById(barberId)
+            if (!existentBarber.isPresent()) throw new ResourceNotFoundException("CLIENT NOT FOUND")
 
-        Barber barber = updateBarber(existentBarber.get(), body)
-        updateUser(body)
+            Barber barber = updateBarber(existentBarber.get(), body)
+            updateUser(body)
 
-        def savedBarber = barberRepository.save(barber)
-        return decoratorPatternBarber(savedBarber)
+            def savedBarber = barberRepository.save(barber)
+            return decoratorPatternBarber(savedBarber)
+        } catch (ResourceNotFoundException | NoSuchElementException ex) {
+            throw new ResourceNotFoundException(ex.message)
+        }
     }
 
     protected static BarberResponseDTO decoratorPatternBarber(Barber brb) {

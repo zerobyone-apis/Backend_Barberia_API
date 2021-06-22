@@ -16,15 +16,33 @@ class EnterpriseService {
     @Autowired
     EnterpriseRepository enterpriseRepository
 
-    List<Enterprise> getAll() {
+    List<Enterprise> findAll() {
         enterpriseRepository.findAll()
     }
 
-    Enterprise getById(Long id) {
+    Enterprise findById(Long id) {
         def enterprise = enterpriseRepository.findById(id)
         if (enterprise.isEmpty()) throw new ResourceNotFoundException("ENTERPRISE_NOT_FOUND")
 
         enterprise.get()
     }
 
+
+    // TODO: CREATE
+
+    // TODO: UPDATE
+
+    // TODO: ADD EMPLOYEE
+
+    // TODO: REMOVE EMPLOYEE
+
+    // TODO: EDIT SETTINGS
+
+    // TODO: ADD NEW LOCALS
+
+    // TODO: REMOVE LOCALS
+
+    // TODO: GET REPORTS
+
+    // TODO: LOGICAL DELETE
 }

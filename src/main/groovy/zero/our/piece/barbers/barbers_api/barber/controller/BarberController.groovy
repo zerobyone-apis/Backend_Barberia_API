@@ -26,12 +26,21 @@ class BarberController {
     @Autowired
     BarberService service
 
+    //TODO: Only admins can use this endpoint create ADMIN security rol
     @GetMapping()
     //@PreAuthorize('hasAuthorities()')
     @ResponseStatus(HttpStatus.OK)
     def getBarbers(Principal principal) {
         //def user = securityService.getLoggedUser(principal)
         service.findAll()
+    }
+
+    @GetMapping("/actives")
+    //@PreAuthorize('hasAuthorities()')
+    @ResponseStatus(HttpStatus.OK)
+    def getActiveBarbers(Principal principal) {
+        //def user = securityService.getLoggedUser(principal)
+        service.findAllActives()
     }
 
     @GetMapping("/{id}")
@@ -66,6 +75,8 @@ class BarberController {
         service.update(barber, barberId)
     }
 
+
+    //TODO: Only admins can use this endpoint create ADMIN security rol
     @PatchMapping("/deactivate/{barber_id}")
     //@PreAuthorize('hasAuthorities()')
     @ResponseStatus(HttpStatus.OK)
