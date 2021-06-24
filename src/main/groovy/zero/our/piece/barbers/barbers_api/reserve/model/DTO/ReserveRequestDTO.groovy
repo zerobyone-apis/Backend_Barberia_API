@@ -24,7 +24,7 @@ class ReserveRequestDTO {
     String socialNumber
 
     // DateTime info
-    Time duration
+    String duration               // hh:mm
     LocalDateTime reserveDatetime // Las dos cosas, el dia y la hora.
 
     // Reserve Description Info

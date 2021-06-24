@@ -38,13 +38,16 @@ class WorkServices {
     Double total_cost                                   //todo: Validar o aplicar la promocion en el servicio o costo total dependiendo de la promo.
     Boolean under_promotion                             //todo: Se aplica alguna promocion?
 
-    //todo: Falta la info de Producto que se añade en Reserves Table.
-    //      pasarlo para este entity
+    /*
+        TODO:
+         Falta la info de Producto que se añade en Reserves Table.
+         pasarlo para este entity
+     */
 
     // Time Service
-    Time duration_of_service                            //todo: esto puede ser un enum con los horarios prestablecidos de tiempo
-    LocalDateTime start                                       //fecha y hora
-    LocalDateTime finish                                      //fecha y hora se puede calcular en base a la duration pero para persivir mejor el tiempo
+    Time duration_of_service                                  // Esto puede ser un enum con los horarios prestablecidos de tiempo
+    LocalDateTime start                                       // Fecha y hora
+    LocalDateTime finish                                      // Fecha y hora se puede calcular en base a la duration pero para persivir mejor el tiempo
 
     // user & client info
     Long user_id

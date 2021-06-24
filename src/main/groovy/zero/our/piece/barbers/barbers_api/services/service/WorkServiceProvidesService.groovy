@@ -3,7 +3,6 @@ package zero.our.piece.barbers.barbers_api.services.service
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import zero.our.piece.barbers.barbers_api.enterprise.service.EnterpriseService
 import zero.our.piece.barbers.barbers_api.magicCube.exception.CreateResourceException
 import zero.our.piece.barbers.barbers_api.magicCube.exception.ResourceNotFoundException
 import zero.our.piece.barbers.barbers_api.services.infrastructure.WorkServiceStatus
@@ -11,7 +10,6 @@ import zero.our.piece.barbers.barbers_api.services.model.DTO.ServicesRequestDTO
 import zero.our.piece.barbers.barbers_api.services.model.DTO.ServicesResponseDTO
 import zero.our.piece.barbers.barbers_api.services.model.WorkServices
 import zero.our.piece.barbers.barbers_api.services.repository.ServicesRepository
-import zero.our.piece.barbers.barbers_api.user.service.UserService
 
 import java.time.Instant
 import java.time.LocalDateTime
@@ -22,12 +20,6 @@ class WorkServiceProvidesService {
 
     @Autowired
     ServicesRepository servicesRepository
-
-    @Autowired
-    UserService userService
-
-    @Autowired
-    EnterpriseService enterpriseService
 
     List<ServicesResponseDTO> findAll() {
         try {
@@ -41,6 +33,24 @@ class WorkServiceProvidesService {
         try {
             def service = servicesRepository.findById(id).get()
             return decoratorPatternServices(service)
+        } catch (ResourceNotFoundException | NoSuchElementException ex) {
+            throw new ResourceNotFoundException(ex.message)
+        }
+    }
+
+    WorkServices findByIdToEditWorkServiceOrCancel(Long id) {
+        try {
+            def service = servicesRepository.findById(id).get()
+            return service
+        } catch (ResourceNotFoundException | NoSuchElementException ex) {
+            throw new ResourceNotFoundException(ex.message)
+        }
+    }
+
+    void cancel(WorkServices service) {
+        try {
+            service.status = WorkServiceStatus.CANCELED
+            servicesRepository.save(service)
         } catch (ResourceNotFoundException | NoSuchElementException ex) {
             throw new ResourceNotFoundException(ex.message)
         }
@@ -66,6 +76,15 @@ class WorkServiceProvidesService {
     }
 
     //TODO: UPDATE
+    ServicesResponseDTO update(ServicesRequestDTO req) {
+        try {
+            def service = updateWorkService(req)
+            def saved = servicesRepository.save(service)
+            return decoratorPatternServices(saved)
+        } catch (ResourceNotFoundException | NoSuchElementException ex) {
+            throw new CreateResourceException(ex.message)
+        }
+    }
 
     protected static createWorkService(ServicesRequestDTO requestDTO) {
         return new WorkServices(

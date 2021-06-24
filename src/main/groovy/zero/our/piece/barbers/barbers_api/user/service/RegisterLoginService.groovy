@@ -43,6 +43,10 @@ class RegisterLoginService {
         registerLoginRepository.save(createLogSession(user, Action.MORE_EVENTS))
     }
 
+    void cancelReserve(User user) {
+        registerLoginRepository.save(createLogSession(user, Action.CANCEL_RESERVES))
+    }
+
     static RegisterLogins createLogSession(User login, Action action) {
         return new RegisterLogins(
                 username: login.username,
@@ -64,5 +68,6 @@ enum Action {
     UPDATE,
     LOGIN,
     LOGOUT,
+    CANCEL_RESERVES,
     MORE_EVENTS //Definir los tipos de eventos y sus nuevos campos.
 }

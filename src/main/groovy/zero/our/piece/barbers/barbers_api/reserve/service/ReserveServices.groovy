@@ -3,24 +3,30 @@ package zero.our.piece.barbers.barbers_api.reserve.service
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import zero.our.piece.barbers.barbers_api.client.infrastructure.ClientType
+import zero.our.piece.barbers.barbers_api.barber.model.Barber
 import zero.our.piece.barbers.barbers_api.client.model.Client
-import zero.our.piece.barbers.barbers_api.client.model.DTO.ClientRequestDTO
-import zero.our.piece.barbers.barbers_api.client.model.DTO.ClientResponseDTO
-import zero.our.piece.barbers.barbers_api.client.repository.ClientRepository
 import zero.our.piece.barbers.barbers_api.client.service.ClientService
 import zero.our.piece.barbers.barbers_api.enterprise.service.EnterpriseService
-import zero.our.piece.barbers.barbers_api.magicCube.exception.CreateResourceException
 import zero.our.piece.barbers.barbers_api.magicCube.exception.ResourceNotFoundException
+import zero.our.piece.barbers.barbers_api.magicCube.mailing.SendMailService
 import zero.our.piece.barbers.barbers_api.reserve.model.DTO.ReserveRequestDTO
 import zero.our.piece.barbers.barbers_api.reserve.model.DTO.ReserveResponseDTO
 import zero.our.piece.barbers.barbers_api.reserve.model.Reserves
 import zero.our.piece.barbers.barbers_api.reserve.repository.ReserveRepository
+import zero.our.piece.barbers.barbers_api.services.infrastructure.WorkServiceStatus
+import zero.our.piece.barbers.barbers_api.services.model.DTO.ServicesRequestDTO
+import zero.our.piece.barbers.barbers_api.services.model.WorkServices
 import zero.our.piece.barbers.barbers_api.services.service.WorkServiceProvidesService
+import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersPermission
 import zero.our.piece.barbers.barbers_api.user.model.User
+import zero.our.piece.barbers.barbers_api.user.service.RegisterLoginService
 import zero.our.piece.barbers.barbers_api.user.service.UserService
 
+import java.sql.Time
 import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 @Service
 @Slf4j
@@ -41,9 +47,15 @@ class ReserveServices {
     @Autowired
     WorkServiceProvidesService workService
 
+    @Autowired
+    RegisterLoginService registerLoginService
+
+    @Autowired
+    SendMailService sendMailService
+
     List<ReserveResponseDTO> findAll() {
         try {
-            reserveRepository.findAll().collect {it -> decoratorPatternReserve(it)}
+            reserveRepository.findAll().collect { it -> decoratorPatternReserve(it) }
         } catch (ResourceNotFoundException | NoSuchElementException ex) {
             throw new ResourceNotFoundException(ex.message)
         }
@@ -51,7 +63,7 @@ class ReserveServices {
 
     List<ReserveResponseDTO> findAllActives() {
         try {
-            reserveRepository.findAll().stream().filter{it.isActive }.collect {it -> decoratorPatternReserve(it)}
+            reserveRepository.findAll().stream().filter { it.isActive }.collect { it -> decoratorPatternReserve(it) }
         } catch (ResourceNotFoundException | NoSuchElementException ex) {
             throw new ResourceNotFoundException(ex.message)
         }
@@ -68,13 +80,10 @@ class ReserveServices {
         }
     }
 
-    /*
-        This endpoint will be for specific endpoint to know about latest reserve
-     */
-    ReserveResponseDTO findByUserId(Long userId , String date) {
+    ReserveResponseDTO findByUserIdAndDate(Long userId, String date) {
         try {
-            //todo: create the query to db
-            Reserves reserve = reserveRepository.findByUserId(userId, date)
+
+            Reserves reserve = reserveRepository.findByUserIdAndData(userId, date)
             if (!reserve?.id) throw new ResourceNotFoundException("reserve with this User ${userId} for this Date ${date} Not found")
 
             return decoratorPatternReserve(reserve)
@@ -83,11 +92,11 @@ class ReserveServices {
         }
     }
 
-    ReserveResponseDTO findByClientId(Long userId) {
+    ReserveResponseDTO findByClientId(Long clientId) {
         try {
-            //todo: create the query to db
-            Reserves reserve = reserveRepository.findByUserId(userId)
-            if (!reserve?.id) throw new ResourceNotFoundException("reserve with this User ID Not found: " + userId)
+
+            Reserves reserve = reserveRepository.findByClientId(clientId, Instant.now())
+            if (!reserve?.id) throw new ResourceNotFoundException("reserve with this User ID Not found: " + clientId)
 
             return decoratorPatternReserve(reserve)
         } catch (ResourceNotFoundException | NoSuchElementException ex) {
@@ -95,89 +104,84 @@ class ReserveServices {
         }
     }
 
-    List<ReserveResponseDTO> findAllReservesByUserId(Long userId) {
+    List<ReserveResponseDTO> findAllByUserId(Long userId) {
         try {
-            //todo: create the query to db
-            Reserves reserve = reserveRepository.findAllByUserId(userId)
+
+            List<Reserves> reserve = reserveRepository.findAllByUserId(userId)
             if (!reserve?.id) throw new ResourceNotFoundException("reserve with this User ID Not found: ${userId}")
 
-            return decoratorPatternReserve(reserve)
+            return reserve.collect { it -> decoratorPatternReserve(it) }
         } catch (ResourceNotFoundException | NoSuchElementException ex) {
             throw new ResourceNotFoundException(ex.message)
         }
     }
 
-    List<ReserveResponseDTO> findAllReservesByClientId(Long clientId) {
+    List<ReserveResponseDTO> findAllActivesByUserId(Long userId) {
         try {
-            //todo: create the query to db
-            Reserves reserve = reserveRepository.findAllByClientId(clientId)
+
+            List<Reserves> reserve = reserveRepository.findAllActivesByUserId(userId)
+            if (!reserve?.id) throw new ResourceNotFoundException("reserve with this User ID Not found: ${userId}")
+
+            return reserve.collect { it -> decoratorPatternReserve(it) }
+        } catch (ResourceNotFoundException | NoSuchElementException ex) {
+            throw new ResourceNotFoundException(ex.message)
+        }
+    }
+
+    List<ReserveResponseDTO> findAllByClientId(Long clientId) {
+        try {
+
+            List<Reserves> reserve = reserveRepository.findAllByClientId(clientId)
             if (!reserve?.id) throw new ResourceNotFoundException("Reserve with this Client ID Not found: ${clientId}")
 
-            return decoratorPatternReserve(reserve)
+            return reserve.collect { it -> decoratorPatternReserve(it) }
         } catch (ResourceNotFoundException | NoSuchElementException ex) {
             throw new ResourceNotFoundException(ex.message)
         }
     }
 
-    ReserveResponseDTO findByEmail(String email) {
+    void cancel(Long id, Long userId) {
         try {
-            //todo: create the query to db
-            Client client = clientRepository.findByEmail(email)
-            if (!client?.id) throw new ResourceNotFoundException("Client with this Email Not found: " + email)
+            User user = userService.findUserById(userId)
+            if (user?.email) throw new ResourceNotFoundException("BARBER OR HAIRDRESSER NOT FOUND")
 
-            return decoratorPatternClient(client)
+            if (user.permission == UsersPermission.ADMIN || user.permission == UsersPermission.ADMIN) {
+                Reserves reserve = reserveRepository.findById(id).get()
+                if (!reserve?.id) throw new ResourceNotFoundException("RESERVE NOT FOUND")
+
+                WorkServices work = workService.findByIdToEditWorkServiceOrCancel(reserve.workServiceId)
+                if (!work?.user_id) throw new ResourceNotFoundException("WORK SERVICE RESERVED NOT FOUND")
+                workService.cancel(work)
+
+                reserve.isActive = false
+                reserve.reserveStatus = WorkServiceStatus.CANCELED
+                reserve.cancelOn = Instant.now()
+
+                reserveRepository.save(reserve)
+                registerLoginService.cancelReserve(user)
+            }
         } catch (ResourceNotFoundException | NoSuchElementException ex) {
             throw new ResourceNotFoundException(ex.message)
         }
     }
 
-
-
-
-
-    //todo:
-    ReserveResponseDTO findByUsername(String username) {
-        try {
-            Client client = clientRepository.findByUsername(username)
-            if (!client?.id) throw new ResourceNotFoundException("Client with this Username Not found: " + username)
-
-            return decoratorPatternClient(client)
-        } catch (ResourceNotFoundException | NoSuchElementException ex) {
-            throw new ResourceNotFoundException(ex.message)
-        }
-    }
-
-    //todo: terminar este metodo a medias.
-    void logicalDeleted(Long id) {
-        try {
-            Optional<Reserves> reserve = reserveRepository.findById(id)
-            if (!reserve.isPresent()) throw new ResourceNotFoundException("RESERVE NOT FOUND")
-            reserve.get().is_active = false
-            reserve.get().updated_on = Instant.now()
-
-            userService.delete(client.get().user_id)
-            clientRepository.save(client.get())
-            log.info("Logical delete successfully")
-        } catch (ResourceNotFoundException | NoSuchElementException ex) {
-            throw new ResourceNotFoundException(ex.message)
-        }
-    }
-
-    //TODO:
     ReserveResponseDTO create(ReserveRequestDTO body) {
-        Client client = createClient(body)
-        User user = createUser(body)
-        client.user_id = user.id
-        client.social_number = user.social_number
 
-        def savedReserve = clientRepository.save(client)
-        user.client_id = savedReserve.id
-        userService.saveUser(user, 'Updating clientID')
+        // check client id if exist
+        if (!clientService.findById(body.clientId)) throw new ResourceNotFoundException("CLIENT_NOT_FOUND")
 
+        //todo: check if dont have another reserve for the same day,
+        //todo: grabar accion del cliente - CREATE NEW RERSERVE.
+
+        Reserves reserve = createReserve(body)
+
+        // Send Email
+        SendReserveNotificationEmail(reserve)
+        def savedReserve = reserveRepository.save(reserve)
         return decoratorPatternReserve(savedReserve)
     }
 
-    //TODO:
+    //TODO: logic
     ReserveResponseDTO update(ReserveRequestDTO body, Long clientId) {
         def existentClient = clientRepository.findById(clientId)
         if (!existentClient.isPresent()) throw new ResourceNotFoundException("CLIENT NOT FOUND")
@@ -189,7 +193,6 @@ class ReserveServices {
         return decoratorPatternClient(savedClient)
     }
 
-
     //TODO: Algunos metodos para hacer.
     void updateAmountReserve() {}
 
@@ -197,79 +200,47 @@ class ReserveServices {
 
     void generateMetrics() {}
 
-    void logicDelete(Long clientId) {
-        try {
-            Client client = clientRepository.findById(clientId).get()
-            client.is_active = false
-            userService.delete(client.user_id)
-            clientRepository.save(client)
-        } catch (Exception ex) {
-            log.error("ERROR: Trying to save User due to: ${ex.getMessage()}")
-            throw new CreateResourceException("Error: ${ex.getMessage()}")
-        }
-
-    }
-
-
-/*    protected static Client createClient(client) {
-        new Client(
-                name: client.name,
-                username: client.username,
-                phone: client.phone,
-                email: client.email,
-                inst_username: client?.inst_username,
-                inst_image_profile_url: client?.inst_image_profile_url,
-                inst_photo_url: client?.inst_photo_url,
-                accept_integration: client.accept_integration ?: false,
-                client_type: ClientType.NEW_CLIENT,
-                created_on: Instant.now()
+    protected Reserves createReserve(ReserveRequestDTO request) {
+        Double totalCost = calculateTotalCost(request.priceService, request.productCost, request.externalServicesCost, 0)
+        new Reserves(
+                userId: request.userId,
+                enterpriseId: request?.enterpriseId ?: 1,
+                clientId: request.clientId,
+                clientName: request.clientName,
+                clientPhone: request.clientPhone,
+                emailClient: request.emailClient,
+                socialNumber: request.socialNumber,
+                duration: Time.valueOf(request.duration), //hh:mm
+                reserveDatetime: request.reserveDatetime,
+                barberService: request?.barberService,
+                hairdresserService: request?.hairdresserService,
+                promos: request?.promos,
+                priceService: request?.priceService,
+                underPromotion: request.underPromotion,
+                productCost: request.productCost,
+                externalServicesCost: request.externalServicesCost,
+                workServiceId: workService.create(createWorkServiceReq(request, totalCost)).id,
+                createdOn: Instant.now()
         )
     }
 
-    protected static Client updateClient(Client existent, newClient) {
-
-        existent.name = newClient.name
-        existent.username = newClient.username
-        existent.phone = newClient.phone
-        existent.email = newClient.email
-        existent.inst_username = newClient?.inst_username
-        existent.inst_image_profile_url = newClient?.inst_image_profile_url
-        existent.inst_photo_url = newClient?.inst_photo_url
-        existent.accept_integration = newClient.accept_integration ?: false
-        //existent.client_type =  ClientType.NEW_CLIENT //todo count reserve to evaluete type of client
-
-        existent
+    protected static ServicesRequestDTO createWorkServiceReq(reqReserve, totalCost) {
+        new ServicesRequestDTO(
+                service_name: reqReserve.barberService ?: reqReserve.hairdresserService,
+                barber_service: reqReserve?.barberService,
+                hairdresser_service: reqReserve?.hairdresserService,
+                promos: reqReserve?.promos,
+                price_service: reqReserve?.priceService,
+                total_cost: totalCost,
+                under_promotion: reqReserve?.underPromotion,
+                duration_of_service: Time.valueOf(reqReserve.duration),
+                start: reqReserve?.reserveDatetime,
+                user_id: reqReserve.userId,
+                username: reqReserve.employeeUsername,
+                client_id: reqReserve.clientId,
+                client_name: reqReserve.clientName
+        )
     }
-
-    protected User createUser(client) {
-        def user = userService.createUser(
-                new User(
-                        username: client.username,
-                        password: client.password,
-                        email: client.email,
-                        enterprise_id: client.enterprise_id
-                ))
-        return userService.saveUser(user, 'CREATE')
-    }
-
-    protected User updateUser(client) {
-        User existentUser
-        try {
-            existentUser = userService.findByEmail(client.username)
-            def user = userService.updateUser(
-                    new User(
-                            id: existentUser.id,
-                            username: client.username,
-                            password: client.password,
-                            email: client.email,
-                            enterprise_id: client.enterprise_id
-                    ))
-
-            return userService.saveUser(user, 'UPDATE')
-        } catch (Exception ex) {
-            throw new CreateResourceException("User with Username: ${client.username} Not Exists... ERROR: $ex.message",)
-        }
-    }*/
 
     protected ReserveResponseDTO decoratorPatternReserve(Reserves res) {
         def service = workService.findById(res?.workServiceId)
@@ -278,21 +249,61 @@ class ReserveServices {
                 enterprise: enterpriseService.findById(res.enterpriseId),
                 barberUser: userService.findUserToFillReserve(res.userId),
                 client: clientService.findById(res?.clientId),
-                workService:  service,
-                priceService: res?.priceService ?: calculatePrice(res.barberService, res.hairdresserService) ,
+                workService: service,
+                priceService: res?.priceService ?: calculatePrice(res.barberService, res.hairdresserService),
                 productCost: res?.productCost ?: 0,
                 externalServicesCost: res?.externalServicesCost ?: 0,                                 // Cafeteria, bebidas, etc,
-                totalCost: calculateTotalCost(res.priceService, res.productCost, res.externalServicesCost, service.totalCost),                                            //todo: Validar o aplicar la promocion en el servicio o costo total dependiendo de la promo.
+                totalCost: calculateTotalCost(res.priceService, res.productCost, res.externalServicesCost, service?.totalCost),                                            //todo: Validar o aplicar la promocion en el servicio o costo total dependiendo de la promo.
                 isActive: res.isActive
-
         )
     }
+
     protected static Double calculatePrice(barberPrice, hairdresserPrice) {
         return barberPrice.value ?: hairdresserPrice.value
     }
 
-    protected static calculateTotalCost(priceService, productCost, externalServicesCost, serviceTotalCost ){
+    protected static calculateTotalCost(priceService, productCost, externalServicesCost, serviceTotalCost) {
         return priceService + productCost + externalServicesCost + serviceTotalCost
     }
 
+    protected static LocalDate convertToLocalDateTime(String date) {
+        String alteredDate = date.replace("-", "/")
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        LocalDate newFormatDate = LocalDate.parse(alteredDate, formatter)
+        return newFormatDate
+    }
+
+    //todo: mover estos al mailing service
+    // Notification methods
+
+    //todo modify this logic.-
+    protected void SendReserveNotificationEmail(Reserves reserveDetails) {
+        final StringBuilder reserveFormat = new StringBuilder()
+        final StringBuilder dateReserve = new StringBuilder()
+        Barber barber = getBarber(reserveDetails.getBarberOrHairdresserId())
+
+        final String nameBarber = barber.getName()
+        final String instagramBarber = barber.getInstagram()
+        final String facebookBarber = barber.getFacebook()
+        final String date = LocalDate.from(reserveDetails.getStartTime()).toString()
+        final String time = LocalTime.from(reserveDetails.getStartTime()).toString()
+        reserveFormat
+                .append("<li type=\"square\"> Reserva creada por: ").append(reserveDetails.getNameClient() + "</li>")
+                .append("<li type=\"square\"> Tu Reserva con ").append(nameBarber).append(" fue agendada con exito!").append("</li>")
+                .append("<li type=\"square\"> L@ esperamos en Dr César Piovene 1027, Pando, Departamento de Canelones, Uruguay.").append("</li>")
+                .append("<li type=\"square\"> Puedes seguir a ").append(nameBarber).append(" en sus redes sociales y estar actualizado con las ultimas tendencias!")
+                .append("<li type=\"square\"> Instagram: ").append(Objects.nonNull(instagramBarber) ? instagramBarber : "https://www.instagram.com/artexperiencee/").append("</li>")
+                .append("<li type=\"square\"> Facebook: ").append(Objects.nonNull(facebookBarber) ? facebookBarber : "https://www.facebook.com/artexperiencee/").append("</li>")
+
+        dateReserve
+                .append("<li type=\"square\"> Fecha: ").append(date).append("</li>")
+                .append("<li type=\"square\"> Hora: ").append(time).append("</li>")
+
+        sendMailService.notifyAndSendEmail(reserveFormat.toString(), reserveDetails.getNameClient(), dateReserve.toString(), reserveDetails.getMailClient())
+    }
+
+    //todo: mover estos al mailing service
+    void testMail() {
+        sendMailService.notifyAndSendEmail("<li type=\"square\">Esto es un Test del email</li>", "Juan Miguel", "<li type=\"square\">Fecha: 21-08-2020</li> <li type=\"square\">Hora: 12:00 hrs</li>", "")
+    }
 }

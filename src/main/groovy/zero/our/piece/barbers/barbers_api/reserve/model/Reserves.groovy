@@ -10,6 +10,7 @@ import zero.our.piece.barbers.barbers_api.services.infrastructure.WorkServiceSta
 import javax.persistence.*
 import java.sql.Time
 import java.time.Instant
+import java.time.LocalDateTime
 
 @Entity
 @ToString
@@ -36,7 +37,7 @@ class Reserves {
 
     // DateTime info
     Time duration
-    Instant reserveDatetime                     // Las dos cosas, el dia y la hora.
+    LocalDateTime reserveDatetime                     // Las dos cosas, el dia y la hora.
 
     // Reserve Description Info
     Long workServiceId
