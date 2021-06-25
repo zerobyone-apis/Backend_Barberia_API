@@ -15,20 +15,20 @@ class ReserveRequestDTO {
     Long userId
     Long enterpriseId
     String employeeUsername // El barbero o peluquero con el que se agenda.
+    String descripcion // El barbero o peluquero con el que se agenda.
 
     // client info
     Long clientId
-    Long clientName
+    String clientName
     String clientPhone
     String emailClient
     String socialNumber
 
     // DateTime info
     String duration               // hh:mm
-    LocalDateTime reserveDatetime // Las dos cosas, el dia y la hora.
+    String reserveDatetime          // Las dos cosas, el dia y la hora.
 
     // Reserve Description Info
-    Long workServiceId
     ServicesBarber barberService
     ServicesHairdresser hairdresserService
     Promos promos

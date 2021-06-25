@@ -13,21 +13,21 @@ interface ReserveRepository extends JpaRepository<Reserves, Long> {
 
     //todo: check this query on db.
     @Query(name = "SELECT rs.* FROM reserves rs WHERE rs.userId = :userId AND rs.createdOn = :date", nativeQuery = true)
-    Reserves findByUserIdAndData(@Param("userId") final Long userId, @Param("date") final String date );
+    Reserves findByUserIdAndCreatedOn(@Param("userId") Long userId, @Param("date") String date );
 
     //todo: check this query on db.
     @Query(name = "SELECT rs.* FROM reserves rs WHERE rs.userId = :userId", nativeQuery = true)
-    List<Reserves> findAllByUserId(@Param("userId") final Long userId);
+    List<Reserves> findAllByUserId(@Param("userId") Long userId);
 
     //todo: check this query on db.
     @Query(name = "SELECT rs.* FROM reserves rs WHERE rs.userId = :userId AND rs.isActive = TRUE", nativeQuery = true)
-    List<Reserves> findAllActivesByUserId(@Param("userId") final Long userId);
+    List<Reserves> findAllActivesByUserId(@Param("userId") Long userId);
 
     //todo: check this query on db.
-    @Query(name = "SELECT rs.* FROM reserves rs WHERE rs.clientId = :clientId AND rs.isActive = TRUE", nativeQuery = true)
-    List<Reserves> findAllByClientId(@Param("clientId") final Long clientId);
+    @Query(name = "SELECT rs.* FROM reserves rs WHERE rs.clientId = :clientId AND rs.isActive = :active", nativeQuery = true)
+    List<Reserves> findAllByClientIdAndIsActive(@Param("clientId") Long clientId, @Param("active") Boolean active);
 
     //todo: check this query on db.
     @Query(name = "SELECT rs.* FROM reserves rs WHERE rs.clientId = :userId AND rs.createdOn >= :currentDate", nativeQuery = true)
-    Reserves findByClientId(@Param("userId") final Long userId, @Param("currentDate") final Instant currentDate );
+    Reserves findByClientIdAndCreatedOn(@Param("userId") Long userId, @Param("currentDate") Instant currentDate );
 }

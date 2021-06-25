@@ -1,0 +1,230 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_enterprise_table
+      author: max_olivero
+
+      changes:
+        - createTable:
+            tableName: enterprise
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR
+              - column:
+                  name: legal_name
+                  type: VARCHAR
+              - column:
+                  name: email
+                  type: VARCHAR
+              - column:
+                  name: internal_phone
+                  type: VARCHAR
+              - column:
+                  name: legal_number
+                  type: VARCHAR
+              - column:
+                  name: brand_id
+                  type: BIGINT
+              - column:
+                  name: shop_time_id
+                  type: BIGINT
+              - column:
+                  name: address_id
+                  type: BIGINT
+              - column:
+                  name: rating_score_id
+                  type: BIGINT
+              - column:
+                  name: status
+                  type: VARCHAR
+              - column:
+                  name: created_on
+                  type: TIMESTAMP
+              - column:
+                  name: updated_on
+                  type: TIMESTAMP
+              - column:
+                  name: has_integration
+                  type: BOOLEAN
+              - column:
+                  name: enabled
+                  type: BOOLEAN
+
+
+  ## ShopTime Table
+  - changeSet:
+      id: create_shop_time_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: shop_time
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: address_id
+                  type: BIGINT
+              - column:
+                  name: enterprise_id
+                  type: BIGINT
+              - column:
+                  name: created_on
+                  type: TIMESTAMP
+              - column:
+                  name: deleted_on
+                  type: TIMESTAMP
+              - column:
+                  name: enabled
+                  type: BOOLEAN
+
+  ## EnterpriseProducts Table
+  - changeSet:
+      id: create_enterprise_products_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: enterprise_products
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: enterprise_id
+                  type: BIGINT
+              - column:
+                  name: product_id
+                  type: BIGINT
+
+
+  ## EnterpriseUsers Table
+  - changeSet:
+      id: create_enterprise_users_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: enterprise_users
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: enterprise_id
+                  type: BIGINT
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: social_number
+                  type: BIGINT
+
+
+  ## EnterpriseProviders Table
+  - changeSet:
+      id: create_enterprise_providers_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: enterprise_providers
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: enterprise_id
+                  type: BIGINT
+              - column:
+                  name: provider_id
+                  type: BIGINT
+
+
+  ## EnterpriseServices Table
+  - changeSet:
+      id: create_enterprise_reserves_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: enterprise_reserves
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: enterprise_id
+                  type: BIGINT
+              - column:
+                  name: reserve_id
+                  type: BIGINT
+
+  ## RatingScore Table
+  - changeSet:
+      id: create_rating_score_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: rating_score
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: percentage
+                  type: BIGINT
+              - column:
+                  name: average
+                  type: DOUBLE
+              - column:
+                  name: count
+                  type: INT
+
+  ## Days to Work Table
+  - changeSet:
+      id: create_days_to_work_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: days_to_work
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: shop_time_id
+                  type: BIGINT
+              - column:
+                  name: day_name
+                  type: VARCHAR
+              - column:
+                  name: open_time
+                  type: VARCHAR
+              - column:
+                  name: close_time
+                  type: VARCHAR
+

@@ -8,9 +8,12 @@ import zero.our.piece.barbers.barbers_api.barber.model.Barber
 import zero.our.piece.barbers.barbers_api.barber.model.DTO.BarberRequestDTO
 import zero.our.piece.barbers.barbers_api.barber.model.DTO.BarberResponseDTO
 import zero.our.piece.barbers.barbers_api.barber.repository.BarberRepository
+import zero.our.piece.barbers.barbers_api.barber.repository.BarberUsersRepository
 import zero.our.piece.barbers.barbers_api.enterprise.service.ShopTimeService
 import zero.our.piece.barbers.barbers_api.magicCube.exception.CreateResourceException
 import zero.our.piece.barbers.barbers_api.magicCube.exception.ResourceNotFoundException
+import zero.our.piece.barbers.barbers_api.user.infrastructure.BarberUsers
+import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersPermission
 import zero.our.piece.barbers.barbers_api.user.model.User
 import zero.our.piece.barbers.barbers_api.user.service.UserService
 
@@ -22,6 +25,9 @@ class BarberService {
 
     @Autowired
     BarberRepository barberRepository
+
+    @Autowired
+    BarberUsersRepository barberUsersRepository
 
     @Autowired
     ShopTimeService shopTimeService
@@ -48,7 +54,7 @@ class BarberService {
     BarberResponseDTO findById(Long id) {
         try {
             def foundUser = barberRepository.findById(id).get()
-            if (!foundUser?.id) throw new ResourceNotFoundException("USER_NOT_FOUND")
+            if (!foundUser?.id) throw new ResourceNotFoundException("BARBER_NOT_FOUND")
 
             return decoratorPatternBarber(foundUser)
         } catch (ResourceNotFoundException | NoSuchElementException ex) {
@@ -76,6 +82,7 @@ class BarberService {
             def savedBarber = barberRepository.save(barber)
             user.barber_id = savedBarber.id
             userService.saveUser(user, 'Updating barberID')
+            barberUsersRepository.save(new BarberUsers(barberId: user.barber_id, userId: user.id))
 
             return decoratorPatternBarber(savedBarber)
         } catch (ResourceNotFoundException | NoSuchElementException ex) {
@@ -164,7 +171,8 @@ class BarberService {
                         username: barber.username,
                         password: barber.password,
                         email: barber.email,
-                        enterprise_id: barber.enterprise_id
+                        enterprise_id: barber.enterprise_id ?: 1,
+                        permission: barber.roll ? UsersPermission.valueOf(barber.roll.name()) : UsersPermission.BARBER
                 ))
         return userService.saveUser(user, 'CREATE')
     }

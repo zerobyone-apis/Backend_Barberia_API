@@ -30,7 +30,7 @@ class BarberController {
     @GetMapping()
     //@PreAuthorize('hasAuthorities()')
     @ResponseStatus(HttpStatus.OK)
-    def getBarbers(Principal principal) {
+    def getBarbers(/*Principal principal*/) {
         //def user = securityService.getLoggedUser(principal)
         service.findAll()
     }
@@ -38,7 +38,7 @@ class BarberController {
     @GetMapping("/actives")
     //@PreAuthorize('hasAuthorities()')
     @ResponseStatus(HttpStatus.OK)
-    def getActiveBarbers(Principal principal) {
+    def getActiveBarbers(/*Principal principal*/) {
         //def user = securityService.getLoggedUser(principal)
         service.findAllActives()
     }
@@ -46,15 +46,15 @@ class BarberController {
     @GetMapping("/{id}")
     //@PreAuthorize('hasAuthorities()')
     @ResponseStatus(HttpStatus.OK)
-    def getBarberById(Principal principal, @PathVariable("id") Long barberId) {
+    def getBarberById(/*Principal principal,*/ @PathVariable("id") Long barberId) {
         //def user = securityService.getLoggedUser(principal)
         service.findById(barberId)
     }
 
-    @GetMapping("/{user_id}")
+    @GetMapping("/user/{id}")
     //@PreAuthorize('hasAuthorities()')
     @ResponseStatus(HttpStatus.OK)
-    def getBarberUserById(Principal principal, @PathVariable("user_id") Long userId) {
+    def getBarberUserById(/*Principal principal,*/ @PathVariable("id") Long userId) {
         //def user = securityService.getLoggedUser(principal)
         service.findByUserId(userId)
     }
@@ -62,7 +62,7 @@ class BarberController {
     @PostMapping
     //@PreAuthorize('hasAuthorities()')
     @ResponseStatus(HttpStatus.OK)
-    def create(Principal principal, @RequestBody BarberRequestDTO barber) {
+    def create(/*Principal principal,*/ @RequestBody BarberRequestDTO barber) {
         //def user = securityService.getLoggedUser(principal)
         service.create(barber)
     }
@@ -70,7 +70,7 @@ class BarberController {
     @PutMapping("/{barber_id}")
     //@PreAuthorize('hasAuthorities()')
     @ResponseStatus(HttpStatus.OK)
-    def update(Principal principal, @RequestBody BarberRequestDTO barber, @PathVariable("barber_id") Long barberId) {
+    def update(/*Principal principal,*/ @RequestBody BarberRequestDTO barber, @PathVariable("barber_id") Long barberId) {
         //def user = securityService.getLoggedUser(principal)
         service.update(barber, barberId)
     }
@@ -80,12 +80,9 @@ class BarberController {
     @PatchMapping("/deactivate/{barber_id}")
     //@PreAuthorize('hasAuthorities()')
     @ResponseStatus(HttpStatus.OK)
-    void logicDeleteById(Principal principal, @PathVariable("barber_id") Long id) {
+    void logicDeleteById(/* Principal principal,*/ @PathVariable("barber_id") Long id) {
         //def user = securityService.getLoggedUser(principal)
         service.logicDelete(id);
     }
-
-
-
 
 }

@@ -12,7 +12,7 @@ import java.time.LocalDateTime
 class ServicesResponseDTO {
 
     Long id
-    String serviceName  // FIXME: de momento puede servir para añadir mas info descriptivo al servicio pero podriamos renombrar
+    String description
 
     // Type Service
     ServicesBarber barberService
@@ -21,11 +21,13 @@ class ServicesResponseDTO {
 
     // Cost service
     Double priceService
+    Double productCost
+    Double externalServicesCost
     Double totalCost
     Boolean underPromotion
 
     // Time Service
-    Time durationOfService
+    String durationOfService
     LocalDateTime start
     LocalDateTime finish
 
@@ -35,6 +37,9 @@ class ServicesResponseDTO {
 
     Long clientId
     String clientName
+    String clientPhone
+    String socialNumber
+    String clientEmail
 
     WorkServiceStatus status
 }

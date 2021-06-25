@@ -15,6 +15,6 @@ class ClientUsers {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "client_users_sequence")
     @SequenceGenerator(name = "client_users_sequence", sequenceName = "client_users_sequence", allocationSize = 1)
     Long id
-    Long client_id
-    Long user_id
+    Long clientId
+    Long userId
 }

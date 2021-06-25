@@ -12,27 +12,32 @@ import java.time.LocalDateTime
 
 class ServicesRequestDTO {
 
-     String service_name
+     String description
 
     // Type Service
-    ServicesBarber barber_service
-    ServicesHairdresser hairdresser_service
+    ServicesBarber barberService
+    ServicesHairdresser hairdresserService
     Promos promos
 
     // Cost service
-    Double price_service
-    Double total_cost
-    Boolean under_promotion
+    Double priceService
+    Double productCost
+    Double externalServicesCost
+    Double totalCost
+    Boolean underPromotion
 
     // Time Service
-    Time duration_of_service
+    String duration
     LocalDateTime start
 
     // user & client info
-    Long user_id
+    Long userId
     String username
 
-    Long client_id
-    String client_name
+    Long clientId
+    String clientName
+    String clientPhone
+    String clientEmail
+    String socialNumber
 
 }

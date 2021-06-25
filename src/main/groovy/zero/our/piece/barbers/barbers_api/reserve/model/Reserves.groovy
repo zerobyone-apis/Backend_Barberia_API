@@ -30,36 +30,22 @@ class Reserves {
 
     // client info
     Long clientId
-    Long clientName                             //fixme: Unnecessary by client ID
-    String clientPhone                          //fixme: Unnecessary by client ID
-    String emailClient                          //fixme: Unnecessary by client ID
-    String socialNumber                         //fixme: Unnecessary by client ID
 
     // DateTime info
-    Time duration
-    LocalDateTime reserveDatetime                     // Las dos cosas, el dia y la hora.
+    String duration
+    LocalDateTime reserveDatetime       // Las dos cosas, el dia y la hora.
 
     // Reserve Description Info
     Long workServiceId
-    ServicesBarber barberService                //fixme: Unnecessary by workService ID
-    ServicesHairdresser hairdresserService      //fixme: Unnecessary by workService ID
-    Promos promos                               //fixme: Unnecessary by workService ID
-
-    // Cost reserve - Los mismos que el servicio pero se añaden los del producto
-    Double priceService                          //fixme: Unnecessary by workService ID
-    Boolean underPromotion                       //fixme: Unnecessary by workService ID
-    Double productCost                           //TODO: Crear el servicio de producto y validar en el servicio para hacer analitycs
-    Double externalServicesCost                  // Cafeteria, bebidas, etc,
-    Double totalCost                            //fixme: Unnecessary by workService ID
 
     // Creation data
     Instant createdOn
     Instant updateOn
     Instant cancelOn
 
-    WorkServiceStatus reserveStatus              //fixme: Unnecessary by workService ID
+    Boolean requestedCancel              //todo: Propiedad por si el cliente quiere cancelar la reserva
 
-    Boolean isActive = Boolean.TRUE             //todo: Esto deberia reemplazarse por el RESERVED
+    Boolean isActive = Boolean.TRUE
 
 
 }

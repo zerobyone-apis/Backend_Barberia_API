@@ -48,10 +48,7 @@ class UserService {
 
     List<UserResponseDTO> findAll() {
         try {
-            userRepository.findAll()
-                    .stream()
-                    .map({ it -> decoratorPatternUser(it) })
-                    .collect(Collectors.toList())
+            userRepository.findAll().collect { it -> decoratorPatternUser(it) }
         } catch (ResourceNotFoundException | NoSuchElementException ex) {
             throw new ResourceNotFoundException(ex.message)
         }
@@ -101,43 +98,6 @@ class UserService {
         response
     }
 
-
-    // Used by Reserves to find user data info
-    public ResponseUserLoginDTO findUserToFillReserve(Long userId) {
-        def user = this.findUserById(userId)
-        def response = getUserByPermission(user)
-        response.user = decoratorPatternUser(user)
-        response
-    }
-
-    protected ResponseUserLoginDTO getUserByPermission(User user){
-        ResponseUserLoginDTO response = new ResponseUserLoginDTO()
-        switch (user.permission) {
-            case UsersPermission.CLIENT:
-                response.client = checkUserIsClient(user)
-                break
-            case UsersPermission.BARBER:
-                response.barber = checkUserIsBarber(user)
-                break
-            case UsersPermission.HAIRDRESSER:
-                //todo: hairdresser search
-                response.barber = checkUserIsBarber(user)
-                break
-            case UsersPermission.SUPERVISOR:
-                //todo: Supervisor search
-                response.barber = checkUserIsBarber(user)
-                break
-            case UsersPermission.ADMIN:
-                //todo: Admin search
-                response.barber = checkUserIsBarber(user)
-                break
-            default:
-                log.error("Permission Denied.. you have no access to this information.")
-                break
-        }
-        response
-    }
-
     UserResponseDTO create(User user) {
         User newUser = createUser(user)
         newUser = saveUser(newUser, 'CREATE')
@@ -169,9 +129,9 @@ class UserService {
                 username: user?.username,
                 password: user?.password,
                 email: user?.email,
-                permission: user?.permission ?: UsersPermission.CLIENT,
+                permission: user?.permission,
                 barber_id: user?.barber_id,
-                enterprise_id: user?.enterprise_id,
+                enterprise_id: user?.enterprise_id ?: 1,
                 hairdresser_id: user?.hairdresser_id,
                 client_id: user?.client_id,
                 created_on: Instant.now(),
@@ -213,6 +173,42 @@ class UserService {
         }
     }
 
+    // Used by Reserves to find user data info
+    ResponseUserLoginDTO findUserToFillReserve(Long userId) {
+        def user = this.findUserById(userId)
+        def response = getUserByPermission(user)
+        response.user = decoratorPatternUser(user)
+        response
+    }
+
+    protected ResponseUserLoginDTO getUserByPermission(User user){
+        ResponseUserLoginDTO response = new ResponseUserLoginDTO()
+        switch (user.permission) {
+            case UsersPermission.CLIENT:
+                response.client = checkUserIsClient(user)
+                break
+            case UsersPermission.BARBER:
+                response.barber = checkUserIsBarber(user)
+                break
+            case UsersPermission.HAIRDRESSER:
+                //todo: hairdresser search
+                response.barber = checkUserIsBarber(user)
+                break
+            case UsersPermission.SUPERVISOR:
+                //todo: Supervisor search
+                response.barber = checkUserIsBarber(user)
+                break
+            case UsersPermission.ADMIN:
+                //todo: Admin search
+                response.barber = checkUserIsBarber(user)
+                break
+            default:
+                log.error("Permission Denied.. you have no access to this information.")
+                break
+        }
+        response
+    }
+
     protected User loginProcess(RequestUserLoginDTO user) {
         try {
             User foundUser = new User()
@@ -243,8 +239,11 @@ class UserService {
     protected ClientResponseDTO checkUserIsClient(User user) {clientService.findByUserId(user.id)}
 
     protected Long setSocialNumber(User user) {
+        def socialNumeber = (user.social_number != null && user.social_number > 0)
         try {
-            if (!user?.social_number) {
+            if (socialNumeber) {
+                return user.social_number
+            } else {
                 //todo: El enterprise ID se obtiene de la pagina o Empresa a la que el usuario ser registro, cada barberia o peluqueria va a tener su propio
                 //      Sitio web por lo que tendra su propio EnterpriseID al registrarse de un sitio , se consigue el Enterprise ID de esa EMpresa,
                 //      Esto nos ayuda a tener claro de que empresa es cada usuario y calcular las metricas correctas con estos datos.
@@ -257,8 +256,6 @@ class UserService {
                 } else {
                     return maxValue + 1
                 }
-            } else {
-                return user.social_number
             }
         } catch (Exception ex) {
             log.error("ERROR: Finding the MAX Social Number... ${ex.getMessage()}")
