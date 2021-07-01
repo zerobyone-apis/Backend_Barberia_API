@@ -27,6 +27,8 @@ databaseChangeLog:
         file: /db/changelog/entities/contact.yaml
     - include:
         file: /db/changelog/entities/foreignkeys.yaml
+    - include:
+        file: /db/changelog/entities/audits.yaml
 
 
 

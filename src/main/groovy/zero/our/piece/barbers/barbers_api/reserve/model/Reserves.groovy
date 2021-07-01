@@ -10,6 +10,7 @@ import zero.our.piece.barbers.barbers_api.services.infrastructure.WorkServiceSta
 import javax.persistence.*
 import java.sql.Time
 import java.time.Instant
+import java.time.LocalDateTime
 
 @Entity
 @ToString
@@ -25,40 +26,26 @@ class Reserves {
     // user - barber or hairdresser info
     Long userId
     Long enterpriseId
-    String employeeUsername // El barbero o peluquero con el que se agenda. v
+    String employeeUsername // El barbero o peluquero con el que se agenda.
 
     // client info
     Long clientId
-    Long clientName
-    String clientPhone
-    String emailClient
-    String socialNumber
 
     // DateTime info
-    Time duration
-    Instant reserveDatetime // Las dos cosas, el dia y la hora.
+    String duration
+    LocalDateTime reserveDatetime       // Las dos cosas, el dia y la hora.
 
     // Reserve Description Info
     Long workServiceId
-    ServicesBarber barberService
-    ServicesHairdresser hairdresserService
-    Promos promos
-
-    // Cost reserve - Los mismos que el servicio pero se añaden los del producto
-    Double priceService
-    Boolean underPromotion
-    Double productCost
-    Double externalServicesCost // Cafeteria, bebidas, etc,
-    Double totalCost //todo: Validar o aplicar la promocion en el servicio o costo total dependiendo de la promo.
 
     // Creation data
     Instant createdOn
     Instant updateOn
     Instant cancelOn
 
-    WorkServiceStatus reserveStatus
+    Boolean requestedCancel              //todo: Propiedad por si el cliente quiere cancelar la reserva
 
-    Boolean isActive = Boolean.TRUE // Esto deberia reemplazarse por el RESERVED
+    Boolean isActive = Boolean.TRUE
 
 
 }

@@ -3,10 +3,13 @@ package zero.our.piece.barbers.barbers_api.user.service
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import zero.our.piece.barbers.barbers_api.client.model.DTO.ClientResponseDTO
 import zero.our.piece.barbers.barbers_api.magicCube.exception.ResourceNotFoundException
 import zero.our.piece.barbers.barbers_api.user.model.RegisterLogins
 import zero.our.piece.barbers.barbers_api.user.model.User
 import zero.our.piece.barbers.barbers_api.user.repository.RegisterLoginRepository
+
+import java.lang.invoke.DirectMethodHandle
 import java.time.Instant
 
 @Service
@@ -43,6 +46,10 @@ class RegisterLoginService {
         registerLoginRepository.save(createLogSession(user, Action.MORE_EVENTS))
     }
 
+    void cancelReserve(User user, Action action) {
+        registerLoginRepository.save(createLogSession(user, action))
+    }
+
     static RegisterLogins createLogSession(User login, Action action) {
         return new RegisterLogins(
                 username: login.username,
@@ -64,5 +71,6 @@ enum Action {
     UPDATE,
     LOGIN,
     LOGOUT,
+    USER_CANCEL_RESERVES,
     MORE_EVENTS //Definir los tipos de eventos y sus nuevos campos.
 }

@@ -49,9 +49,7 @@ class ClientController {
     }
 
 
-/*
 
-    //todo: get by email
     @GetMapping("/{email}")
     @ResponseStatus(HttpStatus.OK)
     def findByEmail(@PathVariable("email") String email) {
@@ -65,11 +63,11 @@ class ClientController {
     }
 
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deactivate/{clientId}")
     @ResponseStatus(HttpStatus.OK)
-    void deleteById(@PathVariable("id") Long id) {
-        clientService.logicalDeleted(id);
+    void desactivateAccount(@PathVariable("clientId") Long id) {
+        clientService.logicDelete(id);
     }
-*/
+
 
 }

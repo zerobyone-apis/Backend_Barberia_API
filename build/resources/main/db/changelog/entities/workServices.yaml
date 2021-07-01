@@ -13,29 +13,35 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  name: service_name
+                  name: description
                   type: VARCHAR
               - column:
-                  name: barber_service
+                  name: barberService
                   type: VARCHAR
               - column:
-                  name: hairdresser_service
+                  name: hairdresserService
                   type: VARCHAR
               - column:
                   name: promos
                   type: VARCHAR
               - column:
-                  name: price_Service
+                  name: priceService
                   type: DOUBLE
               - column:
-                  name: total_cost
+                  name: productCost
                   type: DOUBLE
               - column:
-                  name: under_promotion
+                  name: externalServicesCost
+                  type: DOUBLE
+              - column:
+                  name: totalCost
+                  type: DOUBLE
+              - column:
+                  name: underPromotion
                   type: BOOLEAN
               - column:
-                  name: duration_of_service
-                  type: TIMESTAMP
+                  name: duration
+                  type: VARCHAR
               - column:
                   name: start
                   type: TIMESTAMP
@@ -43,19 +49,34 @@ databaseChangeLog:
                   name: finish
                   type: TIMESTAMP
               - column:
-                  name: user_id
+                  name: userId
                   type: BIGINT
               - column:
                   name: username
                   type: VARCHAR
               - column:
-                  name: client_id
+                  name: clientId
                   type: BIGINT
               - column:
-                  name: created_on
+                  name: clientName
+                  type: VARCHAR
+              - column:
+                  name: clientPhone
+                  type: VARCHAR
+              - column:
+                  name: clientEmail
+                  type: VARCHAR
+              - column:
+                  name: socialNumber
+                  type: VARCHAR
+              - column:
+                  name: createdOn
                   type: TIMESTAMP
               - column:
-                  name: updated_on
+                  name: updatedOn
+                  type: TIMESTAMP
+              - column:
+                  name: canceledOn
                   type: TIMESTAMP
               - column:
                   name: status

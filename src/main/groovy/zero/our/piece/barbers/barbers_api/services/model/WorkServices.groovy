@@ -10,6 +10,7 @@ import zero.our.piece.barbers.barbers_api.services.infrastructure.WorkServiceSta
 import javax.persistence.*
 import java.sql.Time
 import java.time.Instant
+import java.time.LocalDateTime
 
 @Entity
 @ToString
@@ -21,31 +22,39 @@ class WorkServices {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "work_services_sequence")
     @SequenceGenerator(name = "work_services_sequence", sequenceName = "work_services_sequence", allocationSize = 1)
     Long id
-    String service_name
+    String description
 
     // Type Service
-    ServicesBarber barber_service
-    ServicesHairdresser hairdresser_service
+    ServicesBarber barberService
+    ServicesHairdresser hairdresserService
+
+    // promotions
     Promos promos
 
     // Cost service
-    Double price_service
-    Double total_cost        //todo: Validar o aplicar la promocion en el servicio o costo total dependiendo de la promo.
-    Boolean under_promotion  //todo: Se aplica alguna promocion?
+    Double priceService
+    Double productCost                                  //TODO: Crear el servicio de producto y validar en el servicio para hacer analitycs
+    Double externalServicesCost
+    Double totalCost
+    Boolean underPromotion
 
     // Time Service
-    Time duration_of_service //todo: esto puede ser un enum con los horarios prestablecidos de tiempo
-    Instant start //fecha y hora
-    Instant finish   //fecha y hora se puede calcular en base a la duration pero para persivir mejor el tiempo
+    String duration
+    LocalDateTime start                                       // Fecha y hora
+    LocalDateTime finish                                      // Fecha y hora se puede calcular en base a la duration pero para persivir mejor el tiempo
 
     // user & client info
-    Long user_id
+    Long userId
     String username
-    Long client_id
-    String client_name
+    Long clientId
+    String clientName
+    String clientPhone
+    String clientEmail
+    String socialNumber
 
-    Instant created_on
-    Instant updated_on
+    Instant createdOn
+    Instant updatedOn
+    Instant canceledOn
 
     WorkServiceStatus status
 }

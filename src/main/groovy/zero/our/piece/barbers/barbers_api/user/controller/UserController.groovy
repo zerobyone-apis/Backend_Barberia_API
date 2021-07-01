@@ -26,7 +26,6 @@ class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     def create(@RequestBody User user) {
       userService.create(user);
-
     }
 
     @PutMapping
@@ -39,6 +38,12 @@ class UserController {
     @ResponseStatus(HttpStatus.OK)
     def getUserById(@PathVariable("id") Long idUser) {
         userService.findById(idUser);
+    }
+
+    @GetMapping("/username/{username}")
+    @ResponseStatus(HttpStatus.OK)
+    def getUserByUsername(@PathVariable("username") String username) {
+        userService.findByUsername(username);
     }
 
     @PostMapping("/v1/login")

@@ -7,6 +7,7 @@ class BarberResponseDTO {
     // barber info;
     Long id
     String name
+    String phone
     String open_work_time
     String duration_cuts_time
     Long enterprise_id
@@ -16,10 +17,13 @@ class BarberResponseDTO {
     String description
     EnterpriseRoll roll
     Double prestige
-    Boolean is_admin
+
+    Boolean accept_integration
+    Boolean accept_facebook_integration
 
     String facebook_username
     String fb_image_profile_url
     String inst_username
     String inst_image_profile_url
+    Boolean is_admin
 }

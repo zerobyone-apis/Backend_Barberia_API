@@ -55,6 +55,9 @@ class Enterprise {
     @NotNull(message = "INVALID_ADDRESS_ID")
     Long address_id
 
+    @NotNull(message = "INVALID_ADDRESS_ID")
+    Long site_id                                    // TODO: CREAR UN CONTROLLER Y ENTITY DE CONFIGURACIONES
+
     Long rating_score_id
     EnterpriseStatus status
 
@@ -77,6 +80,5 @@ class Enterprise {
     Boolean has_integration // Integration with others apis
     Boolean enabled = Boolean.TRUE
 
-    //TODO: Queda temrinar varios de las entidades y realizar todas las tablas en liquibase.
     // See: https://web.archive.org/web/20161108113341/https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
 }

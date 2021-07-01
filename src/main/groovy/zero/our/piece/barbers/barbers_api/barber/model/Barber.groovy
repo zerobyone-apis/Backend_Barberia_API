@@ -23,8 +23,8 @@ class Barber {
     Long user_id
     String name
     String username
-    String phone        //TODO: Encriptar estos datos
-    String email        //TODO: Encriptar estos datos
+    String phone                                //TODO: Encriptar estos datos
+    String email                                //TODO: Encriptar estos datos
     String description
 
     // Enterprise info
@@ -32,17 +32,17 @@ class Barber {
     EnterpriseRoll roll
     // check: El roll tiene que ser el mismo que el Permission de Usuario para poder ver los accesos correctos.
 
-    String open_work_time     // horario en el que trabaja, o se rige por la empresa
-    String duration_cut_time // duracion de sus servicios, 30 min, 40 min, 1 hora. etc.
+    String open_work_time                       // horario en el que trabaja, o se rige por la empresa
+    String duration_cut_time                    // duracion de sus servicios, 30 min, 40 min, 1 hora. etc.
 
     // Social Media - Instagram.
-    String inst_username         //TODO: Encriptar estos datos
-    String inst_image_profile_url     //TODO: Encriptar estos datos
-    Boolean accept_integration   //TODO: Encriptar estos datos
+    String inst_username                         //TODO: Encriptar estos datos
+    String inst_image_profile_url                //TODO: Encriptar estos datos
+    Boolean accept_integration                   //TODO: Encriptar estos datos
 
-    String facebook_username             //TODO: Encriptar estos datos
-    String fb_image_profile_url               //TODO: Encriptar estos datos
-    Boolean accept_facebook_integration   //TODO: Encriptar estos datos
+    String facebook_username                     //TODO: Encriptar estos datos
+    String fb_image_profile_url                  //TODO: Encriptar estos datos
+    Boolean accept_facebook_integration          //TODO: Encriptar estos datos
 
     // Analytics data - This data is only required when it necessary do the metrics by batch operation or on hand.
     @Transient
@@ -87,5 +87,6 @@ class Barber {
     Instant updated_on
 
     Boolean is_active = Boolean.TRUE
+    Boolean is_admin = Boolean.FALSE
 }
 

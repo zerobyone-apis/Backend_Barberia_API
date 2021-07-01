@@ -8,8 +8,11 @@ import zero.our.piece.barbers.barbers_api.client.model.Client
 import zero.our.piece.barbers.barbers_api.client.model.DTO.ClientRequestDTO
 import zero.our.piece.barbers.barbers_api.client.model.DTO.ClientResponseDTO
 import zero.our.piece.barbers.barbers_api.client.repository.ClientRepository
+import zero.our.piece.barbers.barbers_api.client.repository.ClientUsersRepository
 import zero.our.piece.barbers.barbers_api.magicCube.exception.CreateResourceException
 import zero.our.piece.barbers.barbers_api.magicCube.exception.ResourceNotFoundException
+import zero.our.piece.barbers.barbers_api.user.infrastructure.ClientUsers
+import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersPermission
 import zero.our.piece.barbers.barbers_api.user.model.User
 import zero.our.piece.barbers.barbers_api.user.service.UserService
 
@@ -24,14 +27,14 @@ class ClientService {
     ClientRepository clientRepository
 
     @Autowired
+    ClientUsersRepository clientUsersRepository
+
+    @Autowired
     UserService userService
 
     List<ClientResponseDTO> findAll() {
         try {
-            clientRepository.findAll()
-                    .stream()
-                    .map({ it -> decoratorPatternClient(it) })
-                    .collect(Collectors.toList())
+            clientRepository.findAll().collect { it -> decoratorPatternClient(it) }
         } catch (ResourceNotFoundException | NoSuchElementException ex) {
             throw new ResourceNotFoundException(ex.message)
         }
@@ -81,21 +84,6 @@ class ClientService {
         }
     }
 
-    void logicalDeleted(Long id) {
-        try {
-            Optional<Client> client = clientRepository.findById(id)
-            if (!client.isPresent()) throw new ResourceNotFoundException("CLIENT NOT FOUND")
-            client.get().is_active = false
-            client.get().updated_on = Instant.now()
-
-            userService.delete(client.get().user_id)
-            clientRepository.save(client.get())
-            log.info("Logical delete successfully")
-        } catch (ResourceNotFoundException | NoSuchElementException ex) {
-            throw new ResourceNotFoundException(ex.message)
-        }
-    }
-
     ClientResponseDTO create(ClientRequestDTO body) {
         Client client = createClient(body)
         User user = createUser(body)
@@ -105,10 +93,10 @@ class ClientService {
         def savedClient = clientRepository.save(client)
         user.client_id = savedClient.id
         userService.saveUser(user, 'Updating clientID')
+        clientUsersRepository.save(new ClientUsers(clientId: user.client_id, userId: user.id))
 
         return decoratorPatternClient(savedClient)
     }
-
 
     ClientResponseDTO update(ClientRequestDTO body, Long clientId) {
         def existentClient = clientRepository.findById(clientId)
@@ -120,14 +108,6 @@ class ClientService {
         def savedClient = clientRepository.save(client)
         return decoratorPatternClient(savedClient)
     }
-
-
-    //TODO: Algunos metodos para hacer.
-    void updateAmountReserve() {}
-
-    void updateMetrics() {}
-
-    void generateMetrics() {}
 
     void logicDelete(Long clientId) {
         try {
@@ -142,6 +122,21 @@ class ClientService {
 
     }
 
+    //TODO: Algunos metodos para hacer METRICS.
+    void updateAmountReserve() {}
+    void updateMetrics() {}
+    void generateMetrics() {}
+
+    Client findClientById(Long id) {
+        try {
+            def foundUser = clientRepository.findById(id).get()
+            if (!foundUser?.id) throw new ResourceNotFoundException("USER_NOT_FOUND")
+
+            return foundUser
+        } catch (ResourceNotFoundException | NoSuchElementException ex) {
+            throw new ResourceNotFoundException(ex.message)
+        }
+    }
 
     protected static Client createClient(client) {
         new Client(
@@ -158,17 +153,16 @@ class ClientService {
         )
     }
 
-
     protected static Client updateClient(Client existent, newClient) {
 
-        existent.name = newClient.name
-        existent.username = newClient.username
-        existent.phone = newClient.phone
-        existent.email = newClient.email
-        existent.inst_username = newClient?.inst_username
+        existent.name                   = newClient.name
+        existent.username               = newClient.username
+        existent.phone                  = newClient.phone
+        existent.email                  = newClient.email
+        existent.inst_username          = newClient?.inst_username
         existent.inst_image_profile_url = newClient?.inst_image_profile_url
-        existent.inst_photo_url = newClient?.inst_photo_url
-        existent.accept_integration = newClient.accept_integration ?: false
+        existent.inst_photo_url         = newClient?.inst_photo_url
+        existent.accept_integration     = newClient.accept_integration ?: false
         //existent.client_type =  ClientType.NEW_CLIENT //todo count reserve to evaluete type of client
 
         existent
@@ -180,7 +174,8 @@ class ClientService {
                         username: client.username,
                         password: client.password,
                         email: client.email,
-                        enterprise_id: client.enterprise_id
+                        enterprise_id: client.enterprise_id ?: 1,
+                        permission: UsersPermission.CLIENT
                 ))
         return userService.saveUser(user, 'CREATE')
     }
@@ -195,7 +190,7 @@ class ClientService {
                             username: client.username,
                             password: client.password,
                             email: client.email,
-                            enterprise_id: client.enterprise_id
+                            enterprise_id: client.enterprise_id ?: 1
                     ))
 
             return userService.saveUser(user, 'UPDATE')

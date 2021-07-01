@@ -13,75 +13,39 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  name: user_id
+                  name: userId
                   type: BIGINT
               - column:
-                  name: enterprise_id
+                  name: enterpriseId
                   type: BIGINT
               - column:
-                  name: employee_username
+                  name: employeeUsername
                   type: VARCHAR
               - column:
-                  name: client_id
+                  name: clientId
                   type: BIGINT
-              - column:
-                  name: client_name
-                  type: VARCHAR
-              - column:
-                  name: client_phone
-                  type: VARCHAR
-              - column:
-                  name: email_client
-                  type: VARCHAR
-              - column:
-                  name: social_number
-                  type: VARCHAR
               - column:
                   name: duration
+                  type: VARCHAR
+              - column:
+                  name: reserveDatetime
                   type: TIMESTAMP
               - column:
-                  name: reserve_datetime
-                  type: TIMESTAMP
-              - column:
-                  name: work_service_id
+                  name: workServiceId
                   type: BIGINT
               - column:
-                  name: barber_service
-                  type: VARCHAR
+                  name: createdOn
+                  type: TIMESTAMP
               - column:
-                  name: hairdresser_service
-                  type: VARCHAR
+                  name: updateOn
+                  type: TIMESTAMP
               - column:
-                  name: promos
-                  type: VARCHAR
+                  name: cancelOn
+                  type: TIMESTAMP
               - column:
-                  name: price_service
-                  type: DOUBLE
-              - column:
-                  name: product_cost
-                  type: DOUBLE
-              - column:
-                  name: external_services_cost
-                  type: DOUBLE
-              - column:
-                  name: total_cost
-                  type: DOUBLE
-              - column:
-                  name: under_promotion
+                  name: requestedCancel
                   type: BOOLEAN
               - column:
-                  name: created_on
-                  type: TIMESTAMP
-              - column:
-                  name: update_on
-                  type: TIMESTAMP
-              - column:
-                  name: cancel_on
-                  type: TIMESTAMP
-              - column:
-                  name: reserve_status
-                  type: VARCHAR
-              - column:
-                  name: is_active
+                  name: isActive
                   type: BOOLEAN
 
