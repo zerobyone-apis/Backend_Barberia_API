@@ -1,8 +1,10 @@
-package zero.our.piece.barbers.barbers_api._security
+package zero.our.piece.barbers.barbers_api._security.infrastructure
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
@@ -11,14 +13,23 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.provisioning.InMemoryUserDetailsManager
-import org.springframework.web.cors.CorsConfiguration
-import org.springframework.web.cors.CorsConfigurationSource
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource
-import static zero.our.piece.barbers.barbers_api._security.ApplicationUserRole.*
+
+
+import static ApplicationUserRole.*
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    /*
+        TODO:
+            Basic Authentication funciona.
+            falta guardar los usuarios, y pasarnos a FORM AUTHENTICATION con JWT.
+
+            -> https://youtu.be/her_7pa0vrg?t=8362 crack.
+
+     */
 
     @Autowired
     private PasswordEncoder passwordEncoder
@@ -26,62 +37,49 @@ class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "index", "/js/*").permitAll()
-                .antMatchers("/enterprise/**", "/email/**", "/metrics").hasRole(ADMIN.name()) //todo: we can select which route can access the rol.
+                .antMatchers("/user/login").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
                 .httpBasic()
     }
 
-    /*  todo: ROUTE BASE AUTHENTICATION.
-            Falta terminar de crear la seguridad, por ahoran tenemos autenticacion de rutas por medio de bcrypt y spring.
-            - https://www.youtube.com/watch?v=her_7pa0vrg&t=1948s min: 01:15
-    */
 
-
-    @Override
     @Bean
+    @Override
     protected UserDetailsService userDetailsService() {
         UserDetails admin = User.builder()
                 .username("zeroDev")
                 .password(passwordEncoder.encode("password"))
-                .roles(ADMIN.name())
+                //.roles(ADMIN.name())
+                .authorities(ADMIN.getGrantedAuthorities())
                 .build()
 
         UserDetails supervisor = User.builder()
                 .username("TeamSupervisor")
                 .password(passwordEncoder.encode("password"))
-                .roles(SUPERVISOR.name())
+                //.roles(SUPERVISOR.name())
+                .authorities(SUPERVISOR.getGrantedAuthorities())
                 .build()
 
         UserDetails barber = User.builder()
                 .username("TeamBarber")
                 .password(passwordEncoder.encode("password"))
-                .roles(BARBER.name())
+                //.roles(BARBER.name())
+                .authorities(BARBER.getGrantedAuthorities())
                 .build()
 
         UserDetails client = User.builder()
                 .username("TeamClient")
                 .password(passwordEncoder.encode("password"))
-                .roles(CLIENT.name())
+                //.roles(CLIENT.name())
+                .authorities(CLIENT.getGrantedAuthorities())
                 .build()
 
         new InMemoryUserDetailsManager(
                 admin, supervisor, barber, client
         )
-    }
-
-    @Bean
-    static CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration()
-        configuration.setAllowedOrigins(Arrays.asList("*"))
-        configuration.setAllowedMethods(Arrays.asList("*"))
-        configuration.setAllowedHeaders(Arrays.asList("*"))
-        configuration.setAllowCredentials(true)
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource()
-        source.registerCorsConfiguration("/**", configuration)
-        return source
     }
 }

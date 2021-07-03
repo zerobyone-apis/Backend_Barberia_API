@@ -26,17 +26,16 @@ class BarberController {
     @Autowired
     BarberService service
 
-    //TODO: Only admins can use this endpoint create ADMIN security rol
     @GetMapping()
-    //@PreAuthorize('hasAuthorities()')
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyAuthority('brb_read' , 'FULL')")
     def getBarbers(/*Principal principal*/) {
         //def user = securityService.getLoggedUser(principal)
         service.findAll()
     }
 
     @GetMapping("/actives")
-    //@PreAuthorize('hasAuthorities()')
+    @PreAuthorize("hasAnyAuthority('brb_read' , 'full')")
     @ResponseStatus(HttpStatus.OK)
     def getActiveBarbers(/*Principal principal*/) {
         //def user = securityService.getLoggedUser(principal)
@@ -44,7 +43,7 @@ class BarberController {
     }
 
     @GetMapping("/{id}")
-    //@PreAuthorize('hasAuthorities()')
+    @PreAuthorize("hasAnyAuthority('brb_read' , 'full')")
     @ResponseStatus(HttpStatus.OK)
     def getBarberById(/*Principal principal,*/ @PathVariable("id") Long barberId) {
         //def user = securityService.getLoggedUser(principal)
@@ -52,7 +51,7 @@ class BarberController {
     }
 
     @GetMapping("/user/{id}")
-    //@PreAuthorize('hasAuthorities()')
+    @PreAuthorize("hasAnyAuthority('brb_read' , 'full')")
     @ResponseStatus(HttpStatus.OK)
     def getBarberUserById(/*Principal principal,*/ @PathVariable("id") Long userId) {
         //def user = securityService.getLoggedUser(principal)
@@ -60,7 +59,7 @@ class BarberController {
     }
 
     @PostMapping
-    //@PreAuthorize('hasAuthorities()')
+    @PreAuthorize("hasAnyAuthority('brb_write' , 'full')")
     @ResponseStatus(HttpStatus.OK)
     def create(/*Principal principal,*/ @RequestBody BarberRequestDTO barber) {
         //def user = securityService.getLoggedUser(principal)
@@ -68,17 +67,15 @@ class BarberController {
     }
 
     @PutMapping("/{barber_id}")
-    //@PreAuthorize('hasAuthorities()')
+    @PreAuthorize("hasAnyAuthority('brb_write' , 'full')")
     @ResponseStatus(HttpStatus.OK)
     def update(/*Principal principal,*/ @RequestBody BarberRequestDTO barber, @PathVariable("barber_id") Long barberId) {
         //def user = securityService.getLoggedUser(principal)
         service.update(barber, barberId)
     }
 
-
-    //TODO: Only admins can use this endpoint create ADMIN security rol
     @PatchMapping("/deactivate/{barber_id}")
-    //@PreAuthorize('hasAuthorities()')
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SUPERVISOR')")
     @ResponseStatus(HttpStatus.OK)
     void logicDeleteById(/* Principal principal,*/ @PathVariable("barber_id") Long id) {
         //def user = securityService.getLoggedUser(principal)
