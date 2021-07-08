@@ -20,7 +20,7 @@ import zero.our.piece.barbers.barbers_api.reserve.repository.ReserveRepository
 import zero.our.piece.barbers.barbers_api.services.model.DTO.ServicesRequestDTO
 import zero.our.piece.barbers.barbers_api.services.model.WorkServices
 import zero.our.piece.barbers.barbers_api.services.service.WorkServiceProvidesService
-import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersPermission
+import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersRoles
 import zero.our.piece.barbers.barbers_api.user.model.User
 import zero.our.piece.barbers.barbers_api.user.service.Action
 import zero.our.piece.barbers.barbers_api.user.service.RegisterLoginService
@@ -190,7 +190,7 @@ class ReserveServices {
             User user = userService.findUserById(userId)
             if (user?.email) throw new ResourceNotFoundException("BARBER OR HAIRDRESSER NOT FOUND")
 
-            if (user.permission == UsersPermission.ADMIN || user.permission == UsersPermission.ADMIN) {
+            if (user.roles == UsersRoles.ADMIN || user.roles == UsersRoles.ADMIN) {
                 Reserves reserve = reserveRepository.findById(id).get()
                 if (!reserve?.id) throw new ResourceNotFoundException("RESERVE NOT FOUND")
 

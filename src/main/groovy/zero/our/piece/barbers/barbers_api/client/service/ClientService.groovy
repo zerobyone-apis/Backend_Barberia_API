@@ -12,7 +12,7 @@ import zero.our.piece.barbers.barbers_api.client.repository.ClientUsersRepositor
 import zero.our.piece.barbers.barbers_api.magicCube.exception.CreateResourceException
 import zero.our.piece.barbers.barbers_api.magicCube.exception.ResourceNotFoundException
 import zero.our.piece.barbers.barbers_api.user.infrastructure.ClientUsers
-import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersPermission
+import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersRoles
 import zero.our.piece.barbers.barbers_api.user.model.User
 import zero.our.piece.barbers.barbers_api.user.service.UserService
 
@@ -175,7 +175,7 @@ class ClientService {
                         password: client.password,
                         email: client.email,
                         enterprise_id: client.enterprise_id ?: 1,
-                        permission: UsersPermission.CLIENT
+                        roles: UsersRoles.CLIENT
                 ))
         return userService.saveUser(user, 'CREATE')
     }

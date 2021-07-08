@@ -1,6 +1,6 @@
 package zero.our.piece.barbers.barbers_api.user.infrastructure
 
-enum UsersPermission {
+enum UsersRoles {
     ADMIN, //Full access
     CLIENT, // User Consumer Only
     BARBER, // Profiles Barber, and reserves

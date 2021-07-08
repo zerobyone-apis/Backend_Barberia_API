@@ -15,7 +15,7 @@ import zero.our.piece.barbers.barbers_api.enterprise.infrastructure.EnterpriseUs
 import zero.our.piece.barbers.barbers_api.enterprise.repository.EnterpriseUsersRepository
 import zero.our.piece.barbers.barbers_api.magicCube.exception.CreateResourceException
 import zero.our.piece.barbers.barbers_api.magicCube.exception.ResourceNotFoundException
-import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersPermission
+import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersRoles
 import zero.our.piece.barbers.barbers_api.user.model.DTO.RequestUserLoginDTO
 import zero.our.piece.barbers.barbers_api.user.model.DTO.ResponseUserLoginDTO
 import zero.our.piece.barbers.barbers_api.user.model.DTO.UserResponseDTO
@@ -92,7 +92,7 @@ class UserService {
     ResponseUserLoginDTO login(RequestUserLoginDTO login) {
         ResponseUserLoginDTO response = new ResponseUserLoginDTO()
         User user = loginProcess(login)
-        response = getUserByPermission(user)
+        response = getUserByroles(user)
         response.user = decoratorPatternUser(user)
 
         response
@@ -129,7 +129,7 @@ class UserService {
                 username: user?.username,
                 password: user?.password,
                 email: user?.email,
-                permission: user?.permission,
+                roles: user?.roles,
                 barber_id: user?.barber_id,
                 enterprise_id: user?.enterprise_id ?: 1,
                 hairdresser_id: user?.hairdresser_id,
@@ -148,7 +148,7 @@ class UserService {
                 id: existentUser.id,
                 username: user?.username,
                 password: user?.password,
-                permission: user?.permission ?: UsersPermission.CLIENT,
+                roles: user?.roles ?: UsersRoles.CLIENT,
                 barber_id: existentUser?.barber_id ?: user?.barber_id,
                 enterprise_id: user?.enterprise_id ?: existentUser?.enterprise_id,
                 hairdresser_id: existentUser?.hairdresser_id ?: user?.hairdresser_id,
@@ -176,34 +176,34 @@ class UserService {
     // Used by Reserves to find user data info
     ResponseUserLoginDTO findUserToFillReserve(Long userId) {
         def user = this.findUserById(userId)
-        def response = getUserByPermission(user)
+        def response = getUserByroles(user)
         response.user = decoratorPatternUser(user)
         response
     }
 
-    protected ResponseUserLoginDTO getUserByPermission(User user){
+    protected ResponseUserLoginDTO getUserByroles(User user){
         ResponseUserLoginDTO response = new ResponseUserLoginDTO()
-        switch (user.permission) {
-            case UsersPermission.CLIENT:
+        switch (user.roles) {
+            case UsersRoles.CLIENT:
                 response.client = checkUserIsClient(user)
                 break
-            case UsersPermission.BARBER:
+            case UsersRoles.BARBER:
                 response.barber = checkUserIsBarber(user)
                 break
-            case UsersPermission.HAIRDRESSER:
+            case UsersRoles.HAIRDRESSER:
                 //todo: hairdresser search
                 response.barber = checkUserIsBarber(user)
                 break
-            case UsersPermission.SUPERVISOR:
+            case UsersRoles.SUPERVISOR:
                 //todo: Supervisor search
                 response.barber = checkUserIsBarber(user)
                 break
-            case UsersPermission.ADMIN:
+            case UsersRoles.ADMIN:
                 //todo: Admin search
                 response.barber = checkUserIsBarber(user)
                 break
             default:
-                log.error("Permission Denied.. you have no access to this information.")
+                log.error("roles Denied.. you have no access to this information.")
                 break
         }
         response
@@ -300,8 +300,8 @@ class UserService {
                 email: user?.email,
                 username: user?.username,
                 socialNumber: user?.social_number,
-                permissionRol: user?.permission,
-                isAdmin: user?.permission == UsersPermission.ADMIN ?: false
+                roles: user?.roles,
+                isAdmin: user?.roles == UsersRoles.ADMIN ?: false
         )
     }
 }

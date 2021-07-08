@@ -3,7 +3,7 @@ package zero.our.piece.barbers.barbers_api.user.model
 
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
-import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersPermission
+import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersRoles
 import zero.our.piece.barbers.barbers_api.user.service.Action
 
 import javax.persistence.*
@@ -32,7 +32,7 @@ class RegisterLogins {
     Action action
     Instant init_session     //todo: sencive data we need to encrypt
     Instant end_session     //todo: sencive data we need to encrypt
-    UsersPermission permission        //todo: sencive data we need to encrypt
+    String roles        //todo: sencive data we need to encrypt
 
 
 }

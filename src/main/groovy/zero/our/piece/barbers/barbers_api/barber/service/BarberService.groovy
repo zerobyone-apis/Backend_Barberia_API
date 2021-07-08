@@ -13,7 +13,7 @@ import zero.our.piece.barbers.barbers_api.enterprise.service.ShopTimeService
 import zero.our.piece.barbers.barbers_api.magicCube.exception.CreateResourceException
 import zero.our.piece.barbers.barbers_api.magicCube.exception.ResourceNotFoundException
 import zero.our.piece.barbers.barbers_api.user.infrastructure.BarberUsers
-import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersPermission
+import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersRoles
 import zero.our.piece.barbers.barbers_api.user.model.User
 import zero.our.piece.barbers.barbers_api.user.service.UserService
 
@@ -172,7 +172,7 @@ class BarberService {
                         password: barber.password,
                         email: barber.email,
                         enterprise_id: barber.enterprise_id ?: 1,
-                        permission: barber.roll ? UsersPermission.valueOf(barber.roll.name()) : UsersPermission.BARBER
+                        roles: barber.roll ? UsersRoles.valueOf(barber.roll.name()) : UsersRoles.BARBER
                 ))
         return userService.saveUser(user, 'CREATE')
     }
@@ -220,7 +220,7 @@ class BarberService {
 
             return userService.saveUser(user, 'UPDATE')
         } catch (Exception ex) {
-            throw new CreateResourceException("User with Username: ${client.username} Not Exists... ERROR: $ex.message",)
+            throw new CreateResourceException("User with Username: ${barber.username} Not Exists... ERROR: $ex.message",)
         }
     }
 

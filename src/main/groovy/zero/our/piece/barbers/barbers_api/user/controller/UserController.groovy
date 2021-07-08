@@ -33,6 +33,7 @@ class UserController {
 
     @PutMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SUPERVISOR')")
     def update(@RequestBody User user) {
         userService.update(user);
     }
@@ -53,7 +54,7 @@ class UserController {
 
     @PostMapping("/v1/login")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SUPERVISOR')")
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SUPERVISOR')")
     def login(@RequestBody RequestUserLoginDTO login) {
         userService.login(login);
     }

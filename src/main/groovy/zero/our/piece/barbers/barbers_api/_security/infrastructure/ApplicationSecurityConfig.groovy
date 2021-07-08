@@ -3,6 +3,7 @@ package zero.our.piece.barbers.barbers_api._security.infrastructure
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -13,7 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.provisioning.InMemoryUserDetailsManager
-
+import zero.our.piece.barbers.barbers_api._security.service.UserSecurityService
 
 import static ApplicationUserRole.*
 
@@ -34,52 +35,34 @@ class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private PasswordEncoder passwordEncoder
 
+    @Autowired
+    private UserSecurityService userSecurityService
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/user/login").permitAll()
+                .antMatchers("/user/v1/login").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
                 .httpBasic()
     }
 
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+       auth.authenticationProvider(daoAuthenticationProvider())
+    }
+
 
     @Bean
-    @Override
-    protected UserDetailsService userDetailsService() {
-        UserDetails admin = User.builder()
-                .username("zeroDev")
-                .password(passwordEncoder.encode("password"))
-                //.roles(ADMIN.name())
-                .authorities(ADMIN.getGrantedAuthorities())
-                .build()
-
-        UserDetails supervisor = User.builder()
-                .username("TeamSupervisor")
-                .password(passwordEncoder.encode("password"))
-                //.roles(SUPERVISOR.name())
-                .authorities(SUPERVISOR.getGrantedAuthorities())
-                .build()
-
-        UserDetails barber = User.builder()
-                .username("TeamBarber")
-                .password(passwordEncoder.encode("password"))
-                //.roles(BARBER.name())
-                .authorities(BARBER.getGrantedAuthorities())
-                .build()
-
-        UserDetails client = User.builder()
-                .username("TeamClient")
-                .password(passwordEncoder.encode("password"))
-                //.roles(CLIENT.name())
-                .authorities(CLIENT.getGrantedAuthorities())
-                .build()
-
-        new InMemoryUserDetailsManager(
-                admin, supervisor, barber, client
+    DaoAuthenticationProvider daoAuthenticationProvider(){
+        new DaoAuthenticationProvider(
+                passwordEncoder: passwordEncoder,
+                userDetailsService: userSecurityService,
         )
     }
+
+
 }
