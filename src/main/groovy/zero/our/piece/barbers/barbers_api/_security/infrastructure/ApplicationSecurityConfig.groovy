@@ -9,18 +9,12 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.core.userdetails.User
-import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.password.PasswordEncoder
-import org.springframework.security.provisioning.InMemoryUserDetailsManager
 import zero.our.piece.barbers.barbers_api._security.service.UserSecurityService
-
-import static ApplicationUserRole.*
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity (prePostEnabled = true)
 class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /*
@@ -52,12 +46,16 @@ class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-       auth.authenticationProvider(daoAuthenticationProvider())
+        auth.authenticationProvider(daoAuthenticationProvider())
     }
 
+    /*
+        todo:
+            Probar y revisar porque no estan reconociendo a los usuarios cuando todo parece estar bien, revisar el collect de authorities
+     */
 
     @Bean
-    DaoAuthenticationProvider daoAuthenticationProvider(){
+    DaoAuthenticationProvider daoAuthenticationProvider() {
         new DaoAuthenticationProvider(
                 passwordEncoder: passwordEncoder,
                 userDetailsService: userSecurityService,
