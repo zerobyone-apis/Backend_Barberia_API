@@ -12,6 +12,7 @@ import java.nio.file.attribute.UserPrincipalNotFoundException
 @Service("Postgres")
 class UserSecurePostgresService {
 
+    //@Deprecated
     //@Autowired
     //private UserSecureDAO repository
 
@@ -19,11 +20,9 @@ class UserSecurePostgresService {
     UserRepository repository
 
     UserSecurity findUserSecurityByUsername(String username) {
-        //todo: Agregar capa de busqueda a tabla de usuarios comunes por el username.
         User user = repository.findByUsername(username)
         if(!user.roles) throw new UserPrincipalNotFoundException("User not found with this Username")
-        // crear un UserSecurity con los datos obtenidos del usuario existente
-        def userDetail = new UserSecurity(
+        new UserSecurity(
                 email: user.email,
                 username: user.username,
                 password: user.password,
@@ -34,12 +33,21 @@ class UserSecurePostgresService {
                 accountNonLocked: true,
                 accountNonExpired: true
         )
-        userDetail
     }
 
     UserSecurity findByEmail(String email){
-        UserSecurity user =  repository.findByEmail(email)
-        user.authorities = user.role.getGrantedAuthorities()
-        user
+        User user = repository.findByEmail(email)
+        if(!user.roles) throw new UserPrincipalNotFoundException("User not found with this Email")
+        new UserSecurity(
+                email: user.email,
+                username: user.username,
+                password: user.password,
+                role: ApplicationUserRole.valueOf(user.roles.name()),
+                authorities: ApplicationUserRole.valueOf(user.roles.name()).getGrantedAuthorities(),
+                enabled: true,
+                credentialsNonExpired: true,
+                accountNonLocked: true,
+                accountNonExpired: true
+        )
     }
 }

@@ -9,7 +9,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.password.PasswordEncoder
+import zero.our.piece.barbers.barbers_api._security.infrastructure.jwt.JwtUsernameAndPasswordAuthFilter
 import zero.our.piece.barbers.barbers_api._security.service.UserSecurityService
 
 @Configuration
@@ -36,23 +38,19 @@ class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .addFilter(new JwtUsernameAndPasswordAuthFilter(authenticationManager: authenticationManager()))
                 .authorizeRequests()
                 .antMatchers("/user/v1/login").permitAll()
                 .anyRequest()
                 .authenticated()
-                .and()
-                .httpBasic()
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider())
     }
-
-    /*
-        todo:
-            Probar y revisar porque no estan reconociendo a los usuarios cuando todo parece estar bien, revisar el collect de authorities
-     */
 
     @Bean
     DaoAuthenticationProvider daoAuthenticationProvider() {
