@@ -54,10 +54,4 @@ class UserSecurity implements UserDetails {
 
     @Transient
     Set<GrantedAuthority> authorities
-
-    //todo: Validar si esto esta funcionando correctamente
-    Collection<? extends GrantedAuthority> getAuthorities() {
-        authorities = new HashSet<>();
-        authorities.collect {it -> new SimpleGrantedAuthority(role.name())}.collect()
-    }
 }

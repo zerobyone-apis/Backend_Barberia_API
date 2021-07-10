@@ -28,7 +28,7 @@ class BarberController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority('brb_read' , 'FULL')")
+    @PreAuthorize("hasAnyAuthority('brb_read' , 'full')")
     def getBarbers(/*Principal principal*/) {
         //def user = securityService.getLoggedUser(principal)
         service.findAll()

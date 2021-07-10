@@ -108,6 +108,7 @@ class BarberService {
     protected static BarberResponseDTO decoratorPatternBarber(Barber brb) {
         new BarberResponseDTO(
                 id: brb?.id,
+                userId: brb?.user_id,
                 name: brb?.name,
                 phone: brb?.phone,
                 username: brb?.username,

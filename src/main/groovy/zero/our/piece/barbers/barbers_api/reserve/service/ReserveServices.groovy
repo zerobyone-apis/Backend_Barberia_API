@@ -166,7 +166,7 @@ class ReserveServices {
         def savedReserve = reserveRepository.save(reserve)
 
         // Send Email
-        SendReserveNotificationEmail(reserve)
+        this.sendReserveNotificationEmail(reserve, client)
         return decoratorPatternReserve(savedReserve)
     }
 
@@ -181,7 +181,7 @@ class ReserveServices {
         def savedReserve = reserveRepository.save(updated)
 
         // Send Email
-        SendReserveNotificationEmail(updated)
+        this.sendReserveNotificationEmail(updated, client)
         return decoratorPatternReserve(savedReserve)
     }
 
@@ -248,7 +248,7 @@ class ReserveServices {
                 employeeUsername:   request.employeeUsername,
                 enterpriseId:       request?.enterpriseId ?: 1,
                 clientId:           request.clientId,
-                duration:           request.duration, //hh:mm
+                duration:           request.duration, //hh:mm:ss
                 reserveDatetime:    convertToLocalDateTime(request.reserveDatetime),
                 workServiceId:      workService.create(createWorkServiceReq(request)).id,
                 createdOn:          Instant.now(),
@@ -310,7 +310,7 @@ class ReserveServices {
     }
 
     //TODO: Planificar un servicio de notificaciones en los cuales dependiendo el tipo de notificacion el mail que se enviara para ello debemos tener un sistema de tamplates por Notificacion.
-    protected void SendReserveNotificationEmail(Reserves reserveDetails) {
+    protected void sendReserveNotificationEmail(Reserves reserveDetails, ClientResponseDTO client) {
 
         BarberResponseDTO barber = getBarber(reserveDetails.userId)
 
@@ -322,14 +322,14 @@ class ReserveServices {
                               <li type=\"square\"> Hora: ${reserveDetails.reserveDatetime.toLocalTime()}</li>
                           """
         def formatReserve = """
-                                <li type=\"square\"> Reserva creada por: ${reserveDetails.clientName}</li>
+                                <li type=\"square\"> Reserva creada por: ${client.name}</li>
                                 <li type=\"square\"> Tu Reserva con ${barber.name} fue agendada con exito!</li>
                                 <li type=\"square\"> L@ esperamos en Dr César Piovene 1027, Pando, Departamento de Canelones, Uruguay.</li>
                                 <li type=\"square\"> Puedes seguir a ${barber.name} en sus redes sociales y estar actualizado con las ultimas tendencias!
                                 <li type=\"square\"> Instagram: ${instagramBarberUrl ?: "https://www.instagram.com/artexperiencee/"} </li>
                                 <li type=\"square\"> Facebook: ${facebookBarberUrl ?: "https://www.facebook.com/artexperiencee/"} </li>
                             """
-        sendMailService.notifyAndSendEmail(formatReserve, reserveDetails.clientName, reserveDate, reserveDetails.emailClient)
+        sendMailService.notifyAndSendEmail(formatReserve, client.name, reserveDate, client.email)
     }
 
     void testMail(String recipientEmail) {

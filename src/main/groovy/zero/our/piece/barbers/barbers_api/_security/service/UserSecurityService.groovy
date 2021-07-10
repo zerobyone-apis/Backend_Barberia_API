@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
+import zero.our.piece.barbers.barbers_api._security.model.UserSecurity
 import zero.our.piece.barbers.barbers_api._security.repository.UserSecureDAO
 
 /*
@@ -28,7 +29,7 @@ class UserSecurityService implements UserDetailsService {
 
     @Override
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-         UserDetails user = postgresService.findUserSecurityByUsername(username)
+        UserSecurity user = postgresService.findUserSecurityByUsername(username)
         if (!user.username)  throw new UsernameNotFoundException("USERNAME_NOT_FOUND")
 
         //todo: Hacer la logica de busqueda a la db por username, y validar si tiene permisos y roles, y devolverlos al contexto de seguridad

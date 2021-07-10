@@ -40,17 +40,17 @@ reports-reserves:
     cron: 0 3 * * * *
 
 mail:
-  username: smtp.test.zero@gmail.com
-  password: Asterisc0
-  to:  damianezetiel1@gmail.com, mitsuki-kun@hotmail.com, max3.1994@gmail.com, smtp.test.zero@gmail.com,
-  host: smtp.gmail.com
+  username:  smtp.test.zero@gmail.com # 1571f256f928ed0916f6fe8b95608fb6
+  password: Asterisc0 # f16ae53ca7e2d298aacc18dae05e602a
+  to:  max3.1994@gmail.com , nixon68872@ovooovo.com , max3.1994@gmail.com
+  host: smtp.gmail.com # in-v3.mailjet.com
   port: 587
   auth: true
   enable: true
   required: true
   contact:
     recipient:
-      to: #new_test_email@gmail.com
+      to: #max3.1994@gmail.com
   content:
     subject: "Confirmación de Reserva" #subject-email
     description: "Hola [USERNAME], \n\n Gracias por formar parte de Art Experience :rocket: \n Su reserva ah sido agendada correctamente!! \n\nDetalle de la Reserva: \n " #content-text of email
