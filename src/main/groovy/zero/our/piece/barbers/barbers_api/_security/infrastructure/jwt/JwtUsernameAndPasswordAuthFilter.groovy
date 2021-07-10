@@ -54,5 +54,10 @@ class JwtUsernameAndPasswordAuthFilter extends UsernamePasswordAuthenticationFil
         response.addHeader("Authorization", "Bearer ${token}")
     }
 
+    /* TOdo:
+    *   Continuar con el siguiente paso de verificar si el token es valido,
+    *    -> Recurso : https://youtu.be/her_7pa0vrg?t=15410
+    *    - Por otro lado, hacer que el token devuelva toda la info del User ya que si no deberia de hacer una llamada mas a mi endpoint de /user/v1/login/ y bucar los datos para encriptarlos o tokenizarlos.   */
+
 
 }
