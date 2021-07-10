@@ -3,9 +3,7 @@ package zero.our.piece.barbers.barbers_api._security.service
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import zero.our.piece.barbers.barbers_api._security.infrastructure.ApplicationUserRole
 import zero.our.piece.barbers.barbers_api._security.model.UserSecurity
-import zero.our.piece.barbers.barbers_api._security.repository.UserSecureDAO
 
 import static zero.our.piece.barbers.barbers_api._security.infrastructure.ApplicationUserRole.*
 
