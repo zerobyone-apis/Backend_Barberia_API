@@ -29,6 +29,13 @@ class JwtUsernameAndPasswordAuthFilter extends UsernamePasswordAuthenticationFil
     Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
             UsernameAndPasswordAuthRequest authRequest = new ObjectMapper().readValue(request.inputStream, UsernameAndPasswordAuthRequest.class)
+            /*TODO:
+            *       Tener en cuenta que dentro de UsernamePasswordAuthenticationToken van dos objetos de tipo Object:
+            *       @principal  -> En este objeto podriamos guardar toda la data que quisieramos cargar en el contexto a utilizar por ejemplo el dto de User.
+            *       @credentials -> En este objeto deberiamos de usarlo unicamente para cuando sea necesario percisir o leer algun tipo de credencial encriptado.
+            *       @authoritires -> es una extension, requiere un Collection de GrantedAutorities, sirve para saber que puede hacer ese usuario
+            *       Todo esto se podria llegar a usar desde el principal en el controler, y pasarlo al servicio para alguna logica.
+            * */
             Authentication authentication = new UsernamePasswordAuthenticationToken(
                     authRequest.username,
                     authRequest.password
@@ -56,9 +63,10 @@ class JwtUsernameAndPasswordAuthFilter extends UsernamePasswordAuthenticationFil
     }
 
     /*  Todo:
-    *       Continuar con el siguiente paso de verificar si el token es valido,
-    *    -> Recurso : https://youtu.be/her_7pa0vrg?t=15410
+    *       Verificacion y envio de mail, con token para validar usuario, y validaciones de expiracion, crud de token, pesistencia en tabla para que podamos identificar cuantos tokens y cuando vencen los mismos.,
+    *    -> Recurso : https://youtu.be/QwQuro7ekvc?t=1061
     *    -> Por otro lado, hacer que el token devuelva toda la info del User ya que si no deberia de hacer una llamada mas a mi endpoint de /user/v1/login/ y bucar los datos para encriptarlos o tokenizarlos.
+    *       Revisar el TODO que deje mas arriba
     */
 
 
