@@ -50,11 +50,15 @@ mail:
   required: true
   contact:
     recipient:
-      to: #max3.1994@gmail.com
+      to: # max3.1994@gmail.com
   content:
     subject: "Confirmación de Reserva" #subject-email
-    description: "Hola [USERNAME], \n\n Gracias por formar parte de Art Experience :rocket: \n Su reserva ah sido agendada correctamente!! \n\nDetalle de la Reserva: \n " #content-text of email
+    description: "Hola [USERNAME], \n\n Gracias por formar parte de Art Experience :rocket: \n Su reserva ah sido agendada correctamente!! \n\nDetalle de la Reserva: \n " # content-text of email
 
 
-jwt:
-  secretkey: "THIS_IS_MY_SECURE_SECRET_KEY_BLABLABLALABLABLABLABLA_ZERO"
+auth:
+  jwt:
+    secret-key: "THIS_IS_MY_SECURE_SECRET_KEY_BLABLABLALABLABLABLABLA_ZERO"
+  token:
+    prefix: "Bearer "
+    expiration-days: 1

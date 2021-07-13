@@ -11,22 +11,22 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.password.PasswordEncoder
+import zero.our.piece.barbers.barbers_api._security.infrastructure.jwt.JwtConfig
 import zero.our.piece.barbers.barbers_api._security.infrastructure.jwt.JwtUsernameAndPasswordAuthFilter
+import zero.our.piece.barbers.barbers_api._security.infrastructure.jwt.TokenVerifier
 import zero.our.piece.barbers.barbers_api._security.service.UserSecurityService
+
+import javax.crypto.SecretKey
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity (prePostEnabled = true)
 class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    JwtConfig jwtConfig
 
-    /*
-        TODO:
-            Basic Authentication funciona.
-            falta guardar los usuarios, y pasarnos a FORM AUTHENTICATION con JWT.
-
-            -> https://youtu.be/her_7pa0vrg?t=8362 crack.
-
-     */
+    @Autowired
+    SecretKey secretKey
 
     @Autowired
     private PasswordEncoder passwordEncoder
@@ -40,7 +40,8 @@ class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(new JwtUsernameAndPasswordAuthFilter(authenticationManager: authenticationManager()))
+                .addFilter(new JwtUsernameAndPasswordAuthFilter(authenticationManager: authenticationManager(), jwtConfig: jwtConfig, secretKey: secretKey))
+                .addFilterAfter(new TokenVerifier(secretKey: secretKey ,jwtConfig: jwtConfig ), JwtUsernameAndPasswordAuthFilter.class)
                 .authorizeRequests()
                 .antMatchers("/user/v1/login").permitAll()
                 .anyRequest()

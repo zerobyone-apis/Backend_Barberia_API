@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 import zero.our.piece.barbers.barbers_api._security.model.UserSecurity
-import zero.our.piece.barbers.barbers_api._security.repository.UserSecureDAO
 
 /*
     todo:       -> Siguiente paso Form AUTH + JWT token, and cookie sessions.
