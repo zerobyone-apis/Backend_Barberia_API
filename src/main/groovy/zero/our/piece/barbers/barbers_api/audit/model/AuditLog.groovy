@@ -4,7 +4,7 @@ package zero.our.piece.barbers.barbers_api.audit.model
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import zero.our.piece.barbers.barbers_api.audit.infrastructure.AuditAction
-import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersPermission
+import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersRoles
 
 import javax.persistence.*
 import java.time.Instant
@@ -22,14 +22,13 @@ class AuditLog {
     String username                   //todo: sencive data we need to encrypt
     String email                      //todo: sencive data we need to encrypt
     Long socialNumber                 //todo: sencive data we need to encrypt
-    UsersPermission permission        //todo: sencive data we need to encrypt
+
+    @Enumerated(EnumType.STRING)
+    UsersRoles roles                   //todo: sencive data we need to encrypt
 
     Long barberId
-
     Long hairdresserId
-
     Long clientId
-
     AuditAction action
     Instant createdOn
     Instant updatedOn

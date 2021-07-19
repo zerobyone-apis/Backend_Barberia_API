@@ -1,0 +1,68 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_user_security
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: user_security
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: password
+                  type: VARCHAR
+              - column:
+                  name: username
+                  type: VARCHAR
+              - column:
+                  name: email
+                  type: VARCHAR
+              - column:
+                  name: role
+                  type: VARCHAR
+              - column:
+                  name: accountNonExpired
+                  type: BOOLEAN
+              - column:
+                  name: accountNonLocked
+                  type: BOOLEAN
+              - column:
+                  name: credentialsNonExpired
+                  type: BOOLEAN
+              - column:
+                  name: enabled
+                  type: BOOLEAN
+
+  ################################################################################################
+  ##  TODO:  FIn tabla de Seguridad-usuarios
+  ################################################################################################
+
+#  - changeSet:
+#      id: create_countries_table
+#      author: max_olivero
+#
+ #     changes:
+ #       - createTable:
+ #           tableName: countries
+ #           columns:
+ #             - column:
+ #                 autoIncrement: true
+ #                 constraints:
+ #                   primaryKey: true
+ #                 name: id
+ #                 type: BIGINT
+ #             - column:
+ #                 name: name
+#                  type: VARCHAR
+#             - column:
+#                  name: iso_code
+#                 type: VARCHAR
+#
+  ################################################################################################
+  ##  TODO: Crear la clave foranea entre users:
+  ##  (id) Countries -> Address table 1 a n
+  ################################################################################################

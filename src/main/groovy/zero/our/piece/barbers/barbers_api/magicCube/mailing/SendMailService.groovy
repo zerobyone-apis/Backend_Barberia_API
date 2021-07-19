@@ -115,7 +115,7 @@ class SendMailService {
         MimeMessage mailContent = new MimeMessage(mailSession)
         mailContent.setSubject(subject)
         //mailContent.setText(detailsEmail);
-        setListOfAddresses(mailContent, clientEmail, true)
+        setListOfAddresses(mailContent, clientEmail, false)
         return mailContent
     }
 
@@ -190,6 +190,6 @@ class SendMailService {
         return ""
     }
 
-    private final String HTML_TEMPLATE_EMAIL_RESERVE_CONFIRM = "src/main/resources/emailTemplates/EmailTemplateReservesConfirm.html"
+    private final String HTML_TEMPLATE_EMAIL_RESERVE_CONFIRM = "src/main/resources/mail/bundles/EmailTemplateReservesConfirm.html"
 
 }

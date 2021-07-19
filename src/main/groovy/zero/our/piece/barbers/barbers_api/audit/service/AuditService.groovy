@@ -9,7 +9,7 @@ import zero.our.piece.barbers.barbers_api.audit.repository.AuditLogRepository
 import zero.our.piece.barbers.barbers_api.barber.model.DTO.BarberResponseDTO
 import zero.our.piece.barbers.barbers_api.client.model.DTO.ClientResponseDTO
 import zero.our.piece.barbers.barbers_api.magicCube.exception.ResourceNotFoundException
-import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersPermission
+import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersRoles
 import zero.our.piece.barbers.barbers_api.user.model.DTO.UserResponseDTO
 import zero.our.piece.barbers.barbers_api.user.model.RegisterLogins
 import zero.our.piece.barbers.barbers_api.user.model.User
@@ -57,7 +57,7 @@ class AuditService {
                 socialNumber: client.social_number,
                 clientId: client?.id,
                 createdOn:  Instant.now(),
-                permission: UsersPermission.CLIENT,
+                roles: UsersRoles.CLIENT,
                 action: action
         )
     }
@@ -69,7 +69,7 @@ class AuditService {
                 socialNumber: admin.social_number,
                 barberId: admin.id,
                 createdOn:  Instant.now(),
-                permission: UsersPermission.ADMIN,
+                roles: UsersRoles.ADMIN,
                 action: action
         )
     }
@@ -81,7 +81,7 @@ class AuditService {
                 socialNumber: user.social_number,
                 barberId: user?.id,
                 createdOn:  Instant.now(),
-                permission: UsersPermission.SUPERVISOR,
+                roles: UsersRoles.SUPERVISOR,
                 action: action
         )
     }
@@ -93,7 +93,7 @@ class AuditService {
                 socialNumber: barber.social_number,
                 barberId: barber?.id,
                 createdOn:  Instant.now(),
-                permission: UsersPermission.BARBER,
+                roles: UsersRoles.BARBER,
                 action: action
         )
     }

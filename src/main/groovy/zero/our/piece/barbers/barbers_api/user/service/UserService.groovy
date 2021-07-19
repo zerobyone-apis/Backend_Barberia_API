@@ -1,12 +1,10 @@
 package zero.our.piece.barbers.barbers_api.user.service
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.util.BooleanType
 import groovy.util.logging.Slf4j
 import org.hibernate.exception.SQLGrammarException
-import org.hibernate.type.BinaryType
-import org.hibernate.type.NumericBooleanType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import zero.our.piece.barbers.barbers_api._security.infrastructure.PasswordConfig
 import zero.our.piece.barbers.barbers_api.barber.model.DTO.BarberResponseDTO
 import zero.our.piece.barbers.barbers_api.barber.service.BarberService
 import zero.our.piece.barbers.barbers_api.client.model.DTO.ClientResponseDTO
@@ -15,7 +13,7 @@ import zero.our.piece.barbers.barbers_api.enterprise.infrastructure.EnterpriseUs
 import zero.our.piece.barbers.barbers_api.enterprise.repository.EnterpriseUsersRepository
 import zero.our.piece.barbers.barbers_api.magicCube.exception.CreateResourceException
 import zero.our.piece.barbers.barbers_api.magicCube.exception.ResourceNotFoundException
-import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersPermission
+import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersRoles
 import zero.our.piece.barbers.barbers_api.user.model.DTO.RequestUserLoginDTO
 import zero.our.piece.barbers.barbers_api.user.model.DTO.ResponseUserLoginDTO
 import zero.our.piece.barbers.barbers_api.user.model.DTO.UserResponseDTO
@@ -23,7 +21,6 @@ import zero.our.piece.barbers.barbers_api.user.model.User
 import zero.our.piece.barbers.barbers_api.user.repository.UserRepository
 
 import java.time.Instant
-import java.util.stream.Collectors
 
 @Service
 @Slf4j
@@ -40,6 +37,9 @@ class UserService {
 
     @Autowired
     RegisterLoginService registerLoginService
+
+    @Autowired
+    PasswordConfig passwordConfig
 
     @Autowired
     EnterpriseUsersRepository enterpriseUsersRepository
@@ -92,7 +92,7 @@ class UserService {
     ResponseUserLoginDTO login(RequestUserLoginDTO login) {
         ResponseUserLoginDTO response = new ResponseUserLoginDTO()
         User user = loginProcess(login)
-        response = getUserByPermission(user)
+        response = getUserByroles(user)
         response.user = decoratorPatternUser(user)
 
         response
@@ -129,7 +129,7 @@ class UserService {
                 username: user?.username,
                 password: user?.password,
                 email: user?.email,
-                permission: user?.permission,
+                roles: user?.roles,
                 barber_id: user?.barber_id,
                 enterprise_id: user?.enterprise_id ?: 1,
                 hairdresser_id: user?.hairdresser_id,
@@ -148,7 +148,7 @@ class UserService {
                 id: existentUser.id,
                 username: user?.username,
                 password: user?.password,
-                permission: user?.permission ?: UsersPermission.CLIENT,
+                roles: user?.roles ?: UsersRoles.CLIENT,
                 barber_id: existentUser?.barber_id ?: user?.barber_id,
                 enterprise_id: user?.enterprise_id ?: existentUser?.enterprise_id,
                 hairdresser_id: existentUser?.hairdresser_id ?: user?.hairdresser_id,
@@ -164,6 +164,7 @@ class UserService {
     User saveUser(User user, String action) {
         userValidation(user, action)
         try {
+            user.password = passwordConfig.passwordEncoder(user.password)
             def savedUser = userRepository.save(user)
             enterpriseUsersRepository.save(new EnterpriseUsers(enterprise_id: savedUser.enterprise_id, user_id: savedUser.id, social_number: savedUser.social_number))
             return savedUser
@@ -176,34 +177,34 @@ class UserService {
     // Used by Reserves to find user data info
     ResponseUserLoginDTO findUserToFillReserve(Long userId) {
         def user = this.findUserById(userId)
-        def response = getUserByPermission(user)
+        def response = getUserByroles(user)
         response.user = decoratorPatternUser(user)
         response
     }
 
-    protected ResponseUserLoginDTO getUserByPermission(User user){
+    protected ResponseUserLoginDTO getUserByroles(User user){
         ResponseUserLoginDTO response = new ResponseUserLoginDTO()
-        switch (user.permission) {
-            case UsersPermission.CLIENT:
+        switch (user.roles) {
+            case UsersRoles.CLIENT:
                 response.client = checkUserIsClient(user)
                 break
-            case UsersPermission.BARBER:
+            case UsersRoles.BARBER:
                 response.barber = checkUserIsBarber(user)
                 break
-            case UsersPermission.HAIRDRESSER:
+            case UsersRoles.HAIRDRESSER:
                 //todo: hairdresser search
                 response.barber = checkUserIsBarber(user)
                 break
-            case UsersPermission.SUPERVISOR:
+            case UsersRoles.SUPERVISOR:
                 //todo: Supervisor search
                 response.barber = checkUserIsBarber(user)
                 break
-            case UsersPermission.ADMIN:
+            case UsersRoles.ADMIN:
                 //todo: Admin search
                 response.barber = checkUserIsBarber(user)
                 break
             default:
-                log.error("Permission Denied.. you have no access to this information.")
+                log.error("roles Denied.. you have no access to this information.")
                 break
         }
         response
@@ -213,12 +214,12 @@ class UserService {
         try {
             User foundUser = new User()
             if (user?.social_number && user?.password) {
-                foundUser = userRepository.findBySocialNumberAndPassword(user.social_number, user.password)
+                foundUser = userRepository.findBySocialNumberAndPassword(user.social_number, passwordConfig.passwordEncoder(user.password))
                 if (!foundUser?.id) throw new CreateResourceException("Social number or Password are wrong.")
             }
 
             if (user?.email && user?.password) {
-                foundUser = userRepository.findByEmailAndPassword(user.email, user.password)
+                foundUser = userRepository.findByEmailAndPassword(user.email, passwordConfig.passwordEncoder(user.password))
                 if (!foundUser?.id) throw new CreateResourceException("Email or Password are wrong.")
             }
 
@@ -268,26 +269,26 @@ class UserService {
             case 'EXIST':
                 if (!user?.id) throw new CreateResourceException("USER_ID_CANNOT_BE_NULL")
 
-                Optional<User> checkUsername = userRepository.findById(user.id)
-                if (!checkUsername.isPresent()) throw new CreateResourceException("User ID: ${checkUsername.get().id} Not Exists.")
+                User checkUsername = userRepository.findById(user.id)
+                if (!checkUsername?.username) throw new CreateResourceException("User ID: ${checkUsername.id} Not Exists.")
 
-                return checkUsername.get()
+                return checkUsername
                 break
             case 'CREATE':
-                Optional<User> checkUsername = userRepository.findByUsername(user.username)
-                if (checkUsername.isPresent()) throw new CreateResourceException("User: ${checkUsername.get().username} already exists, please try with another Username.")
+                User checkUsername = userRepository.findByUsername(user.username)
+                if (!checkUsername?.username) throw new CreateResourceException("User: ${checkUsername.username} already exists, please try with another Username.")
 
-                Optional<User> checkEmail = userRepository.findByEmail(user.email)
-                if (checkEmail.isPresent()) throw new CreateResourceException("User: ${user.email} already exists, please try with another Email.")
+                User checkEmail = userRepository.findByEmail(user.email)
+                if (checkEmail?.username) throw new CreateResourceException("User: ${user.email} already exists, please try with another Email.")
                 break
             case 'UPDATE':
-                Optional<User> checkUsername = userRepository.findByUsername(user.username)
-                if (!checkUsername.isPresent()) throw new CreateResourceException("User: ${checkUsername.get().username} Not Found.")
-                if (checkUsername.get()?.id != user.id) throw new CreateResourceException("User: ${checkUsername.get().id} Not Found.")
+                User checkUsername = userRepository.findByUsername(user.username)
+                if (!checkUsername?.username) throw new CreateResourceException("User: ${checkUsername.username} Not Found.")
+                if (checkUsername?.id != user.id) throw new CreateResourceException("User: ${checkUsername.id} Not Found.")
 
-                Optional<User> checkEmail = userRepository.findByEmail(user.email)
-                if (!checkEmail.isPresent()) throw new CreateResourceException("User: ${checkEmail.get().email} Not Found.")
-                if (checkEmail.get()?.id != user.id) throw new CreateResourceException("User: ${checkEmail.get().id} Not Found.")
+                User checkEmail = userRepository.findByEmail(user.email)
+                if (!checkEmail?.email) throw new CreateResourceException("User: ${checkEmail.email} Not Found.")
+                if (checkEmail?.id != user.id) throw new CreateResourceException("User: ${checkEmail.id} Not Found.")
                 break
             default:
                 log.info("Action: Action provided is not listed..")
@@ -300,8 +301,8 @@ class UserService {
                 email: user?.email,
                 username: user?.username,
                 socialNumber: user?.social_number,
-                permissionRol: user?.permission,
-                isAdmin: user?.permission == UsersPermission.ADMIN ?: false
+                roles: user?.roles,
+                isAdmin: user?.roles == UsersRoles.ADMIN ?: false
         )
     }
 }

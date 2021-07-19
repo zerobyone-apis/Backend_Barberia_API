@@ -2,6 +2,7 @@ package zero.our.piece.barbers.barbers_api._configuration
 
 import com.sun.mail.util.MailSSLSocketFactory
 import groovy.util.logging.Slf4j
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -20,10 +21,11 @@ class MailPropertiesConfig {
     String password
     String host
     String port
-    String[] to
     String auth
     String enable
     String required
+
+    @Value('${mail.to}') String[] to
 
 
     private Properties setMailProperties() throws GeneralSecurityException {
@@ -36,6 +38,7 @@ class MailPropertiesConfig {
         propertiesRequiredByMail.put("mail.smtp.host", this.host)
         propertiesRequiredByMail.put("mail.smtp.port", this.port)
         propertiesRequiredByMail.put("mail.smtp.auth", this.auth)
+        propertiesRequiredByMail.put("mail.smtp.to", this.to)
         propertiesRequiredByMail.put("mail.smtp.ssl.socketFactory", sslSocketToManageAllHost)
         return propertiesRequiredByMail
     }

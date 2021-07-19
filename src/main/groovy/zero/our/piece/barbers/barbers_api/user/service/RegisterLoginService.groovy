@@ -60,7 +60,7 @@ class RegisterLoginService {
                 client_id: login?.client_id,
                 init_session:  Instant.now(),
                 end_session: action == Action.LOGOUT ? Instant.now() : null,
-                permission: login.permission,
+                roles: login.roles,
                 action: action
         )
     }

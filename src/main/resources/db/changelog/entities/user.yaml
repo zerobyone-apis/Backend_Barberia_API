@@ -37,6 +37,9 @@ databaseChangeLog:
                   name: email
                   type: VARCHAR
               - column:
+                  name: roles
+                  type: VARCHAR
+              - column:
                   name: permission
                   type: VARCHAR
               - column:
@@ -107,7 +110,7 @@ databaseChangeLog:
                   name: action
                   type: VARCHAR
               - column:
-                  name: permission
+                  name: roles
                   type: VARCHAR
               - column:
                   name: init_session

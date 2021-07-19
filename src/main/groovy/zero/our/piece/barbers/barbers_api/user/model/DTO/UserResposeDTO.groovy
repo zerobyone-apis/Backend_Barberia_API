@@ -1,13 +1,13 @@
 package zero.our.piece.barbers.barbers_api.user.model.DTO
 
-import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersPermission
+import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersRoles
 
 class UserResponseDTO {
 
     String email
     String username
     Long socialNumber
-    UsersPermission permissionRol
+    UsersRoles roles
     Boolean isAdmin
 
 }

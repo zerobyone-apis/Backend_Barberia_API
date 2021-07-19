@@ -30,7 +30,7 @@ class Hairdresser {
     // Enterprise info
     Long enterprise_id   // todo: hacer el fk con usuario v
     EnterpriseRoll roll
-    // check: El roll tiene que ser el mismo que el Permission de Usuario para poder ver los accesos correctos.
+    // check: El roll tiene que ser el mismo que el roles de Usuario para poder ver los accesos correctos.
 
     String open_work_time     // horario en el que trabaja, o se rige por la empresa
     String duration_cuts_time // duracion de sus servicios, 30 min, 40 min, 1 hora. etc.

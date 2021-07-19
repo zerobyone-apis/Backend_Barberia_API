@@ -7,10 +7,10 @@ class ClientResponseDTO {
 
     // Client info;
     Long id
-    String name         //todo encryptar estos valores
+    String name
     String phone        //todo encryptar estos valores
-    String username     //todo encryptar estos valores
-    String email        //todo encryptar estos valores
+    String username
+    String email
     Long social_number
     ClientType client_type
 
