@@ -7,47 +7,64 @@ import zero.our.piece.barbers.barbers_api._security.model.UserSecurity
 import zero.our.piece.barbers.barbers_api.user.model.User
 import zero.our.piece.barbers.barbers_api.user.repository.UserRepository
 
+
 import java.nio.file.attribute.UserPrincipalNotFoundException
 
-@Service("Postgres")
+@Service ("Postgres")
 class UserSecurePostgresService {
 
-    //@Deprecated
-    //@Autowired
-    //private UserSecureDAO repository
+    /*
+    -> Deprecado, seria para obtener informacion de alguna tabla de UserSecurity donde guarde  no se tokens o algo.. y luego validarlos aca.
+        @Deprecated
+        @Autowired
+        private UserSecureDAO repository
+
+   -> Service para tener la info total del usuario.
+        @Autowired
+        UserService userService
+    */
 
     @Autowired
     UserRepository repository
 
     UserSecurity findUserSecurityByUsername(String username) {
+        /**
+         * todo: En caso de necesitar añadir mas info del usuario al principal, para hacer alguna operacion de seguridad,
+         *      o añadirlo directamente al token, como el: Phone, informacion del cliente o informacion del barber
+         *      -> ResponseUserLoginDTO dtoUser = userService.findUserToFillReserve(user.id)
+         */
         User user = repository.findByUsername(username)
-        if(!user.roles) throw new UserPrincipalNotFoundException("User not found with this Username")
-        new UserSecurity(
-                email: user.email,
+        if (!user.roles) throw new UserPrincipalNotFoundException("User not found with this Username")
+        UserSecurity userSecurity = new UserSecurity(
                 username: user.username,
                 password: user.password,
-                role: ApplicationUserRole.valueOf(user.roles.name()),
-                authorities: ApplicationUserRole.valueOf(user.roles.name()).getGrantedAuthorities(),
-                enabled: true,
                 credentialsNonExpired: true,
+                enabled: true,
+                accountNonExpired: true,
                 accountNonLocked: true,
-                accountNonExpired: true
+                authorities: ApplicationUserRole.valueOf(user.roles.name()).getGrantedAuthorities()
         )
+        userSecurity.id = user.id
+        userSecurity.email = user.email
+        userSecurity.role = ApplicationUserRole.valueOf(user.roles.name())
+        userSecurity
     }
 
-    UserSecurity findByEmail(String email){
+    UserSecurity findByEmail(String email) {
         User user = repository.findByEmail(email)
-        if(!user.roles) throw new UserPrincipalNotFoundException("User not found with this Email")
-        new UserSecurity(
-                email: user.email,
+        if (!user.roles) throw new UserPrincipalNotFoundException("User not found with this Email")
+        UserSecurity userSecurity = new UserSecurity(
                 username: user.username,
                 password: user.password,
-                role: ApplicationUserRole.valueOf(user.roles.name()),
-                authorities: ApplicationUserRole.valueOf(user.roles.name()).getGrantedAuthorities(),
-                enabled: true,
                 credentialsNonExpired: true,
+                enabled: true,
+                accountNonExpired: true,
                 accountNonLocked: true,
-                accountNonExpired: true
+                authorities: ApplicationUserRole.valueOf(user.roles.name()).getGrantedAuthorities()
         )
+        userSecurity.id = user.id
+        userSecurity.email = user.email
+        userSecurity.role = ApplicationUserRole.valueOf(user.roles.name())
+        userSecurity
     }
 }

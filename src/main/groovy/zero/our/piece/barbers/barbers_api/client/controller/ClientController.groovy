@@ -31,9 +31,11 @@ class ClientController {
         clientService.findById(clientId);
     }
 
-    @PostMapping
+    /**
+     * @public Solo para que registren clientes
+     */
+    @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAnyAuthority('cli_resv_write', 'brb_write')")
     def create(@RequestBody ClientRequestDTO body) {
         clientService.create(body);
     }

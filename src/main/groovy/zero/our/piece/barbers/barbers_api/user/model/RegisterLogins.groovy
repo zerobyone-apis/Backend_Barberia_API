@@ -19,7 +19,7 @@ class RegisterLogins {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "register_logins_sequence")
     @SequenceGenerator(name = "register_logins_sequence", sequenceName = "register_logins_sequence", allocationSize = 1)
     Long id
-    String username     //todo: sencive data we need to encrypt
+    String username
     String email
     Long social_number   //todo: sencive data we need to encrypt
 
@@ -30,8 +30,8 @@ class RegisterLogins {
     Long client_id
 
     Action action
-    Instant init_session     //todo: sencive data we need to encrypt
-    Instant end_session     //todo: sencive data we need to encrypt
+    Instant init_session
+    Instant end_session
     String roles        //todo: sencive data we need to encrypt
 
 

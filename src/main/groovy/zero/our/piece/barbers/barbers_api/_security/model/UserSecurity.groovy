@@ -1,13 +1,9 @@
 package zero.our.piece.barbers.barbers_api._security.model
 
 import groovy.transform.EqualsAndHashCode
-import groovy.transform.ToString
 import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.userdetails.UserDetails
-
+import org.springframework.security.core.userdetails.User
 import zero.our.piece.barbers.barbers_api._security.infrastructure.ApplicationUserRole
-
 import javax.persistence.Entity
 import javax.persistence.EnumType
 import javax.persistence.Enumerated
@@ -33,25 +29,24 @@ import javax.persistence.Transient
 @Entity
 @EqualsAndHashCode
 @Table(name = "user_security")
-class UserSecurity implements UserDetails {
+class UserSecurity extends User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_security_sequence")
     @SequenceGenerator(name = "user_security_sequence", sequenceName = "user_security_sequence", allocationSize = 1)
     Long id
-
-    String password
-    String username
     String email
+    String username
 
     @Enumerated(EnumType.STRING)
     ApplicationUserRole role
 
-    boolean accountNonExpired
-    boolean accountNonLocked
-    boolean credentialsNonExpired
-    boolean enabled
-
     @Transient
     Set<GrantedAuthority> authorities
+
+    UserSecurity(String username, String password, boolean enabled, boolean credentialsNonExpired, boolean accountNonLocked, boolean accountNonExpired, Set<GrantedAuthority> authorities) {
+        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities)
+        this.username = username
+        this.authorities = authorities
+    }
 }

@@ -1,8 +1,8 @@
 package zero.our.piece.barbers.barbers_api._security.infrastructure.jwt
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.google.gson.Gson
 import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -11,6 +11,7 @@ import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 import javax.crypto.SecretKey
+import javax.json.Json
 import javax.servlet.FilterChain
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
@@ -32,7 +33,7 @@ class JwtUsernameAndPasswordAuthFilter extends UsernamePasswordAuthenticationFil
             /*TODO:
             *       Tener en cuenta que dentro de UsernamePasswordAuthenticationToken van dos objetos de tipo Object:
             *       @principal  -> En este objeto podriamos guardar toda la data que quisieramos cargar en el contexto a utilizar por ejemplo el dto de User.
-            *       @credentials -> En este objeto deberiamos de usarlo unicamente para cuando sea necesario percisir o leer algun tipo de credencial encriptado.
+            *       @credentials -> En este objeto deberiamos de usarlo unicamente para cuando sea necesario persistir o leer algun tipo de credencial encriptado.
             *       @authoritires -> es una extension, requiere un Collection de GrantedAutorities, sirve para saber que puede hacer ese usuario
             *       Todo esto se podria llegar a usar desde el principal en el controler, y pasarlo al servicio para alguna logica.
             * */
@@ -53,13 +54,28 @@ class JwtUsernameAndPasswordAuthFilter extends UsernamePasswordAuthenticationFil
 
         String token = Jwts.builder()
                 .setSubject(authResult.name)
+                .claim("user_id", authResult.principal.properties.get("id"))
+                .claim("email", authResult.principal.properties.get("email"))
+                .claim("role", authResult.principal.properties.get("role"))
                 .claim("authorities", authResult.getAuthorities())
                 .setIssuedAt(new Date())
                 .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusDays(jwtConfig.expirationDays)))
                 .signWith(secretKey)
                 .compact()
 
-        response.addHeader(jwtConfig.getAuthorizationHeader(), jwtConfig.prefix + token)
+        // Esto le añade el token en el header,
+        // response.addHeader(jwtConfig.getAuthorizationHeader(), jwtConfig.prefix + token)
+
+        // Envio el token en el body.
+        def jsonResp = [
+            auth_token: jwtConfig.prefix + token,
+            header_name: jwtConfig.getAuthorizationHeader(),
+            refresh_token: "Refresh Token",
+            message: "User is correctly logged"
+        ]
+        response.setContentType("application/json")
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(new Gson().toJson(jsonResp))
     }
 
     /*  Todo:

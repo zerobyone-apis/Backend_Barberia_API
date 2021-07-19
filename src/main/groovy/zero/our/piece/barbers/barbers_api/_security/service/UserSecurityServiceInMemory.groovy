@@ -9,73 +9,40 @@ import static zero.our.piece.barbers.barbers_api._security.infrastructure.Applic
 
 // TODO: DEMORA MUCHO EN CARGAR, Y TIRA ERROR PORQUE NO RECONOCE UN LIST<UserSecurity>
 
-@Service("InMemory")
+@Service ("InMemory")
 class UserSecurityServiceInMemory {
 
     @Autowired
     private PasswordEncoder passwordEncoder
 
-
     UserSecurity findUserSecurityByUsername(String username) {
-       def result = findAllUsers().find { it -> it.username == username }
+        def result = findAllUsers().find { it -> it.username == username }
         result
     }
 
     List<UserSecurity> findAllUsers() {
         new ArrayList<UserSecurity>(
-                new UserSecurity(
-                        username: "zeroDev",
-                        password: passwordEncoder.encode("password"),
-                        email: "test.admin@gmail.com",
-                        role: ADMIN,
-                        authorities: ADMIN.getGrantedAuthorities(),
-                        accountNonExpired: false,
-                        accountNonLocked: true,
-                        credentialsNonExpired: true,
-                        enabled: true
-                        // token: ""
-                ),
-                new UserSecurity(
-                        username: "TeamSupervisor",
-                        password: passwordEncoder.encode("password"),
-                        email: "test.supervisor@gmail.com",
-                        role: SUPERVISOR,
-                        authorities: SUPERVISOR.getGrantedAuthorities(),
-                        accountNonExpired: false,
-                        accountNonLocked: true,
-                        credentialsNonExpired: true,
-                        enabled: true
-                        // token: ""
-                ),
-
-                new UserSecurity(
-                        username: "TeamBarber",
-                        password: passwordEncoder.encode("password"),
-                        email: "test.barber@gmail.com",
-                        role: BARBER,
-                        authorities: BARBER.getGrantedAuthorities(),
-                        accountNonExpired: false,
-                        accountNonLocked: true,
-                        credentialsNonExpired: true,
-                        enabled: true
-                        // token: ""
-                ),
-
-                new UserSecurity(
-                        username: "TeamClient",
-                        password: passwordEncoder.encode("password"),
-                        email: "test.client@gmail.com",
-                        role: CLIENT,
-                        authorities: CLIENT.getGrantedAuthorities(),
-                        accountNonExpired: false,
-                        accountNonLocked: true,
-                        credentialsNonExpired: true,
-                        enabled: true
-                        // token: ""
-                )
-
+                this.createUserSecurity("zeroDev", "password", "test.admin@gmail.com", ADMIN, false),
+                this.createUserSecurity("TeamSupervisor", "password", "test.supervisor@gmail.com", SUPERVISOR, false),
+                this.createUserSecurity("TeamBarber", "password", "test.barber@gmail.com", BARBER, false),
+                this.createUserSecurity("TeamHairdresser", "password", "test.hairdresser@gmail.com", HAIRDRESSER, false),
+                this.createUserSecurity("TeamClient", "password", "test.client@gmail.com", CLIENT, true)
         )
     }
 
-
+    def createUserSecurity(username, password, email, role, accountNonExpired) {
+        def user = new UserSecurity(
+                username: username,
+                password: passwordEncoder.encode(password),
+                authorities: role.getGrantedAuthorities(),
+                accountNonExpired: accountNonExpired,
+                accountNonLocked: true,
+                credentialsNonExpired: true,
+                enabled: true
+        )
+        user.role = role
+        user.email = email
+        user.authorities = role.getGrantedAuthorities()
+        user
+    }
 }
