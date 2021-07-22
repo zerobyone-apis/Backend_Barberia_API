@@ -3,6 +3,8 @@ package zero.our.piece.barbers.barbers_api.client.service
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import zero.our.piece.barbers.barbers_api._security.model.ConfirmationToken
+import zero.our.piece.barbers.barbers_api._security.service.ConfirmationTokenService
 import zero.our.piece.barbers.barbers_api.client.infrastructure.ClientType
 import zero.our.piece.barbers.barbers_api.client.model.Client
 import zero.our.piece.barbers.barbers_api.client.model.DTO.ClientRequestDTO
@@ -17,7 +19,7 @@ import zero.our.piece.barbers.barbers_api.user.model.User
 import zero.our.piece.barbers.barbers_api.user.service.UserService
 
 import java.time.Instant
-import java.util.stream.Collectors
+import java.time.LocalDateTime
 
 @Service
 @Slf4j
@@ -31,6 +33,9 @@ class ClientService {
 
     @Autowired
     UserService userService
+
+    @Autowired
+    ConfirmationTokenService tokenService
 
     List<ClientResponseDTO> findAll() {
         try {
@@ -95,14 +100,23 @@ class ClientService {
         userService.saveUser(user, 'Updating clientID')
         clientUsersRepository.save(new ClientUsers(clientId: user.client_id, userId: user.id))
 
+        // todo: Create and save token
+        String token = tokenService.createToken(user)
+        log.info("Este es el token que se enviara -> ${token}")
+
+        //todo: enviamos el token.
+
+
         return decoratorPatternClient(savedClient)
     }
 
-    ClientResponseDTO update(ClientRequestDTO body, Long clientId) {
-        def existentClient = clientRepository.findById(clientId)
-        if (!existentClient.isPresent()) throw new ResourceNotFoundException("CLIENT NOT FOUND")
 
-        Client client = updateClient(existentClient.get(), body)
+
+    ClientResponseDTO update(ClientRequestDTO body, Long clientId) {
+        Client existentClient = clientRepository.findById(clientId).get()
+        if (existentClient?.username) throw new ResourceNotFoundException("CLIENT NOT FOUND")
+
+        Client client = updateClient(existentClient, body)
         updateUser(body)
 
         def savedClient = clientRepository.save(client)
@@ -215,4 +229,12 @@ class ClientService {
         )
     }
 
+    void confirmUserClient(Client client) {
+        try {
+            clientRepository.save(client)
+        }catch(Exception ex) {
+            log.error("Algo salio mal Activando al nuevo cliente...")
+            throw new IllegalStateException("Something wrong with new Client ACTIVATION.. ${ex.message}")
+        }
+    }
 }

@@ -24,10 +24,10 @@ class User {
     Long barber_id
     Long hairdresser_id
     Long client_id
-    String username     //todo: sencive data we need to encrypt
+    String username
     String password     //todo: sencive data we need to encrypt
-    String email        //todo: sencive data we need to encrypt
-    Long social_number   //todo: sencive data we need to encrypt
+    String email
+    Long social_number
     Instant created_on
     Instant update_on
 
@@ -38,6 +38,6 @@ class User {
     //@Enumerated(EnumType.STRING)
     ApplicationUserPermission permission   // todo: ver si se guardan los roles, o si se borra la columna
 
-    Boolean is_active = Boolean.TRUE
+    Boolean is_active = Boolean.FALSE  //Ahora debera actualizarse por medio de notificacion en email.
 }
 

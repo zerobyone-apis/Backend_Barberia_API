@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import zero.our.piece.barbers.barbers_api._configuration.RestCrossOriginController
+import zero.our.piece.barbers.barbers_api._security.service.ConfirmationTokenService
 import zero.our.piece.barbers.barbers_api.client.model.Client
 import zero.our.piece.barbers.barbers_api.client.model.DTO.ClientRequestDTO
 import zero.our.piece.barbers.barbers_api.client.service.ClientService
@@ -16,6 +17,9 @@ class ClientController {
 
     @Autowired
     ClientService clientService
+
+    @Autowired
+    ConfirmationTokenService confirmationTokenService
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
@@ -34,10 +38,19 @@ class ClientController {
     /**
      * @public Solo para que registren clientes
      */
-    @PostMapping("/register")
+    @PostMapping("/p/register")
     @ResponseStatus(HttpStatus.CREATED)
     def create(@RequestBody ClientRequestDTO body) {
         clientService.create(body);
+    }
+
+    /**
+     * @public Solo para que los clientes confirmen su registro
+     */
+    @PatchMapping("/p/confirm/{token}")
+    @ResponseStatus(HttpStatus.OK)
+    def confirm(@RequestParam("token") String token) {
+        confirmationTokenService.verifyToken(token);
     }
 
 

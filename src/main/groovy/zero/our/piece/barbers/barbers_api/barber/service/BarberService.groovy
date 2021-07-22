@@ -35,6 +35,14 @@ class BarberService {
     @Autowired
     UserService userService
 
+    void confirmUserBarber(Barber brb) {
+        try {
+            barberRepository.save(brb)
+        } catch (ResourceNotFoundException | NoSuchElementException ex) {
+            throw new ResourceNotFoundException("Error in the confirmed email.. ${ex.message}")
+        }
+    }
+
     List<BarberResponseDTO> findAll() {
         try {
             barberRepository.findAll().collect { it -> decoratorPatternBarber(it) }

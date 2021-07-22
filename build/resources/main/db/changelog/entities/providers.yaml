@@ -1,0 +1,78 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_providers_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: providers
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: brand_id
+                  type: BIGINT
+              - column:
+                  name: country_id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR
+              - column:
+                  name: email
+                  type: VARCHAR
+              - column:
+                  name: internal_phone
+                  type: VARCHAR
+              - column:
+                  name: created_on
+                  type: TIMESTAMP
+              - column:
+                  name: updated_on
+                  type: TIMESTAMP
+              - column:
+                  name: enabled
+                  type: BOOLEAN
+
+  - changeSet:
+      id: create_provider_products_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: provider_products
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: provider_id
+                  type: BIGINT
+              - column:
+                  name: product_id
+                  type: BIGINT
+
+  - changeSet:
+      id: create_provider_enterprise_table
+      author: max_olivero
+      changes:
+        - createTable:
+            tableName: provider_enterprise
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: enterprise_id
+                  type: BIGINT
+              - column:
+                  name: provider_id
+                  type: BIGINT

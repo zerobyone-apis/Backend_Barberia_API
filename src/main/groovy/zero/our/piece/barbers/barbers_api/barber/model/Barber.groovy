@@ -86,7 +86,7 @@ class Barber {
     Instant created_on
     Instant updated_on
 
-    Boolean is_active = Boolean.TRUE
+    Boolean is_active = Boolean.FALSE
     Boolean is_admin = Boolean.FALSE
 }
 

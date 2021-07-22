@@ -3,10 +3,15 @@ package zero.our.piece.barbers.barbers_api.user.service
 import groovy.util.logging.Slf4j
 import org.hibernate.exception.SQLGrammarException
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import zero.our.piece.barbers.barbers_api._security.infrastructure.PasswordConfig
+import zero.our.piece.barbers.barbers_api._security.model.ConfirmationToken
+import zero.our.piece.barbers.barbers_api._security.service.ConfirmationTokenService
+import zero.our.piece.barbers.barbers_api.barber.model.Barber
 import zero.our.piece.barbers.barbers_api.barber.model.DTO.BarberResponseDTO
 import zero.our.piece.barbers.barbers_api.barber.service.BarberService
+import zero.our.piece.barbers.barbers_api.client.model.Client
 import zero.our.piece.barbers.barbers_api.client.model.DTO.ClientResponseDTO
 import zero.our.piece.barbers.barbers_api.client.service.ClientService
 import zero.our.piece.barbers.barbers_api.enterprise.infrastructure.EnterpriseUsers
@@ -21,6 +26,7 @@ import zero.our.piece.barbers.barbers_api.user.model.User
 import zero.our.piece.barbers.barbers_api.user.repository.UserRepository
 
 import java.time.Instant
+import java.time.LocalDateTime
 
 @Service
 @Slf4j
@@ -39,10 +45,13 @@ class UserService {
     RegisterLoginService registerLoginService
 
     @Autowired
-    PasswordConfig passwordConfig
+    BCryptPasswordEncoder passwordEncoder
 
     @Autowired
     EnterpriseUsersRepository enterpriseUsersRepository
+
+    @Autowired
+    ConfirmationTokenService tokenService
 
     private Long FIRST_SOCIAL_NUMBER = 600L
 
@@ -136,8 +145,7 @@ class UserService {
                 client_id: user?.client_id,
                 created_on: Instant.now(),
                 social_number: setSocialNumber(user),
-                update_on: user?.is_active == Boolean.FALSE ? Instant.now() : null,
-                is_active: !user?.is_active ?: true
+                update_on: user?.is_active == Boolean.FALSE ? Instant.now() : null
         )
     }
 
@@ -156,7 +164,7 @@ class UserService {
                 created_on: existentUser.created_on,
                 social_number: setSocialNumber(user),
                 update_on: Instant.now(),
-                is_active: user?.is_active == Boolean.FALSE ?: true
+                is_active: user?.is_active // antes era siempre TRUE -> ahora sera por medio de confirmacion en mail
         )
         updatedUser
     }
@@ -164,7 +172,7 @@ class UserService {
     User saveUser(User user, String action) {
         userValidation(user, action)
         try {
-            user.password = passwordConfig.passwordEncoder(user.password)
+            user.password = passwordEncoder.encode(user.password)
             def savedUser = userRepository.save(user)
             enterpriseUsersRepository.save(new EnterpriseUsers(enterprise_id: savedUser.enterprise_id, user_id: savedUser.id, social_number: savedUser.social_number))
             return savedUser
@@ -182,7 +190,7 @@ class UserService {
         response
     }
 
-    protected ResponseUserLoginDTO getUserByroles(User user){
+    protected ResponseUserLoginDTO getUserByroles(User user) {
         ResponseUserLoginDTO response = new ResponseUserLoginDTO()
         switch (user.roles) {
             case UsersRoles.CLIENT:
@@ -214,12 +222,12 @@ class UserService {
         try {
             User foundUser = new User()
             if (user?.social_number && user?.password) {
-                foundUser = userRepository.findBySocialNumberAndPassword(user.social_number, passwordConfig.passwordEncoder(user.password))
+                foundUser = userRepository.findBySocialNumberAndPassword(user.social_number, passwordEncoder.encode(user.password))
                 if (!foundUser?.id) throw new CreateResourceException("Social number or Password are wrong.")
             }
 
             if (user?.email && user?.password) {
-                foundUser = userRepository.findByEmailAndPassword(user.email, passwordConfig.passwordEncoder(user.password))
+                foundUser = userRepository.findByEmailAndPassword(user.email, passwordEncoder.encode(user.password))
                 if (!foundUser?.id) throw new CreateResourceException("Email or Password are wrong.")
             }
 
@@ -237,7 +245,7 @@ class UserService {
         barberService.findByUserId(user.id)
     }
 
-    protected ClientResponseDTO checkUserIsClient(User user) {clientService.findByUserId(user.id)}
+    protected ClientResponseDTO checkUserIsClient(User user) { clientService.findByUserId(user.id) }
 
     protected Long setSocialNumber(User user) {
         def socialNumeber = (user.social_number != null && user.social_number > 0)
@@ -267,28 +275,28 @@ class UserService {
     protected def userValidation(User user, String action) {
         switch (action) {
             case 'EXIST':
-                if (!user?.id) throw new CreateResourceException("USER_ID_CANNOT_BE_NULL")
+                if (user?.id) throw new CreateResourceException("USER_ID_CANNOT_BE_NULL")
 
                 User checkUsername = userRepository.findById(user.id)
-                if (!checkUsername?.username) throw new CreateResourceException("User ID: ${checkUsername.id} Not Exists.")
+                if (checkUsername?.username) throw new CreateResourceException("User ID: ${user.id} Not Exists.")
 
                 return checkUsername
                 break
             case 'CREATE':
-                User checkUsername = userRepository.findByUsername(user.username)
-                if (!checkUsername?.username) throw new CreateResourceException("User: ${checkUsername.username} already exists, please try with another Username.")
+                User checkUsername =  userRepository.findByUsername(user.username)
+                if (checkUsername?.username) throw new CreateResourceException("User: ${user.username} already exists, please try with another Username.")
 
                 User checkEmail = userRepository.findByEmail(user.email)
                 if (checkEmail?.username) throw new CreateResourceException("User: ${user.email} already exists, please try with another Email.")
                 break
             case 'UPDATE':
                 User checkUsername = userRepository.findByUsername(user.username)
-                if (!checkUsername?.username) throw new CreateResourceException("User: ${checkUsername.username} Not Found.")
-                if (checkUsername?.id != user.id) throw new CreateResourceException("User: ${checkUsername.id} Not Found.")
+                if (checkUsername?.username) throw new CreateResourceException("User: ${user.username} Not Found.")
+                if (checkUsername?.id != user.id) throw new CreateResourceException("User: ${user.id} Not Found.")
 
                 User checkEmail = userRepository.findByEmail(user.email)
-                if (!checkEmail?.email) throw new CreateResourceException("User: ${checkEmail.email} Not Found.")
-                if (checkEmail?.id != user.id) throw new CreateResourceException("User: ${checkEmail.id} Not Found.")
+                if (checkEmail?.email) throw new CreateResourceException("User: ${user.email} Not Found.")
+                if (checkEmail?.id != user.id) throw new CreateResourceException("User: ${user.id} Not Found.")
                 break
             default:
                 log.info("Action: Action provided is not listed..")
@@ -305,4 +313,8 @@ class UserService {
                 isAdmin: user?.roles == UsersRoles.ADMIN ?: false
         )
     }
+
+
+
+
 }
