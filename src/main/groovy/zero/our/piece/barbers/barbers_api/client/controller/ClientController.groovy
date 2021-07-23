@@ -38,7 +38,7 @@ class ClientController {
     /**
      * @public Solo para que registren clientes
      */
-    @PostMapping("/p/register")
+    @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     def create(@RequestBody ClientRequestDTO body) {
         clientService.create(body);
@@ -47,9 +47,9 @@ class ClientController {
     /**
      * @public Solo para que los clientes confirmen su registro
      */
-    @PatchMapping("/p/confirm/{token}")
+    @PatchMapping("/confirm/{token}")
     @ResponseStatus(HttpStatus.OK)
-    def confirm(@RequestParam("token") String token) {
+    def confirm(@PathVariable("token") String token) {
         confirmationTokenService.verifyToken(token);
     }
 

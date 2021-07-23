@@ -25,25 +25,6 @@ class TokenVerifier extends OncePerRequestFilter {
     SecretKey secretKey
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String path = request.getRequestURI()
-        switch (path) {
-            case "/client/register":
-                return "/client/p/register" == path ?: true
-                break
-            case "/client/p/confirm":
-                return "/client/confirm" == path ?: true
-                break
-            case "/user/v1/login":
-                return "/user/v1/login" == path ?: true
-                break
-            default:
-                logger.info("Necesita estar authenticado...")
-                return false
-        }
-    }
-
-    @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorizationHeader = request.getHeader(jwtConfig?.getAuthorizationHeader())
 

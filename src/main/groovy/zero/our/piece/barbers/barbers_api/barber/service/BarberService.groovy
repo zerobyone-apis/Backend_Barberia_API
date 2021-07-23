@@ -81,6 +81,17 @@ class BarberService {
         }
     }
 
+    Barber getBarberById(Long brbId) {
+        try {
+            Barber barber = barberRepository.findById(brbId).get()
+            if (!barber?.id) throw new ResourceNotFoundException("Barber with this ID Not found: " + brbId)
+
+            return barber
+        } catch (ResourceNotFoundException | NoSuchElementException ex) {
+            throw new ResourceNotFoundException(ex.message)
+        }
+    }
+
     BarberResponseDTO create(BarberRequestDTO body) {
         try {
             Barber barber = createBarber(body)

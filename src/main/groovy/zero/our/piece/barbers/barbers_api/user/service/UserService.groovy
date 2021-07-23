@@ -78,9 +78,9 @@ class UserService {
 
     User findByEmail(String email) {
         try {
-            Optional<User> foundUser = userRepository.findByEmail(email)
-            if (foundUser.isPresent()) {
-                return foundUser.get()
+            User foundUser = userRepository.findByEmail(email)
+            if (foundUser.email) {
+                return foundUser
             }
         } catch (ResourceNotFoundException | NoSuchElementException ex) {
             throw new ResourceNotFoundException(ex.message)
@@ -89,9 +89,9 @@ class UserService {
 
     User findByUsername(String username) {
         try {
-            Optional<User> foundUser = userRepository.findByUsername(username)
-            if (foundUser.isPresent()) {
-                return foundUser.get()
+            User foundUser = userRepository.findByUsername(username)
+            if (foundUser.username) {
+                return foundUser
             }
         } catch (ResourceNotFoundException | NoSuchElementException ex) {
             throw new ResourceNotFoundException(ex.message)
@@ -218,16 +218,29 @@ class UserService {
         response
     }
 
+
+/*
+    FIXME: BUG
+    todo: Revisar como poder logearte si tenemos la password encriptada.
+         No matchea el nuevo encode del password con el que esta en la base de datos.
+         - Se me ocurre, busar por email, siempre que exista solo uno, obtener el user, decodear el password, validar con el que nos llega del request.
+            y si va to_do bien, devolvemos el usario logeado,
+
+            Pero capas que hay mejores opciones. investigarlo.
+
+ */
     protected User loginProcess(RequestUserLoginDTO user) {
         try {
             User foundUser = new User()
+            user.password = passwordEncoder.encode(user.password)
+            //FIXME: BUG - NO SE PUEDE LOGEAR
             if (user?.social_number && user?.password) {
-                foundUser = userRepository.findBySocialNumberAndPassword(user.social_number, passwordEncoder.encode(user.password))
+                foundUser = userRepository.findBySocialNumberAndPassword(user.social_number, user.password)
                 if (!foundUser?.id) throw new CreateResourceException("Social number or Password are wrong.")
             }
-
+            //FIXME: BUG - NO SE PUEDE LOGEAR
             if (user?.email && user?.password) {
-                foundUser = userRepository.findByEmailAndPassword(user.email, passwordEncoder.encode(user.password))
+                foundUser = userRepository.findByEmailAndPassword(user.email, user.password)
                 if (!foundUser?.id) throw new CreateResourceException("Email or Password are wrong.")
             }
 

@@ -47,7 +47,7 @@ class ClientService {
 
     ClientResponseDTO findById(Long id) {
         try {
-            def foundUser = clientRepository.findById(id).get()
+            Client foundUser = clientRepository.findById(id).get()
             if (!foundUser?.id) throw new ResourceNotFoundException("USER_NOT_FOUND")
 
             return decoratorPatternClient(foundUser)

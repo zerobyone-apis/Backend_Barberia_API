@@ -4,12 +4,14 @@ import groovy.util.logging.Slf4j
 import javassist.NotFoundException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import zero.our.piece.barbers.barbers_api._security.model.ConfirmationToken
 import zero.our.piece.barbers.barbers_api._security.repository.ConfirmationTokenRepository
 import zero.our.piece.barbers.barbers_api.barber.model.Barber
 import zero.our.piece.barbers.barbers_api.barber.service.BarberService
 import zero.our.piece.barbers.barbers_api.client.model.Client
 import zero.our.piece.barbers.barbers_api.client.service.ClientService
+import zero.our.piece.barbers.barbers_api.magicCube.exception.ClientException
 import zero.our.piece.barbers.barbers_api.user.model.User
 import zero.our.piece.barbers.barbers_api.user.service.UserService
 
@@ -39,11 +41,10 @@ class ConfirmationTokenService {
        }
     }
 
-    void setConfirmedAt(String token){
+    void setConfirmedAt(ConfirmationToken confirmationToken){
        try{
-           def confirmedToken = this.getToken(token)
-           confirmedToken.confirmAt = LocalDateTime.now()
-           repository.save(confirmedToken)
+           confirmationToken.confirmAt = LocalDateTime.now()
+           repository.save(confirmationToken)
        } catch(Exception e){
            log.error("Somwthing was wrong Updating confirm at from token... ${e.message}")
        }
@@ -72,16 +73,17 @@ class ConfirmationTokenService {
         token
     }
 
+    @Transactional
     def verifyToken(String token) {
         ConfirmationToken confirmationToken = this.getToken(token)
-        if (confirmationToken?.createdOn) throw new IllegalStateException("Token Not Found..")
+        if (!confirmationToken?.createdOn) throw new ClientException("Token Not Found..")
 
-        if (confirmationToken?.confirmAt) throw new IllegalStateException("Email already confirmed..")
+        if (confirmationToken.confirmAt) throw new ClientException("Email already confirmed..")
 
         LocalDateTime expiresOn = confirmationToken.expiresOn
-        if (expiresOn.isBefore(LocalDateTime.now())) throw new IllegalStateException("Token expired")
+        if (expiresOn.isBefore(LocalDateTime.now())) throw new ClientException("Token expired")
 
-        this.setConfirmedAt(token)
+        this.setConfirmedAt(confirmationToken)
         this.confirmUser(confirmationToken.user.email)
         log.info("User confirmed! ")
 
@@ -93,13 +95,13 @@ class ConfirmationTokenService {
         user.is_active = Boolean.TRUE
 
         if (user?.barber_id) {
-            Barber barber = barberService.findById(user.barber_id)
+            Barber barber = barberService.getBarberById(user.barber_id)
             barber.is_active = Boolean.TRUE
             barberService.confirmUserBarber(barber)
         }
 
         if (user?.client_id) {
-            Client client = clientService.findById(user.client_id)
+            Client client = clientService.findClientById(user.client_id)
             client.is_active = Boolean.TRUE
             clientService.confirmUserClient(client)
 
