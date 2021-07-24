@@ -11,7 +11,6 @@ import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 import javax.crypto.SecretKey
-import javax.json.Json
 import javax.servlet.FilterChain
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
@@ -21,6 +20,7 @@ import java.time.LocalDate
 class JwtUsernameAndPasswordAuthFilter extends UsernamePasswordAuthenticationFilter {
 
     AuthenticationManager authenticationManager
+
     @Autowired
     private JwtConfig jwtConfig
     @Autowired
@@ -56,6 +56,11 @@ class JwtUsernameAndPasswordAuthFilter extends UsernamePasswordAuthenticationFil
                 .setSubject(authResult.name)
                 .claim("user_id", authResult.principal.properties.get("id"))
                 .claim("email", authResult.principal.properties.get("email"))
+
+            /*
+            todo: probar si puedo obtener el user authenticado en el endpoint y ocntinuar el flujo
+                    -> .claim("secret", authResult.principal.properties.get("password"))
+             */
                 .claim("role", authResult.principal.properties.get("role"))
                 .claim("authorities", authResult.getAuthorities())
                 .setIssuedAt(new Date())

@@ -36,17 +36,17 @@ class UserSecurePostgresService {
         User user = repository.findByUsername(username)
         if (!user.roles) throw new UserPrincipalNotFoundException("User not found with this Username")
         UserSecurity userSecurity = new UserSecurity(
+                id: user.id,
                 username: user.username,
                 password: user.password,
                 credentialsNonExpired: true,
                 enabled: true,
                 accountNonExpired: true,
                 accountNonLocked: true,
-                authorities: ApplicationUserRole.valueOf(user.roles.name()).getGrantedAuthorities()
+                authorities: ApplicationUserRole.valueOf(user.roles.name()).getGrantedAuthorities(),
+                email: user.email,
+                role: ApplicationUserRole.valueOf(user.roles.name())
         )
-        userSecurity.id = user.id
-        userSecurity.email = user.email
-        userSecurity.role = ApplicationUserRole.valueOf(user.roles.name())
         userSecurity
     }
 

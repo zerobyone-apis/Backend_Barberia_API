@@ -3,6 +3,7 @@ package zero.our.piece.barbers.barbers_api._security.model
 import groovy.transform.EqualsAndHashCode
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.User
+import org.springframework.security.core.userdetails.UserDetails
 import zero.our.piece.barbers.barbers_api._security.infrastructure.ApplicationUserRole
 import javax.persistence.Entity
 import javax.persistence.EnumType
@@ -29,7 +30,7 @@ import javax.persistence.Transient
 @Entity
 @EqualsAndHashCode
 @Table(name = "user_security")
-class UserSecurity extends User {
+class UserSecurity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_security_sequence")
@@ -37,6 +38,11 @@ class UserSecurity extends User {
     Long id
     String email
     String username
+    String password
+    boolean enabled
+    boolean accountNonExpired
+    boolean credentialsNonExpired
+    boolean accountNonLocked
 
     @Enumerated(EnumType.STRING)
     ApplicationUserRole role
@@ -44,9 +50,4 @@ class UserSecurity extends User {
     @Transient
     Set<GrantedAuthority> authorities
 
-    UserSecurity(String username, String password, boolean enabled, boolean credentialsNonExpired, boolean accountNonLocked, boolean accountNonExpired, Set<GrantedAuthority> authorities) {
-        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities)
-        this.username = username
-        this.authorities = authorities
-    }
 }

@@ -231,23 +231,22 @@ class UserService {
  */
     protected User loginProcess(RequestUserLoginDTO user) {
         try {
-            User foundUser = new User()
-            user.password = passwordEncoder.encode(user.password)
-            //FIXME: BUG - NO SE PUEDE LOGEAR
+            User existentUser = new User()
+            //todo: deprecated logic -> Solo se logea por email de momento, esta funcionalidad no esta activa.
             if (user?.social_number && user?.password) {
-                foundUser = userRepository.findBySocialNumberAndPassword(user.social_number, user.password)
-                if (!foundUser?.id) throw new CreateResourceException("Social number or Password are wrong.")
+                existentUser = userRepository.findBySocialNumberAndPassword(user.social_number, user.password)
+                if (!existentUser?.id) throw new CreateResourceException("Social number or Password are wrong.")
             }
-            //FIXME: BUG - NO SE PUEDE LOGEAR
+
             if (user?.email && user?.password) {
-                foundUser = userRepository.findByEmailAndPassword(user.email, user.password)
-                if (!foundUser?.id) throw new CreateResourceException("Email or Password are wrong.")
+                existentUser = userRepository.findByEmailAndPassword(user.email, user.password)
+                if (!existentUser?.id) throw new CreateResourceException("Email or Password are wrong.")
             }
 
-            //todo: analitycs table.
-            registerLoginService.login(foundUser)
+            // Todo: Registro de login para anliticas
+            registerLoginService.login(existentUser)
 
-            return foundUser
+            return existentUser
         } catch (SQLGrammarException | CreateResourceException ex) {
             log.error("ERROR_LOGIN: ${ex.getMessage()}")
             throw new CreateResourceException("ERROR_LOGIN: ${ex.getMessage()}")
