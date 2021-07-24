@@ -13,6 +13,8 @@ import zero.our.piece.barbers.barbers_api.client.repository.ClientRepository
 import zero.our.piece.barbers.barbers_api.client.repository.ClientUsersRepository
 import zero.our.piece.barbers.barbers_api.magicCube.exception.CreateResourceException
 import zero.our.piece.barbers.barbers_api.magicCube.exception.ResourceNotFoundException
+import zero.our.piece.barbers.barbers_api.magicCube.mailing.EmailSender
+import zero.our.piece.barbers.barbers_api.magicCube.mailing.EmailServiceV2
 import zero.our.piece.barbers.barbers_api.user.infrastructure.ClientUsers
 import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersRoles
 import zero.our.piece.barbers.barbers_api.user.model.User
@@ -30,6 +32,14 @@ class ClientService {
 
     @Autowired
     ClientUsersRepository clientUsersRepository
+
+    @Autowired
+    EmailSender emailSender
+
+    @Autowired
+    EmailServiceV2 emailServiceV2
+
+
 
     @Autowired
     UserService userService
@@ -105,12 +115,11 @@ class ClientService {
         log.info("Este es el token que se enviara -> ${token}")
 
         //todo: enviamos el token.
-
+        def uri = "http://localhost:8080/client/confirm/${token}"
+        emailSender.send(user.email,  emailServiceV2.getReservesFromJson(user.username, uri))
 
         return decoratorPatternClient(savedClient)
     }
-
-
 
     ClientResponseDTO update(ClientRequestDTO body, Long clientId) {
         Client existentClient = clientRepository.findById(clientId).get()

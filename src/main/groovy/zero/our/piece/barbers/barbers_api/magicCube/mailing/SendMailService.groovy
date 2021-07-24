@@ -63,8 +63,7 @@ class SendMailService {
 
     }
 
-    private Optional<MimeMessage> buildContentMail(String detailsEmails,String description, String subject, String username,
-                                                   String dateTimesReserve, String clientEmail) {
+    private Optional<MimeMessage> buildContentMail(String detailsEmails,String description, String subject, String username, String dateTimesReserve, String clientEmail) {
         try {
             log.info("BUILDING EMAIL CONTENT BY MULTIPARTS BODY ( W_W )? . . .  ")
             MimeMessage mailContent = buildContentTextMail(subject, detailsEmails, clientEmail)
