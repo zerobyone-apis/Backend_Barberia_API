@@ -6,7 +6,6 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import zero.our.piece.barbers.barbers_api._security.model.UserSecurity
 import zero.our.piece.barbers.barbers_api.magicCube.exception.ResourceNotFoundException
@@ -21,7 +20,8 @@ class SecurityService {
     UserSecurity loginUser(String username) throws ResourceNotFoundException{
         UserSecurity user = userSecurityService.loadUserByUsername(username)
         if(!user.isEnabled()) throw new ResourceNotFoundException("User is pending to confirm.. please check your email, and validate your account.")
-        // recuperar el principal manualmente.
+
+        // Authenticar al usuario.
         UserSecurity userAuthenticated = setPrincipal(user)
         if (userAuthenticated) {
             log.info("************************************************")

@@ -11,10 +11,12 @@ class JwtConfig {
     protected String secretKey
 
     @Value('${auth.token.prefix}')
-    protected String prefix
+    public
+    String prefix
 
     @Value('${auth.token.expiration-days}')
-    protected Long expirationDays
+    public
+    Long expirationDays
 
     static String getAuthorizationHeader(){
         HttpHeaders.AUTHORIZATION
