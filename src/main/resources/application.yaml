@@ -11,6 +11,9 @@ spring:
       default-page-size: 40
       max-page-size: 1000
       default-media-type: application/json
+  aop:
+    auto: true
+    proxy-target-class: true
   jpa:
    database: POSTGRESQL
    show-sql: true
@@ -49,6 +52,7 @@ mail:
   auth: true
   enable: true
   required: true
+  protocol: "smtp"
   contact:
     recipient:
       to: # max3.1994@gmail.com
@@ -62,7 +66,6 @@ mail:
     port: 587
     username: smtp.test.zero@gmail.com
     password: Asterisc0
-
     properties:
       mail:
         smtp:

@@ -73,7 +73,7 @@ class JwtUsernameAndPasswordAuthFilter extends UsernamePasswordAuthenticationFil
 
         // Envio el token en el body.
         def jsonResp = [
-            auth_token: jwtConfig.prefix + token,
+            auth_token: token,
             header_name: jwtConfig.getAuthorizationHeader(),
             refresh_token: "Refresh Token",
             message: "User is correctly logged"
@@ -86,8 +86,6 @@ class JwtUsernameAndPasswordAuthFilter extends UsernamePasswordAuthenticationFil
     /*  Todo:
     *       Verificacion y envio de mail, con token para validar usuario, y validaciones de expiracion, crud de token, pesistencia en tabla para que podamos identificar cuantos tokens y cuando vencen los mismos.,
     *    -> Recurso : https://youtu.be/QwQuro7ekvc?t=1061
-    *    -> Por otro lado, hacer que el token devuelva toda la info del User ya que si no deberia de hacer una llamada mas a mi endpoint de /user/v1/login/ y bucar los datos para encriptarlos o tokenizarlos.
-    *       Revisar el TODO que deje mas arriba
     */
 
 

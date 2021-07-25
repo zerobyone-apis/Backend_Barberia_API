@@ -3,6 +3,7 @@ package zero.our.piece.barbers.barbers_api.client.service
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.EnableTransactionManagement
 import zero.our.piece.barbers.barbers_api._security.model.ConfirmationToken
 import zero.our.piece.barbers.barbers_api._security.service.ConfirmationTokenService
 import zero.our.piece.barbers.barbers_api.client.infrastructure.ClientType
@@ -15,6 +16,7 @@ import zero.our.piece.barbers.barbers_api.magicCube.exception.CreateResourceExce
 import zero.our.piece.barbers.barbers_api.magicCube.exception.ResourceNotFoundException
 import zero.our.piece.barbers.barbers_api.magicCube.mailing.EmailSender
 import zero.our.piece.barbers.barbers_api.magicCube.mailing.EmailServiceV2
+import zero.our.piece.barbers.barbers_api.magicCube.utils.FileLoad
 import zero.our.piece.barbers.barbers_api.user.infrastructure.ClientUsers
 import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersRoles
 import zero.our.piece.barbers.barbers_api.user.model.User
@@ -25,6 +27,7 @@ import java.time.LocalDateTime
 
 @Service
 @Slf4j
+@EnableTransactionManagement (proxyTargetClass = true)
 class ClientService {
 
     @Autowired
@@ -35,11 +38,6 @@ class ClientService {
 
     @Autowired
     EmailSender emailSender
-
-    @Autowired
-    EmailServiceV2 emailServiceV2
-
-
 
     @Autowired
     UserService userService
@@ -116,7 +114,7 @@ class ClientService {
 
         //todo: enviamos el token.
         def uri = "http://localhost:8080/client/confirm/${token}"
-        emailSender.send(user.email,  emailServiceV2.getReservesFromJson(user.username, uri))
+        emailSender.send(user.email,  FileLoad.getConfirmBodyEmailHTML(user.username, uri))
 
         return decoratorPatternClient(savedClient)
     }

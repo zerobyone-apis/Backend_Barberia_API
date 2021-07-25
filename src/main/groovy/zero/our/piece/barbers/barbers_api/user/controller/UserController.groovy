@@ -4,7 +4,6 @@ import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
-import org.springframework.http.RequestEntity
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
@@ -13,6 +12,8 @@ import zero.our.piece.barbers.barbers_api._security.model.UserSecurity
 import zero.our.piece.barbers.barbers_api._security.service.ConfirmationTokenService
 import zero.our.piece.barbers.barbers_api._security.service.SecurityService
 import zero.our.piece.barbers.barbers_api.magicCube.exception.ResourceNotFoundException
+import zero.our.piece.barbers.barbers_api.magicCube.mailing.EmailSender
+import zero.our.piece.barbers.barbers_api.magicCube.utils.FileLoad
 import zero.our.piece.barbers.barbers_api.user.model.DTO.RequestUserLoginDTO
 import zero.our.piece.barbers.barbers_api.user.model.DTO.ResponseUserLoginDTO
 import zero.our.piece.barbers.barbers_api.user.model.User
@@ -30,6 +31,9 @@ class UserController {
 
     @Autowired
     ConfirmationTokenService confirmationTokenService
+
+    @Autowired
+    EmailSender emailSender
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
@@ -94,5 +98,16 @@ class UserController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SUPERVISOR')")
     void deleteById(@PathVariable("id") Long id) {
         userService.delete(id);
+    }
+
+    @PatchMapping("/send/email")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    void sendEmail() {
+        String to = "recohen949@dmsdmg.com"
+        String subject = "Validation Email Sender Test"
+        String name = "ADMIN"
+        String url = "http://localhost:8080/test"
+        emailSender.send(to, subject, FileLoad.getConfirmBodyEmailHTML(name, url));
     }
 }

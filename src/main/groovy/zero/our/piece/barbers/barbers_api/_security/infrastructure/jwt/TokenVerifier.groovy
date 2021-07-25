@@ -28,7 +28,7 @@ class TokenVerifier extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorizationHeader = request.getHeader(jwtConfig?.getAuthorizationHeader())
 
-        if (authorizationHeader || !authorizationHeader?.startsWith(jwtConfig.prefix)) {
+        if (!authorizationHeader || !authorizationHeader?.startsWith(jwtConfig.prefix)) {
             filterChain.doFilter(request, response)
             return
         }

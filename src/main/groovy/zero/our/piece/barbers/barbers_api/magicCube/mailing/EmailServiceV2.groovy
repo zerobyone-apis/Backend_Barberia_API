@@ -1,7 +1,10 @@
 package zero.our.piece.barbers.barbers_api.magicCube.mailing
 
 import groovy.util.logging.Slf4j
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.cache.annotation.EnableCaching
+import org.springframework.context.annotation.EnableAspectJAutoProxy
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.scheduling.annotation.Async
@@ -11,34 +14,28 @@ import zero.our.piece.barbers.barbers_api.magicCube.exception.CreateResourceExce
 
 import javax.mail.MessagingException
 import javax.mail.internet.MimeMessage
-import java.nio.file.Files
-import java.nio.file.Paths
+
 
 @Service
 @Slf4j
-@EnableAsync
-class EmailServiceV2 implements EmailSender{
+class EmailServiceV2 implements EmailSender {
 
-    @Value('${mail.content.subject}')
-    String subject
 
     @Value('${mail.to}') String[] to
     @Value('${mail.from}') String from
 
-    @Value('${mail.content.description}')
-    String description
-
+    @Autowired
     private JavaMailSender mailSender
 
     @Override
     @Async
-    void send(String to, String email) {
+    void send(String to, String subject, String body) {
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage()
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8")
-            helper.setText(email, true)
+            helper.setText(body, true)
             helper.setTo(to)
-            helper.setSubject("Confirm your email")
+            helper.setSubject(subject)
             helper.setFrom(this.from)
             mailSender.send(mimeMessage)
         }catch(MessagingException msg){
@@ -46,18 +43,6 @@ class EmailServiceV2 implements EmailSender{
             throw new CreateResourceException("Failed to send email ${msg}")
         }
     }
-    String getReservesFromJson(String name, String url) {
-        try {
-            return new String(Files.readAllBytes(Paths.get( HTML_TEMPLATE_EMAIL_CLIENT_CONFIRM )))
-                    .replace("[NAME]", name)
-                    .replace("[URI]", url)
-        } catch (IOException e) {
-            log.error("Something went wrong -> " + e.getMessage())
-        }
-        return ""
-    }
-
-    private final String HTML_TEMPLATE_EMAIL_CLIENT_CONFIRM = "src/main/groovy/zero/our/piece/barbers/barbers_api/magicCube/mailing/EmailServiceV2.groovy"
 }
 
 /*
