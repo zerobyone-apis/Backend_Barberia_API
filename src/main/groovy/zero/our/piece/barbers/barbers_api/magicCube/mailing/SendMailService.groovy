@@ -21,11 +21,11 @@ class SendMailService {
     @Autowired
     MailPropertiesConfig mailProperties
 
-    @Value('${mail.content.subject}')
+    @Value('${spring.mail.content.subject}')
     String subject
-    @Value('${mail.contact.recipient.to}')
+    @Value('${spring.mail.contact.recipient.to}')
     String contactMail
-    @Value('${mail.content.description}')
+    @Value('${spring.mail.content.description}')
     String description
 
 

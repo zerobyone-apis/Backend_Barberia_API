@@ -2,17 +2,20 @@ package zero.our.piece.barbers.barbers_api.magicCube.mailing
 
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.cache.annotation.EnableCaching
-import org.springframework.context.annotation.EnableAspectJAutoProxy
 import org.springframework.mail.javamail.JavaMailSender
+import org.springframework.mail.javamail.JavaMailSenderImpl
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.scheduling.annotation.Async
-import org.springframework.scheduling.annotation.EnableAsync
 import org.springframework.stereotype.Service
 import zero.our.piece.barbers.barbers_api.magicCube.exception.CreateResourceException
 
+import javax.mail.Address
+import javax.mail.Message
 import javax.mail.MessagingException
+import javax.mail.Session
+import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
 
@@ -21,23 +24,28 @@ import javax.mail.internet.MimeMessage
 class EmailServiceV2 implements EmailSender {
 
 
-    @Value('${mail.to}') String[] to
-    @Value('${mail.from}') String from
+    @Value('${spring.mail.to}') String[] to
+    @Value('${spring.mail.from}') String from
 
     @Autowired
-    private JavaMailSender mailSender
+    Session session
+
+    @Autowired
+    private JavaMailSenderImpl mailSender
 
     @Override
     @Async
-    void send(String to, String subject, String body) {
+    Boolean send(String to, String subject, String body) {
         try {
+            mailSender.session = session
             MimeMessage mimeMessage = mailSender.createMimeMessage()
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8")
+           MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8")
             helper.setText(body, true)
             helper.setTo(to)
             helper.setSubject(subject)
             helper.setFrom(this.from)
             mailSender.send(mimeMessage)
+            return Boolean.TRUE
         }catch(MessagingException msg){
             log.error("Failed to send email ${msg}")
             throw new CreateResourceException("Failed to send email ${msg}")
@@ -45,8 +53,12 @@ class EmailServiceV2 implements EmailSender {
     }
 }
 
-/*
-todo: probar el mail sender a ver si lo manda.
-      COnfigurar los puertos y demas.
-      https://youtu.be/QwQuro7ekvc?t=6033
-* */
+
+/* @Deprecated - hasta no ver si queda bien de la otra forma
+  mimeMessage = new MimeMessage(session)
+  mimeMessage.setFrom(new InternetAddress(this.from))
+  mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(to))
+  mimeMessage.setSubject(subject)
+  mimeMessage.setContent(body, "text/html")
+*/
+

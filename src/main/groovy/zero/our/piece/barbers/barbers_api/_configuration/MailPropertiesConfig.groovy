@@ -15,25 +15,25 @@ import javax.mail.Session
 import java.security.GeneralSecurityException
 
 @Configuration
-@ConfigurationProperties(prefix = "mail")
+@ConfigurationProperties(prefix = "spring.mail")
 @Slf4j
 class MailPropertiesConfig {
 
     String username
     String password
     String host
-    String port
+    Long port
     String auth
     String enable
     String protocol
     String required
 
-    @Value('${mail.to}') String[] to
+    @Value('${spring.mail.to}') String[] to
 
 
     private Properties setMailProperties() throws GeneralSecurityException {
-        MailSSLSocketFactory sslSocketToManageAllHost = new MailSSLSocketFactory()
-        sslSocketToManageAllHost.setTrustAllHosts(true)
+       // MailSSLSocketFactory sslSocketToManageAllHost = new MailSSLSocketFactory()
+       // sslSocketToManageAllHost.setTrustAllHosts(true)
         Properties propertiesRequiredByMail = new Properties()
         propertiesRequiredByMail.put("mail.smtp.starttls.enable", this.enable)
         propertiesRequiredByMail.put("mail.smtp.user", this.username)
@@ -42,7 +42,7 @@ class MailPropertiesConfig {
         propertiesRequiredByMail.put("mail.smtp.port", this.port)
         propertiesRequiredByMail.put("mail.smtp.auth", this.auth)
         propertiesRequiredByMail.put("mail.smtp.to", this.to)
-        propertiesRequiredByMail.put("mail.smtp.ssl.socketFactory", sslSocketToManageAllHost)
+      //  propertiesRequiredByMail.put("spring.mail.smtp.ssl.socketFactory", sslSocketToManageAllHost)
         return propertiesRequiredByMail
     }
 
@@ -62,13 +62,13 @@ class MailPropertiesConfig {
 
 
     @Bean
-    JavaMailSender getJavaMailSender() {
+    JavaMailSenderImpl getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost(this.host);
-        mailSender.setPort(Integer.valueOf(this.port));
+        mailSender.setPort(this.port.toInteger());
 
         mailSender.setUsername(this.username);
-        mailSender.setPassword(this.username);
+        mailSender.setPassword(this.password);
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", this.protocol);
@@ -79,6 +79,4 @@ class MailPropertiesConfig {
 
         return mailSender;
     }
-
-
 }

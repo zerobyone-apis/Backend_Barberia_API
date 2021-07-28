@@ -103,11 +103,12 @@ class UserController {
     @PatchMapping("/send/email")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    void sendEmail() {
-        String to = "recohen949@dmsdmg.com"
+    def sendEmail(@RequestParam("email") String to) {
         String subject = "Validation Email Sender Test"
         String name = "ADMIN"
         String url = "http://localhost:8080/test"
         emailSender.send(to, subject, FileLoad.getConfirmBodyEmailHTML(name, url));
+
+        [status: "Enviado", message: "Se ha enviado el mail exitosamente al siguiente correo: ${to}" ]
     }
 }

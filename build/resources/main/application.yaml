@@ -11,14 +11,11 @@ spring:
       default-page-size: 40
       max-page-size: 1000
       default-media-type: application/json
-  aop:
-    auto: true
-    proxy-target-class: true
   jpa:
-   database: POSTGRESQL
-   show-sql: true
-   hibernate:
-     ddl-auto: update
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
   datasource:
     platform: postgres
     driver-class-name: org.postgresql.Driver
@@ -33,33 +30,23 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
 
-logging:
-  level:
-    org.hibernate.engine.jdbc.env.internal.LobCreatorBuilderImpl: ERROR
-
-reports-reserves:
-  scheduler:
-    enabled: true
-    cron: 0 3 * * * *
-
-mail:
-  username:  smtp.test.zero@gmail.com # 1571f256f928ed0916f6fe8b95608fb6
-  password: Asterisc0 # f16ae53ca7e2d298aacc18dae05e602a
-  to:  max3.1994@gmail.com , recohen949@dmsdmg.com
-  from:  max3.1994@gmail.com
-  host: smtp.gmail.com # in-v3.mailjet.com
-  port: 587
-  auth: true
-  enable: true
-  required: true
-  protocol: "smtp"
-  contact:
-    recipient:
-      to: # max3.1994@gmail.com
-  content:
-    subject: "Confirmación de Reserva" #subject-email
-    description: "Hola [USERNAME], \n\n Gracias por formar parte de Art Experience :rocket: \n Su reserva ah sido agendada correctamente!! \n\nDetalle de la Reserva: \n " # content-text of email
-
+  mail:
+    username: smtp.test.zero@gmail.com # 1571f256f928ed0916f6fe8b95608fb6
+    password: Asterisc0 # f16ae53ca7e2d298aacc18dae05e602a
+    to: max3.1994@gmail.com , recohen949@dmsdmg.com
+    from: max3.1994@gmail.com
+    host: smtp.gmail.com # in-v3.mailjet.com
+    port: 587
+    auth: true
+    enable: true
+    required: true
+    protocol: "smtp"
+    contact:
+      recipient:
+        to: # max3.1994@gmail.com
+    content:
+      subject: "Confirmación de Reserva" #subject-email
+      description: "Hola [USERNAME], \n\n Gracias por formar parte de Art Experience :rocket: \n Su reserva ah sido agendada correctamente!! \n\nDetalle de la Reserva: \n " # content-text of email
 
   mailV2:
     host: smtp.gmail.com
@@ -77,6 +64,15 @@ mail:
           connectiontimeout: 5000
           timeout: 3000
           writetimeout: 5000
+
+logging:
+  level:
+    org.hibernate.engine.jdbc.env.internal.LobCreatorBuilderImpl: ERROR
+
+reports-reserves:
+  scheduler:
+    enabled: true
+    cron: 0 3 * * * *
 
 auth:
   jwt:

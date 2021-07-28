@@ -10,9 +10,9 @@ class FileLoad {
 
     static String getConfirmBodyEmailHTML(String name, String url) {
         try {
-            return new String(Files.readAllBytes(Paths.get( HTML_TEMPLATE_EMAIL_CLIENT_CONFIRM )))
-                    .replace("[NAME]", name)
-                    .replace("[URI]", url)
+            return new String(Files.readAllBytes(Paths.get( EMAIL_TEMPLATE_CLIENT_CONFIRMATION )))
+                    .replace("[USERNAME]", name)
+                    .replace("[URL]", url)
         } catch (IOException e) {
             log.error("Something went wrong -> " + e.getMessage())
         }
@@ -20,5 +20,6 @@ class FileLoad {
     }
 
     //Emails templates.
-    private final static  String HTML_TEMPLATE_EMAIL_CLIENT_CONFIRM = "src/main/groovy/zero/our/piece/barbers/barbers_api/magicCube/mailing/EmailServiceV2.groovy"
+    private final static  String HTML_TEMPLATE_EMAIL_CLIENT_CONFIRM = "src/main/resources/mail/bundles/ConfirmationTokenEmail.html"
+    private final static  String EMAIL_TEMPLATE_CLIENT_CONFIRMATION = "src/main/resources/mail/bundles/RegisterClient/EmailConfirmAccount.html"
 }
