@@ -107,8 +107,10 @@ class UserController {
         String subject = "Validation Email Sender Test"
         String name = "ADMIN"
         String url = "http://localhost:8080/test"
-        emailSender.send(to, subject, FileLoad.getConfirmBodyEmailHTML(name, url));
+        Long socialNumber = 2
 
-        [status: "Enviado", message: "Se ha enviado el mail exitosamente al siguiente correo: ${to}" ]
+        emailSender.send(to, subject, FileLoad.getConfirmBodyEmailHTML(name, url, socialNumber));
+
+        [ status: "Enviado", message: "Se ha enviado el mail exitosamente al siguiente correo: $to" ]
     }
 }

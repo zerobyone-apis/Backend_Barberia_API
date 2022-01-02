@@ -1,7 +1,8 @@
-package zero.our.piece.barbers.barbers_api._security.service
+package zero.our.piece.barbers.barbers_api._security.service.adapters
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 import zero.our.piece.barbers.barbers_api._security.model.UserSecurity
 
@@ -9,7 +10,7 @@ import static zero.our.piece.barbers.barbers_api._security.infrastructure.Applic
 
 // TODO: DEMORA MUCHO EN CARGAR, Y TIRA ERROR PORQUE NO RECONOCE UN LIST<UserSecurity>
 
-@Service ("InMemory")
+// @Service("InMemory")
 class UserSecurityServiceInMemory {
 
     @Autowired

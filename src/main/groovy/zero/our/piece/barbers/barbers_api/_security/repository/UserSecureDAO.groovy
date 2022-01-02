@@ -7,7 +7,7 @@ import zero.our.piece.barbers.barbers_api._security.model.UserSecurity
 
 /*
     Todo: Esta tabla la dejo por las dudas en caso de querer guardar algunas cosas mas, por ejemplo los token de los usuarios, refresh tokens, y algunas cosas mas.
-  *     Antes era la tabal de securitys de usuarios, peroa hora consumo desde la tabal de usuarios.
+  *     Antes era la tabla de securitys de usuarios, peroa hora consumo desde la tabla de usuarios.
   *
 */
 @Deprecated

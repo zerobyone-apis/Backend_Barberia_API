@@ -47,7 +47,7 @@ class ClientController {
     /**
      * @public Solo para que los clientes confirmen su registro
      */
-    @PatchMapping("/confirm/{token}")
+    @GetMapping("/confirm/{token}")
     @ResponseStatus(HttpStatus.OK)
     def confirm(@PathVariable("token") String token) {
         confirmationTokenService.verifyToken(token);

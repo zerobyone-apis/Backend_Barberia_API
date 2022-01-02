@@ -30,14 +30,14 @@ class SendMailService {
 
 
     void notifyAndSendEmail(String detailsEmails, String username, String dateTimesReserve, String clientEmail) {
-        log.info("STARTING SEND EMAIL PROCESS (> 0 _ 0 )> . . .  ")
+        log.info("START EMAIL SEND PROCESS (> 0 _ 0 )> . . .  ")
         Optional<MimeMessage> mailContent =
                 buildContentMail(detailsEmails, description, subject, username, dateTimesReserve, clientEmail)
         mailContent.ifPresent(this.&connectAndSendEmail)
     }
 
     void contactEmail(String description, String subjectMessage, String emailFrom) {
-        log.info("STARTING SEND EMAIL PROCESS (> 0 _ 0 )> . . .  ")
+        log.info("START EMAIL SEND PROCESS (> 0 _ 0 )> . . .  ")
         try {
             log.info("CREATING CONTENT EMAIL . . . ")
             MimeMessage mailContent = new MimeMessage(mailSession)

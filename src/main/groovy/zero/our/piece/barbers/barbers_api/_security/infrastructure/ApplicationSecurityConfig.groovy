@@ -3,12 +3,10 @@ package zero.our.piece.barbers.barbers_api._security.infrastructure
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -16,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import zero.our.piece.barbers.barbers_api._security.infrastructure.jwt.JwtConfig
 import zero.our.piece.barbers.barbers_api._security.infrastructure.jwt.JwtUsernameAndPasswordAuthFilter
 import zero.our.piece.barbers.barbers_api._security.infrastructure.jwt.TokenVerifier
-import zero.our.piece.barbers.barbers_api._security.service.UserSecurityService
+import zero.our.piece.barbers.barbers_api._security.service.adapters.UserSecurityService
 
 import javax.crypto.SecretKey
 

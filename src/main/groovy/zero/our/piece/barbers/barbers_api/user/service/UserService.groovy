@@ -223,7 +223,7 @@ class UserService {
     FIXME: BUG
     todo: Revisar como poder logearte si tenemos la password encriptada.
          No matchea el nuevo encode del password con el que esta en la base de datos.
-         - Se me ocurre, busar por email, siempre que exista solo uno, obtener el user, decodear el password, validar con el que nos llega del request.
+         - Se me ocurre, buscar por email, siempre que exista solo uno, obtener el user, decodear el password, validar con el que nos llega del request.
             y si va to_do bien, devolvemos el usario logeado,
 
             Pero capas que hay mejores opciones. investigarlo.

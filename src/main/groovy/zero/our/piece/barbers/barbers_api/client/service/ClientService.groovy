@@ -2,6 +2,7 @@ package zero.our.piece.barbers.barbers_api.client.service
 
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.EnableTransactionManagement
 import zero.our.piece.barbers.barbers_api._security.model.ConfirmationToken
@@ -23,7 +24,6 @@ import zero.our.piece.barbers.barbers_api.user.model.User
 import zero.our.piece.barbers.barbers_api.user.service.UserService
 
 import java.time.Instant
-import java.time.LocalDateTime
 
 @Service
 @Slf4j
@@ -44,6 +44,8 @@ class ClientService {
 
     @Autowired
     ConfirmationTokenService tokenService
+
+    @Value('${server.baseUrl}') private String baseUrl
 
     List<ClientResponseDTO> findAll() {
         try {
@@ -113,8 +115,9 @@ class ClientService {
         log.info("Este es el token que se enviara -> ${token}")
 
         //todo: enviamos el token.
-        def uri = "http://localhost:8080/client/confirm/${token}"
-        emailSender.send(user.email,  FileLoad.getConfirmBodyEmailHTML(user.username, uri))
+        //def baseUrl = "http://localhost:8080" // Solo por local, pero el base url estare en las properties.
+        def uri = "$baseUrl/client/confirm/${token}"
+        emailSender.send(user.email,  "Confirmación de registro! ", FileLoad.getConfirmBodyEmailHTML(user.username, uri, user.social_number))
 
         return decoratorPatternClient(savedClient)
     }
@@ -198,7 +201,7 @@ class ClientService {
                         enterprise_id: client.enterprise_id ?: 1,
                         roles: UsersRoles.CLIENT
                 ))
-        return userService.saveUser(user, 'CREATE')
+        def savedUser = userService.saveUser(user, 'CREATE')
     }
 
     protected User updateUser(client) {

@@ -32,8 +32,5 @@ class AuditLog {
     AuditAction action
     Instant createdOn
     Instant updatedOn
-
-
-
 }
 

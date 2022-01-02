@@ -13,15 +13,10 @@ import java.nio.file.attribute.UserPrincipalNotFoundException
 @Service ("Postgres")
 class UserSecurePostgresService {
 
-    /*
-    -> Deprecado, seria para obtener informacion de alguna tabla de UserSecurity donde guarde  no se tokens o algo.. y luego validarlos aca.
-        @Deprecated
-        @Autowired
-        private UserSecureDAO repository
-
-   -> Service para tener la info total del usuario.
-        @Autowired
-        UserService userService
+    /**
+        -> Service para tener la info total del usuario.
+              @Autowired
+              UserService userService
     */
 
     @Autowired

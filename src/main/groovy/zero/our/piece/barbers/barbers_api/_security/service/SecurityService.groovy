@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import zero.our.piece.barbers.barbers_api._security.model.UserSecurity
+import zero.our.piece.barbers.barbers_api._security.service.adapters.UserSecurityService
 import zero.our.piece.barbers.barbers_api.magicCube.exception.ResourceNotFoundException
 
 @Service
@@ -43,7 +44,7 @@ class SecurityService {
         UserSecurity userPrincipal = (UserSecurity)authentication.getPrincipal()
         log.info("************************************************")
         log.info(" User principal name -> " + userPrincipal.username)
-        log.info(" Is user enabled -> " + userPrincipal.enabled)
+        log.info(" Is the user enabled -> " + userPrincipal.enabled)
         log.info("************************************************")
 
         userPrincipal

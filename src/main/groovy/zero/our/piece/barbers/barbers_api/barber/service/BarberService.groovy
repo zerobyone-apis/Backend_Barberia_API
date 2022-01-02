@@ -240,7 +240,7 @@ class BarberService {
 
             return userService.saveUser(user, 'UPDATE')
         } catch (Exception ex) {
-            throw new CreateResourceException("User with Username: ${barber.username} Not Exists... ERROR: $ex.message",)
+            throw new CreateResourceException("User with Username: $barber.username Not Exists... ERROR: $ex.message",)
         }
     }
 

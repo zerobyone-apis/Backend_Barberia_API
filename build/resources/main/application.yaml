@@ -21,7 +21,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/barber_api
     username: postgres
-    password: password
+    password:
   #  Production DB Connections
   #  url:
   #  username:
@@ -33,7 +33,7 @@ spring:
   mail:
     username: smtp.test.zero@gmail.com # 1571f256f928ed0916f6fe8b95608fb6
     password: Asterisc0 # f16ae53ca7e2d298aacc18dae05e602a
-    to: max3.1994@gmail.com , recohen949@dmsdmg.com
+    to: max3.1994@gmail.com
     from: max3.1994@gmail.com
     host: smtp.gmail.com # in-v3.mailjet.com
     port: 587

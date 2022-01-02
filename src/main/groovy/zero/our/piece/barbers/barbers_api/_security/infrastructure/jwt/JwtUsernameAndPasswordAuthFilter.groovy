@@ -35,7 +35,7 @@ class JwtUsernameAndPasswordAuthFilter extends UsernamePasswordAuthenticationFil
             *       @principal  -> En este objeto podriamos guardar toda la data que quisieramos cargar en el contexto a utilizar por ejemplo el dto de User.
             *       @credentials -> En este objeto deberiamos de usarlo unicamente para cuando sea necesario persistir o leer algun tipo de credencial encriptado.
             *       @authoritires -> es una extension, requiere un Collection de GrantedAutorities, sirve para saber que puede hacer ese usuario
-            *       Todo esto se podria llegar a usar desde el principal en el controler, y pasarlo al servicio para alguna logica.
+            *       Todo esto se podria llegar a usar desde el principal en el controller, y pasarlo al servicio para alguna logica.
             * */
             Authentication authentication = new UsernamePasswordAuthenticationToken(
                     authRequest.username,
@@ -58,7 +58,7 @@ class JwtUsernameAndPasswordAuthFilter extends UsernamePasswordAuthenticationFil
                 .claim("email", authResult.principal.properties.get("email"))
 
             /*
-            todo: probar si puedo obtener el user authenticado en el endpoint y ocntinuar el flujo
+                TODO: probar si puedo obtener el user authenticado en el endpoint y continuar el flujo
                     -> .claim("secret", authResult.principal.properties.get("password"))
              */
                 .claim("role", authResult.principal.properties.get("role"))

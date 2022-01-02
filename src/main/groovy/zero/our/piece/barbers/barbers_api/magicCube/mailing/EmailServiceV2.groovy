@@ -39,7 +39,7 @@ class EmailServiceV2 implements EmailSender {
         try {
             mailSender.session = session
             MimeMessage mimeMessage = mailSender.createMimeMessage()
-           MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8")
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8")
             helper.setText(body, true)
             helper.setTo(to)
             helper.setSubject(subject)
