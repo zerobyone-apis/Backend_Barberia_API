@@ -21,23 +21,23 @@ class SendMailService {
     @Autowired
     MailPropertiesConfig mailProperties
 
-    @Value('${mail.content.subject}')
+    @Value('${spring.mail.content.subject}')
     String subject
-    @Value('${mail.contact.recipient.to}')
+    @Value('${spring.mail.contact.recipient.to}')
     String contactMail
-    @Value('${mail.content.description}')
+    @Value('${spring.mail.content.description}')
     String description
 
 
     void notifyAndSendEmail(String detailsEmails, String username, String dateTimesReserve, String clientEmail) {
-        log.info("STARTING SEND EMAIL PROCESS (> 0 _ 0 )> . . .  ")
+        log.info("START EMAIL SEND PROCESS (> 0 _ 0 )> . . .  ")
         Optional<MimeMessage> mailContent =
                 buildContentMail(detailsEmails, description, subject, username, dateTimesReserve, clientEmail)
         mailContent.ifPresent(this.&connectAndSendEmail)
     }
 
     void contactEmail(String description, String subjectMessage, String emailFrom) {
-        log.info("STARTING SEND EMAIL PROCESS (> 0 _ 0 )> . . .  ")
+        log.info("START EMAIL SEND PROCESS (> 0 _ 0 )> . . .  ")
         try {
             log.info("CREATING CONTENT EMAIL . . . ")
             MimeMessage mailContent = new MimeMessage(mailSession)
@@ -63,8 +63,7 @@ class SendMailService {
 
     }
 
-    private Optional<MimeMessage> buildContentMail(String detailsEmails,String description, String subject, String username,
-                                                   String dateTimesReserve, String clientEmail) {
+    private Optional<MimeMessage> buildContentMail(String detailsEmails,String description, String subject, String username, String dateTimesReserve, String clientEmail) {
         try {
             log.info("BUILDING EMAIL CONTENT BY MULTIPARTS BODY ( W_W )? . . .  ")
             MimeMessage mailContent = buildContentTextMail(subject, detailsEmails, clientEmail)
@@ -115,7 +114,7 @@ class SendMailService {
         MimeMessage mailContent = new MimeMessage(mailSession)
         mailContent.setSubject(subject)
         //mailContent.setText(detailsEmail);
-        setListOfAddresses(mailContent, clientEmail, true)
+        setListOfAddresses(mailContent, clientEmail, false)
         return mailContent
     }
 
@@ -190,6 +189,6 @@ class SendMailService {
         return ""
     }
 
-    private final String HTML_TEMPLATE_EMAIL_RESERVE_CONFIRM = "src/main/resources/emailTemplates/EmailTemplateReservesConfirm.html"
+    private final String HTML_TEMPLATE_EMAIL_RESERVE_CONFIRM = "src/main/resources/mail/bundles/EmailTemplateReservesConfirm.html"
 
 }

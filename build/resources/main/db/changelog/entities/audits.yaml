@@ -38,6 +38,9 @@ databaseChangeLog:
                         name: action
                         type: VARCHAR
                     - column:
+                        name: roles
+                        type: VARCHAR
+                    - column:
                         name: permission
                         type: VARCHAR
                     - column:

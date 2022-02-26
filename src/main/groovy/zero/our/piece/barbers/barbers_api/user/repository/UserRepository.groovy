@@ -9,8 +9,8 @@ import zero.our.piece.barbers.barbers_api.user.model.User
 @Repository
 interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<User> findByUsername(String username);
-    Optional<User> findByEmail(String email);
+    User findByUsername(String username);
+    User findByEmail(String email);
 
     @Query( value = "SELECT u.* FROM users u WHERE u.social_number = :social_number AND u.password = :password", nativeQuery=true)
     User findBySocialNumberAndPassword(@Param("social_number") Long social_number, @Param("password") String password)
@@ -18,3 +18,5 @@ interface UserRepository extends JpaRepository<User, Long> {
     @Query( value = "SELECT u.* FROM users u WHERE u.email = :email AND u.password = :password", nativeQuery=true)
     User findByEmailAndPassword(@Param("email") String email, @Param("password") String password)
 }
+
+

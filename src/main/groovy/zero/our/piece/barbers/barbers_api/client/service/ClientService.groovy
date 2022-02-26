@@ -2,7 +2,11 @@ package zero.our.piece.barbers.barbers_api.client.service
 
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.EnableTransactionManagement
+import zero.our.piece.barbers.barbers_api._security.model.ConfirmationToken
+import zero.our.piece.barbers.barbers_api._security.service.ConfirmationTokenService
 import zero.our.piece.barbers.barbers_api.client.infrastructure.ClientType
 import zero.our.piece.barbers.barbers_api.client.model.Client
 import zero.our.piece.barbers.barbers_api.client.model.DTO.ClientRequestDTO
@@ -11,16 +15,19 @@ import zero.our.piece.barbers.barbers_api.client.repository.ClientRepository
 import zero.our.piece.barbers.barbers_api.client.repository.ClientUsersRepository
 import zero.our.piece.barbers.barbers_api.magicCube.exception.CreateResourceException
 import zero.our.piece.barbers.barbers_api.magicCube.exception.ResourceNotFoundException
+import zero.our.piece.barbers.barbers_api.magicCube.mailing.EmailSender
+import zero.our.piece.barbers.barbers_api.magicCube.mailing.EmailServiceV2
+import zero.our.piece.barbers.barbers_api.magicCube.utils.FileLoad
 import zero.our.piece.barbers.barbers_api.user.infrastructure.ClientUsers
-import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersPermission
+import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersRoles
 import zero.our.piece.barbers.barbers_api.user.model.User
 import zero.our.piece.barbers.barbers_api.user.service.UserService
 
 import java.time.Instant
-import java.util.stream.Collectors
 
 @Service
 @Slf4j
+@EnableTransactionManagement (proxyTargetClass = true)
 class ClientService {
 
     @Autowired
@@ -30,7 +37,15 @@ class ClientService {
     ClientUsersRepository clientUsersRepository
 
     @Autowired
+    EmailSender emailSender
+
+    @Autowired
     UserService userService
+
+    @Autowired
+    ConfirmationTokenService tokenService
+
+    @Value('${server.baseUrl}') private String baseUrl
 
     List<ClientResponseDTO> findAll() {
         try {
@@ -42,7 +57,7 @@ class ClientService {
 
     ClientResponseDTO findById(Long id) {
         try {
-            def foundUser = clientRepository.findById(id).get()
+            Client foundUser = clientRepository.findById(id).get()
             if (!foundUser?.id) throw new ResourceNotFoundException("USER_NOT_FOUND")
 
             return decoratorPatternClient(foundUser)
@@ -95,14 +110,23 @@ class ClientService {
         userService.saveUser(user, 'Updating clientID')
         clientUsersRepository.save(new ClientUsers(clientId: user.client_id, userId: user.id))
 
+        // todo: Create and save token
+        String token = tokenService.createToken(user)
+        log.info("Este es el token que se enviara -> ${token}")
+
+        //todo: enviamos el token.
+        //def baseUrl = "http://localhost:8080" // Solo por local, pero el base url estare en las properties.
+        def uri = "$baseUrl/client/confirm/${token}"
+        emailSender.send(user.email,  "Confirmación de registro! ", FileLoad.getConfirmBodyEmailHTML(user.username, uri, user.social_number))
+
         return decoratorPatternClient(savedClient)
     }
 
     ClientResponseDTO update(ClientRequestDTO body, Long clientId) {
-        def existentClient = clientRepository.findById(clientId)
-        if (!existentClient.isPresent()) throw new ResourceNotFoundException("CLIENT NOT FOUND")
+        Client existentClient = clientRepository.findById(clientId).get()
+        if (existentClient?.username) throw new ResourceNotFoundException("CLIENT NOT FOUND")
 
-        Client client = updateClient(existentClient.get(), body)
+        Client client = updateClient(existentClient, body)
         updateUser(body)
 
         def savedClient = clientRepository.save(client)
@@ -175,9 +199,9 @@ class ClientService {
                         password: client.password,
                         email: client.email,
                         enterprise_id: client.enterprise_id ?: 1,
-                        permission: UsersPermission.CLIENT
+                        roles: UsersRoles.CLIENT
                 ))
-        return userService.saveUser(user, 'CREATE')
+        def savedUser = userService.saveUser(user, 'CREATE')
     }
 
     protected User updateUser(client) {
@@ -215,4 +239,12 @@ class ClientService {
         )
     }
 
+    void confirmUserClient(Client client) {
+        try {
+            clientRepository.save(client)
+        }catch(Exception ex) {
+            log.error("Algo salio mal Activando al nuevo cliente...")
+            throw new IllegalStateException("Something wrong with new Client ACTIVATION.. ${ex.message}")
+        }
+    }
 }

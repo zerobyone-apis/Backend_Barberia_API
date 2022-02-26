@@ -4,7 +4,8 @@ package zero.our.piece.barbers.barbers_api.user.model
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import org.hibernate.annotations.Type
-import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersPermission
+import zero.our.piece.barbers.barbers_api._security.infrastructure.ApplicationUserPermission
+import zero.our.piece.barbers.barbers_api.user.infrastructure.UsersRoles
 
 import javax.persistence.*
 import java.time.Instant
@@ -23,13 +24,20 @@ class User {
     Long barber_id
     Long hairdresser_id
     Long client_id
-    String username     //todo: sencive data we need to encrypt
+    String username
     String password     //todo: sencive data we need to encrypt
-    String email        //todo: sencive data we need to encrypt
-    Long social_number   //todo: sencive data we need to encrypt
+    String email
+    Long social_number
     Instant created_on
     Instant update_on
-    UsersPermission permission
-    Boolean is_active = Boolean.TRUE
+
+    @Enumerated(EnumType.STRING)
+    UsersRoles roles
+
+    @Deprecated
+    //@Enumerated(EnumType.STRING)
+    ApplicationUserPermission permission   // todo: ver si se guardan los roles, o si se borra la columna
+
+    Boolean is_active = Boolean.FALSE  //Ahora debera actualizarse por medio de notificacion en email.
 }
 

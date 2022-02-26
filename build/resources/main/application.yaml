@@ -12,16 +12,16 @@ spring:
       max-page-size: 1000
       default-media-type: application/json
   jpa:
-   database: POSTGRESQL
-   show-sql: true
-   hibernate:
-     ddl-auto: update
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
   datasource:
     platform: postgres
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/barber_api
     username: postgres
-    password: password
+    password:
   #  Production DB Connections
   #  url:
   #  username:
@@ -29,6 +29,41 @@ spring:
 
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
+
+  mail:
+    username: smtp.test.zero@gmail.com # 1571f256f928ed0916f6fe8b95608fb6
+    password: Asterisc0 # f16ae53ca7e2d298aacc18dae05e602a
+    to: max3.1994@gmail.com
+    from: max3.1994@gmail.com
+    host: smtp.gmail.com # in-v3.mailjet.com
+    port: 587
+    auth: true
+    enable: true
+    required: true
+    protocol: "smtp"
+    contact:
+      recipient:
+        to: # max3.1994@gmail.com
+    content:
+      subject: "Confirmación de Reserva" #subject-email
+      description: "Hola [USERNAME], \n\n Gracias por formar parte de Art Experience :rocket: \n Su reserva ah sido agendada correctamente!! \n\nDetalle de la Reserva: \n " # content-text of email
+
+  mailV2:
+    host: smtp.gmail.com
+    port: 587
+    username: smtp.test.zero@gmail.com
+    password: Asterisc0
+    properties:
+      mail:
+        smtp:
+          ssl:
+            trust: "*"
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
 
 logging:
   level:
@@ -39,20 +74,9 @@ reports-reserves:
     enabled: true
     cron: 0 3 * * * *
 
-mail:
-  username: smtp.test.zero@gmail.com
-  password: Asterisc0
-  to:  damianezetiel1@gmail.com, mitsuki-kun@hotmail.com, max3.1994@gmail.com, smtp.test.zero@gmail.com,
-  host: smtp.gmail.com
-  port: 587
-  auth: true
-  enable: true
-  required: true
-  contact:
-    recipient:
-      to: #new_test_email@gmail.com
-  content:
-    subject: "Confirmación de Reserva" #subject-email
-    description: "Hola [USERNAME], \n\n Gracias por formar parte de Art Experience :rocket: \n Su reserva ah sido agendada correctamente!! \n\nDetalle de la Reserva: \n " #content-text of email
-
-
+auth:
+  jwt:
+    secret-key: "THIS_IS_MY_SECURE_SECRET_KEY_BLABLABLALABLABLABLABLA_ZERO"
+  token:
+    prefix: "Bearer "
+    expiration-days: 1

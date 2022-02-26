@@ -6,6 +6,7 @@ class BarberResponseDTO {
 
     // barber info;
     Long id
+    Long userId
     String name
     String phone
     String open_work_time

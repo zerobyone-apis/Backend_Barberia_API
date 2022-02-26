@@ -29,6 +29,8 @@ databaseChangeLog:
         file: /db/changelog/entities/foreignkeys.yaml
     - include:
         file: /db/changelog/entities/audits.yaml
+    - include:
+        file: /db/changelog/entities/security.yaml
 
 
 
