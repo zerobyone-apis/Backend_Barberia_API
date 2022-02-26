@@ -1,4 +1,4 @@
-package zero.our.piece.barbers.barbers_api.producto.controller
+package zero.our.piece.barbers.barbers_api.product.controller
 
 import groovy.util.logging.Slf4j
 import org.springframework.stereotype.Controller

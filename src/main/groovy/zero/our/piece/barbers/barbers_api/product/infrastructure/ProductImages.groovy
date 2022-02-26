@@ -1,4 +1,4 @@
-package zero.our.piece.barbers.barbers_api.producto.infrastructure
+package zero.our.piece.barbers.barbers_api.product.infrastructure
 
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString

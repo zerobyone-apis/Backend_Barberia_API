@@ -1,4 +1,4 @@
-package zero.our.piece.barbers.barbers_api.producto.repository
+package zero.our.piece.barbers.barbers_api.product.repository
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.repository.query.Param
