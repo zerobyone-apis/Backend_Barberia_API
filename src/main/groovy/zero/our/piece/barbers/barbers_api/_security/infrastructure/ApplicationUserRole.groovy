@@ -1,6 +1,5 @@
 package zero.our.piece.barbers.barbers_api._security.infrastructure
 
-import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 
 import static com.google.common.collect.Sets.newHashSet

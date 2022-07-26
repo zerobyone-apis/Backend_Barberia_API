@@ -332,13 +332,14 @@ class ReserveServices {
         sendMailService.notifyAndSendEmail(formatReserve, client.name, reserveDate, client.email)
     }
 
+    // ~todo~: Endpoint para mandar mails a discrecion - done v
     void testMail(String recipientEmail) {
         def detailsMessage = "<li type=\"square\">Esto es un Test del email</li>"
         def username = "Zero Dev"
         def dateTime = "<li type=\"square\">Fecha: 21-08-2020</li> <li type=\"square\">Hora: 12:00 hrs</li>"
         def defaultEmail = "zerobyone.dev@gmail.com"
         sendMailService.notifyAndSendEmail(detailsMessage, username, dateTime, recipientEmail ?: defaultEmail)
-    } // todo: Endpoint para mandar mails a discrecion
+    }
 
     protected BarberResponseDTO getBarber(userId) {
         barberService.findByUserId(userId)

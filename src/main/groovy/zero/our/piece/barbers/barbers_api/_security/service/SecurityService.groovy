@@ -42,7 +42,7 @@ class SecurityService {
         if ((authentication instanceof AnonymousAuthenticationToken)) throw new ResourceNotFoundException("User is not authenticated")
 
         UserSecurity userPrincipal = (UserSecurity)authentication.getPrincipal()
-        log.info("************************************************")
+        log.info("***************(UserSecurity)*********************************")
         log.info(" User principal name -> " + userPrincipal.username)
         log.info(" Is the user enabled -> " + userPrincipal.enabled)
         log.info("************************************************")

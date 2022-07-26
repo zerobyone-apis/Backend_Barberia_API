@@ -18,7 +18,7 @@ import javax.persistence.Transient
 
 /*
     TODO: Crear esta entidad de user_roles_authorities
-          aca se guardaran los usario con sus diferentes identidades roles, permisos, etcc
+          aca se guardaran los usuario con sus diferentes identidades roles, permisos, etcc
           se retro-alimentara de la tabla de users que ya existe, esta tabla es puramente de seguridad.
 
           todo:

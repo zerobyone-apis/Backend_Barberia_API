@@ -39,61 +39,41 @@ class AuditService {
     }
 
     void saveAdminLog(BarberResponseDTO admin, AuditAction action) {
-        auditLogRepository.save(createClientLog(admin, action))
+        auditLogRepository.save(createAdminLog(admin, action))
     }
 
     void saveUserLog(UserResponseDTO user, AuditAction action) {
-        auditLogRepository.save(createClientLog(user, action))
+        auditLogRepository.save(createUserLog(user, action))
     }
 
     void saveBarberLog(BarberResponseDTO barber, AuditAction action) {
-        auditLogRepository.save(createClientLog(barber, action))
+        auditLogRepository.save(createBarberLog(barber, action))
     }
 
     static AuditLog createClientLog(client, AuditAction action) {
-        return new AuditLog(
-                username: client.username,
-                email: client.email,
-                socialNumber: client.social_number,
-                clientId: client?.id,
-                createdOn:  Instant.now(),
-                roles: UsersRoles.CLIENT,
-                action: action
-        )
+        return buildAuditLog(client, action, UsersRoles.CLIENT)
     }
 
     static AuditLog createAdminLog(admin, AuditAction action) {
-        return new AuditLog(
-                username: admin.username,
-                email: admin.email,
-                socialNumber: admin.social_number,
-                barberId: admin.id,
-                createdOn:  Instant.now(),
-                roles: UsersRoles.ADMIN,
-                action: action
-        )
+        return  buildAuditLog(admin, action, UsersRoles.ADMIN)
     }
 
     static AuditLog createUserLog(user, AuditAction action) {
-        return new AuditLog(
-                username: user.username,
-                email: user.email,
-                socialNumber: user.social_number,
-                barberId: user?.id,
-                createdOn:  Instant.now(),
-                roles: UsersRoles.SUPERVISOR,
-                action: action
-        )
+        return buildAuditLog(user, action, UsersRoles.SUPERVISOR)
     }
 
     static AuditLog createBarberLog(barber, AuditAction action) {
-        return new AuditLog(
-                username: barber.username,
-                email: barber.email,
-                socialNumber: barber.social_number,
-                barberId: barber?.id,
-                createdOn:  Instant.now(),
-                roles: UsersRoles.BARBER,
+        return buildAuditLog(barber, action, UsersRoles.BARBER)
+    }
+
+    private static AuditLog buildAuditLog(data, AuditAction action, UsersRoles role) {
+        new AuditLog(
+                username: data.username,
+                email: data.email,
+                socialNumber: data.social_number,
+                clientId: data?.id,
+                createdOn: Instant.now(),
+                roles: role,
                 action: action
         )
     }

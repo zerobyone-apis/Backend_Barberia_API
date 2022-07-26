@@ -6,5 +6,5 @@ import org.springframework.stereotype.Controller
 @Controller
 @Slf4j
 class EnterpriseController {
-
+// todo: crear controladores y servicios
 }

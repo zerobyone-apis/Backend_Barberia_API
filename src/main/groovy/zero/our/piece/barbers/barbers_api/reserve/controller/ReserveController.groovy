@@ -24,7 +24,10 @@ import java.security.Principal
 @Slf4j
 @RestCrossOriginController("/reserves")
 class ReserveController {
-    
+
+    // Todo: Validar si ya se puede usar el Principal como fuente de inicio de session y si podemos limpiar un poco los endpoints
+    // Todo: Crear un archivo de constantes donde escribamos las rutas de los endpoints como constantes Y las validaciones de segurad tambien.
+
     @Autowired
     ReserveServices reserveService
 

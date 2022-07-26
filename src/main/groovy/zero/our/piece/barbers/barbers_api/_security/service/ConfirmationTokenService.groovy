@@ -48,7 +48,7 @@ class ConfirmationTokenService {
        try{
            repository.save(token)
        } catch(Exception e){
-           log.error("Somwthing was wrong saving the current token...  error: ${e.message}")
+           log.error("Something was wrong saving the current token...  error: [ ${e.message} ]")
        }
     }
 
@@ -57,7 +57,7 @@ class ConfirmationTokenService {
            confirmationToken.confirmAt = LocalDateTime.now()
            repository.save(confirmationToken)
        } catch(Exception e){
-           log.error("Something was wrong Updating confirm at from token... ${e.message}")
+           log.error("Something was wrong Updating confirm at from token... [ ${e.message} ]")
        }
     }
 
