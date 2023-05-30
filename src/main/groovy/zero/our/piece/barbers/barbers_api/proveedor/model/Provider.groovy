@@ -4,7 +4,7 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import org.hibernate.validator.constraints.Length
 import zero.our.piece.barbers.barbers_api.enterprise.model.Enterprise
-import zero.our.piece.barbers.barbers_api.producto.model.Product
+import zero.our.piece.barbers.barbers_api.product.model.Product
 
 import javax.persistence.*
 import javax.validation.constraints.NotEmpty

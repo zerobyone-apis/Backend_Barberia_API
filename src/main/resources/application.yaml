@@ -20,13 +20,13 @@ spring:
   datasource:
     platform: postgres
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/barber_api
-    username: postgres
-    password:
-  #  Production DB Connections
-  #  url:
-  #  username:
+  #  url: jdbc:postgresql://localhost:5432/barber_api
+  #  username: postgres
   #  password:
+  #  Production DB Connections
+    url: jdbc:postgresql://postgres:5FaCEFozaszRpUBUwxrw@containers-us-west-102.railway.app:7936/railway
+    username: postgres
+    password: 5FaCEFozaszRpUBUwxrw
 
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
@@ -35,7 +35,7 @@ spring:
     username: smtp.test.zero@gmail.com # 1571f256f928ed0916f6fe8b95608fb6
     password: Asterisc0 # f16ae53ca7e2d298aacc18dae05e602a
     to: max3.1994@gmail.com
-    from: max3.1994@gmail.com
+    from: smtp.test.zero@gmail.com #max3.1994@gmail.com
     host: smtp.gmail.com # in-v3.mailjet.com
     port: 587
     auth: true

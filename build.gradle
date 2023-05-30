@@ -61,3 +61,6 @@ dependencyManagement {
 test {
 	useJUnitPlatform()
 }
+
+// Railway configuration to deploy backend
+//tasks.jar { enable = false}

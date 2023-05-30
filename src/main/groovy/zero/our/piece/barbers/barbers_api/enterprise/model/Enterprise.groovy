@@ -4,7 +4,7 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import org.hibernate.validator.constraints.Length
 import zero.our.piece.barbers.barbers_api.enterprise.infrastructure.EnterpriseStatus
-import zero.our.piece.barbers.barbers_api.producto.model.Product
+import zero.our.piece.barbers.barbers_api.product.model.Product
 import zero.our.piece.barbers.barbers_api.proveedor.model.Provider
 import zero.our.piece.barbers.barbers_api.reserve.model.Reserves
 import zero.our.piece.barbers.barbers_api.user.model.User

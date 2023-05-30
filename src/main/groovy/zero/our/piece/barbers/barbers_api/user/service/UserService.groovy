@@ -48,10 +48,10 @@ class UserService {
     BCryptPasswordEncoder passwordEncoder
 
     @Autowired
-    EnterpriseUsersRepository enterpriseUsersRepository
+    ConfirmationTokenService tokenService
 
     @Autowired
-    ConfirmationTokenService tokenService
+    EnterpriseUsersRepository enterpriseUsersRepository
 
     private Long FIRST_SOCIAL_NUMBER = 600L
 
@@ -217,7 +217,6 @@ class UserService {
         }
         response
     }
-
 
 /*
     FIXME: BUG
