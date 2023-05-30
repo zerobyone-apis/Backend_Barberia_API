@@ -1,5 +1,5 @@
 server:
-  port: 8080 #PORT
+  port: ${PORT:8080} #PORT
   tomcat:
     max-threads: 300
   baseUrl: http://localhost:8080
@@ -20,13 +20,19 @@ spring:
   datasource:
     platform: postgres
     driver-class-name: org.postgresql.Driver
-  #  url: jdbc:postgresql://localhost:5432/barber_api
-  #  username: postgres
-  #  password:
-  #  Production DB Connections
-    url: jdbc:postgresql://postgres:5FaCEFozaszRpUBUwxrw@containers-us-west-102.railway.app:7936/railway
+    url: jdbc:postgresql://localhost:5432/barber_api
     username: postgres
-    password: 5FaCEFozaszRpUBUwxrw
+    password:
+
+  #  Production vars Connections
+  #  url: jdbc:postgresql://postgres:5FaCEFozaszRpUBUwxrw@containers-us-west-102.railway.app:7936/railway
+  #  username: postgres
+  #  password: 5FaCEFozaszRpUBUwxrw
+
+  #  Production DB
+  #  url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}
+  #  username: ${PGUSER}
+  #  password: ${PGPASSWORD}
 
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml

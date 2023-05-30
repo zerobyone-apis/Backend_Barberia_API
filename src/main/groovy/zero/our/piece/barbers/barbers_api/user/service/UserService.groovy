@@ -4,6 +4,7 @@ import groovy.util.logging.Slf4j
 import org.hibernate.exception.SQLGrammarException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import zero.our.piece.barbers.barbers_api._security.infrastructure.PasswordConfig
 import zero.our.piece.barbers.barbers_api._security.model.ConfirmationToken
@@ -45,7 +46,7 @@ class UserService {
     RegisterLoginService registerLoginService
 
     @Autowired
-    BCryptPasswordEncoder passwordEncoder
+    PasswordEncoder passwordEncoder
 
     @Autowired
     ConfirmationTokenService tokenService

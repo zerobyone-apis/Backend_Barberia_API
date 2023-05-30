@@ -28,7 +28,7 @@ class ClientController {
         clientService.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyAuthority('cli_resv_read')")
     def getClientById(@PathVariable("id") Long clientId) {
@@ -54,28 +54,28 @@ class ClientController {
     }
 
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/by/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyAuthority('cli_resv_write', 'brb_write')")
     def update(@RequestBody ClientRequestDTO client, @PathVariable("id") Long id) {
         clientService.update(client, id);
     }
 
-    @GetMapping("/{email}")
+    @GetMapping("/email/{email}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyAuthority('cli_resv_read', 'brb_write')")
     def findByEmail(@PathVariable("email") String email) {
         clientService.findByEmail(email);
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/username/{username}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyAuthority('cli_resv_read', 'brb_write')")
     def getClientByUsername(@PathVariable("username") String username) {
         clientService.findByUsername(username);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/remove/by/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SUPERVISOR')")
     void logicDeleteById(@PathVariable("id") Long id) {
@@ -83,10 +83,10 @@ class ClientController {
     }
 
 
-    @DeleteMapping("/deactivate/{clientId}")
+    @DeleteMapping("/deactivate/by/id/{clientId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SUPERVISOR')")
-    void desactivateAccount(@PathVariable("clientId") Long id) {
+    void deactivateAccount(@PathVariable("clientId") Long id) {
         clientService.logicDelete(id);
     }
 

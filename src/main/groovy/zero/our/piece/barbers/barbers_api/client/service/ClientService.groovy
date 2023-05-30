@@ -57,12 +57,13 @@ class ClientService {
 
     ClientResponseDTO findById(Long id) {
         try {
-            Client foundUser = clientRepository.findById(id).get()
-            if (!foundUser?.id) throw new ResourceNotFoundException("USER_NOT_FOUND")
+            Optional<Client> client = clientRepository.findById(id)
+            if (!client.isPresent()) throw new ResourceNotFoundException("USER_NOT_FOUND")
 
-            return decoratorPatternClient(foundUser)
+            return decoratorPatternClient(client.get())
         } catch (ResourceNotFoundException | NoSuchElementException ex) {
-            throw new ResourceNotFoundException(ex.message)
+            // TODO: Create new  exceptions to dont throw whole stack strace..
+            throw new ResourceNotFoundException("USER_NOT_FOUND", ex)
         }
     }
 
@@ -114,8 +115,7 @@ class ClientService {
         String token = tokenService.createToken(user)
         log.info("Este es el token que se enviara -> ${token}")
 
-        //todo: enviamos el token.
-        //def baseUrl = "http://localhost:8080" // Solo por local, pero el base url estare en las properties.
+        //todo: enviamos el token
         def uri = "$baseUrl/client/confirm/${token}"
         emailSender.send(user.email,  "Confirmación de registro! ", FileLoad.getConfirmBodyEmailHTML(user.username, uri, user.social_number))
 
